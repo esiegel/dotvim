@@ -10,39 +10,35 @@ Bundle 'gmarik/vundle'
 
 " Bundles :
 Bundle 'git@github.com:esiegel/snipmate-snippets.git'
-"
+
 " original repos on github
+Bundle 'mileszs/ack.vim'
+Bundle 'Rip-Rip/clang_complete'
+Bundle 'msanders/cocoa.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'mileszs/ack.vim'
-Bundle 'majutsushi/tagbar'
-Bundle 'tsaleh/vim-align'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'ervandew/supertab'
-Bundle 'msanders/snipmate.vim'
-Bundle 'tpope/vim-surround'
-Bundle 'msanders/cocoa.vim'
 Bundle 'sorin-ionescu/python.vim'
 Bundle 'riobard/scala.vim'
-Bundle 'Rip-Rip/clang_complete'
+Bundle 'msanders/snipmate.vim'
+Bundle 'ervandew/supertab'
+Bundle 'majutsushi/tagbar'
+Bundle 'tsaleh/vim-align'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'tpope/vim-surround'
 
-"Bundle 'MarcWeber/vim-addon-async'
-"Bundle 'MarcWeber/vim-addon-completion'
-"Bundle 'MarcWeber/vim-addon-json-encoding'
-"Bundle 'MarcWeber/ensime', {'rtp': 'vim/'}
-
-" vim-scripts repoon
+" vim-scripts repo
 Bundle 'a.vim'
-Bundle 'L9'
-Bundle 'Color-Sampler-Pack'
 Bundle 'BusyBee'
 Bundle 'cscope_macros.vim'
+Bundle 'Color-Sampler-Pack'
 Bundle 'Jinja'
+Bundle 'L9'
 Bundle 'octave.vim--'
+
 " non github repos
 Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'git://repo.or.cz/vcscommand'
-" ...
 
 filetype plugin indent on     " required!off                                                                
 
@@ -71,8 +67,8 @@ set smartindent
 
 "tab = 4 spaces "indent spaces = 4 and tab to spaces
 set expandtab
-set tabstop=4 
-set shiftwidth=4
+set tabstop=3 
+set shiftwidth=3
 
 "allowing backspace to work after indent -> see :help i_backspacing
 set backspace=indent,eol,start
@@ -113,6 +109,10 @@ set hidden
 
 "ignorecase when searching
 set ignorecase
+
+"set status line for powerline
+set laststatus=2 
+let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
 
 "Setup backup location and enable
 set backupdir=~/code/.tmpvim/backup
