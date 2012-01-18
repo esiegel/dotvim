@@ -17,6 +17,7 @@ Bundle 'Rip-Rip/clang_complete'
 Bundle 'msanders/cocoa.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/syntastic'
 Bundle 'sorin-ionescu/python.vim'
 Bundle 'riobard/scala.vim'
 Bundle 'msanders/snipmate.vim'
@@ -33,6 +34,7 @@ Bundle 'BusyBee'
 Bundle 'cscope_macros.vim'
 Bundle 'Color-Sampler-Pack'
 Bundle 'Jinja'
+Bundle 'keepcase.vim'
 Bundle 'L9'
 Bundle 'octave.vim--'
 
@@ -231,6 +233,9 @@ noremap <silent><leader>l :cn<CR>
 map! <C-j> <Esc>
 map <C-j> <Esc>
 
+"QuickFix List clear
+noremap <C-q> :call setqflist([])
+
 "Trick if forgot to sudo
 cmap w!! %!sudo tee > /dev/null %
 
@@ -299,6 +304,7 @@ function! SparkleSetup()
     cscope add /usr/local/code/oauth_java/cscope.out                              /usr/local/code/oauth_java/
     cscope add /usr/local/code/redis_java/cscope.out                              /usr/local/code/redis_java/
     cscope add /usr/local/code/schedule_java/cscope.out                           /usr/local/code/schedule_java/
+    cscope add /usr/local/code/http_java/cscope.out                               /usr/local/code/http_java/
     
     cscope add /usr/local/code/spring-framework-3.0.5.RELEASE/src/cscope.out      /usr/local/code/spring-framework-3.0.5.RELEASE/src/
 endfunction
