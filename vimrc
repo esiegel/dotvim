@@ -27,6 +27,14 @@ Bundle 'tsaleh/vim-align'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-fugitive'
+Bundle 'chrisbra/NrrwRgn'
+
+Bundle 'MarcWeber/vim-addon-async'
+Bundle 'MarcWeber/vim-addon-signs'
+Bundle 'MarcWeber/vim-addon-completion'
+Bundle 'MarcWeber/vim-addon-json-encoding'
+Bundle 'tomtom/tlib_vim'
 
 " vim-scripts repo
 Bundle 'a.vim'
@@ -115,6 +123,9 @@ set ignorecase
 "set status line for powerline
 set laststatus=2 
 let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
+
+"Necessary to show unicode glyphs
+set encoding=utf-8 " Necessary to show unicode glyphs
 
 "Setup backup location and enable
 set backupdir=~/code/.tmpvim/backup
@@ -263,6 +274,11 @@ let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 if !empty(matchstr(hostname(), "ebox"))
     let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
+
+""""""""""""""""""""""""""""""AcK""""""""""""""""""""""""""""""
+"narrow window vertical
+let g:nrrw_rgn_vert = 1
+let g:nrrw_rgn_wdth = 80 
 
 """""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS""""""""""""""""""""""""""""""
 
