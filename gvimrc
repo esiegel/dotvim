@@ -7,7 +7,7 @@
 " set number
 
 " Change colorscheme
-colorscheme BusyBee
+colorscheme solarized 
 "colorscheme candycode 
 
 " Turns on the tab bar always
