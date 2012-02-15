@@ -69,8 +69,8 @@ set smartindent
 
 "tab = 4 spaces "indent spaces = 4 and tab to spaces
 set expandtab
-set tabstop=3 
-set shiftwidth=3
+set tabstop=4 
+set shiftwidth=4
 
 "allowing backspace to work after indent -> see :help i_backspacing
 set backspace=indent,eol,start
@@ -114,7 +114,7 @@ set ignorecase
 
 "set status line for powerline
 set laststatus=2 
-let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
+"let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
 
 "Setup backup location and enable
 set backupdir=~/code/.tmpvim/backup
