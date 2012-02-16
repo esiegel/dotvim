@@ -132,6 +132,10 @@ set backupdir=~/code/.tmpvim/backup
 set backup
 set directory=~/code/.tmpvim/swap
 
+"wildmode enables better file viewing when opeing new files, like bash
+set wildmenu
+set wildmode=longest,list
+
 """""""""""""""""""""""""""CTAGS"""""""""""""""""""""""""""""
 
 "Tags files
@@ -223,6 +227,9 @@ endif
 
 "ImportMissing
 nmap <silent><leader>m :JavaImportMissing<CR>
+
+"JavaCorrect
+nmap <silent><leader><leader>c :JavaCorrect<CR>
 
 """""""""""""""""""""""""""MAPPINGS"""""""""""""""""""""""""""
 
