@@ -23,7 +23,7 @@ set guioptions-=LIRrb
 
 " Sets the font and size
 " set guifont=Bitstream\ Vera\ Sans\ Mono:h18
-set guifont=Monospace\ 16
+set guifont=Monospace\ 14
 
 " full screen
 "set fuopt=maxvert,maxhorz

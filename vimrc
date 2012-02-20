@@ -114,7 +114,7 @@ set ignorecase
 
 "set status line for powerline
 set laststatus=2 
-let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
+"let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
 
 "Setup backup location and enable
 set backupdir=~/code/.tmpvim/backup
