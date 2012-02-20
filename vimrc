@@ -23,10 +23,19 @@ Bundle 'riobard/scala.vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'ervandew/supertab'
 Bundle 'majutsushi/tagbar'
-Bundle 'tsaleh/vim-align'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-fugitive'
+Bundle 'chrisbra/NrrwRgn'
+Bundle 'godlygeek/tabular'
+"Bundle 'kien/ctrlp.vim'
+
+Bundle 'MarcWeber/vim-addon-async'
+Bundle 'MarcWeber/vim-addon-signs'
+Bundle 'MarcWeber/vim-addon-completion'
+Bundle 'MarcWeber/vim-addon-json-encoding'
+Bundle 'tomtom/tlib_vim'
 
 " vim-scripts repo
 Bundle 'a.vim'
@@ -69,8 +78,8 @@ set smartindent
 
 "tab = 4 spaces "indent spaces = 4 and tab to spaces
 set expandtab
-set tabstop=3 
-set shiftwidth=3
+set tabstop=4 
+set shiftwidth=4
 
 "allowing backspace to work after indent -> see :help i_backspacing
 set backspace=indent,eol,start
@@ -116,10 +125,17 @@ set ignorecase
 set laststatus=2 
 "let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
 
+"Necessary to show unicode glyphs
+set encoding=utf-8 " Necessary to show unicode glyphs
+
 "Setup backup location and enable
 set backupdir=~/code/.tmpvim/backup
 set backup
 set directory=~/code/.tmpvim/swap
+
+"wildmode enables better file viewing when opeing new files, like bash
+set wildmenu
+set wildmode=longest,list:longest
 
 """""""""""""""""""""""""""CTAGS"""""""""""""""""""""""""""""
 
@@ -198,6 +214,11 @@ set completeopt=longest,menu,preview
 """""""""""""""""""""""""""PYTHON"""""""""""""""""""""""""""
 au FileType python set omnifunc=pythoncomplete#Complete
 
+"""""""""""""""""""""""""""TABULAR"""""""""""""""""""""""""""
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:\zs<CR>
+vmap <Leader>a: :Tabularize /:\zs<CR>
 
 """""""""""""""""""""""""""ECLIM""""""""""""""""""""""""""""""
 
@@ -212,6 +233,9 @@ endif
 
 "ImportMissing
 nmap <silent><leader>m :JavaImportMissing<CR>
+
+"JavaCorrect
+nmap <silent><leader><leader>c :JavaCorrect<CR>
 
 """""""""""""""""""""""""""MAPPINGS"""""""""""""""""""""""""""
 
@@ -264,6 +288,11 @@ if !empty(matchstr(hostname(), "ebox"))
     let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
 
+""""""""""""""""""""""""""""""AcK""""""""""""""""""""""""""""""
+"narrow window vertical
+let g:nrrw_rgn_vert = 1
+let g:nrrw_rgn_wdth = 80 
+
 """""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS""""""""""""""""""""""""""""""
 
 "default code directory
@@ -275,8 +304,13 @@ endif
 
 function! AntSingle()
     "change ant single to current file
-    ! python ~/code/eric/scripts/change_ant_single.py %:p
-    ! ant single
+    ! python ~/code/eric/scripts/change_ant_single.py %:p && ant single
+endfunction
+
+function! Markdownify()
+    "markdown current file to html
+    let l:urlSpacesRemoved = substitute(expand("%:p"), " ", "\\\\ ", "g")
+    execute '!python ~/code/eric/scripts/markdown_to_html.py -i ' . l:urlSpacesRemoved . ' -g'
 endfunction
 
 function! SparkleSetup()
