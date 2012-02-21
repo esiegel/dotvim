@@ -30,6 +30,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'godlygeek/tabular'
 "Bundle 'kien/ctrlp.vim'
+Bundle 'rosenfeld/conque-term'
 
 Bundle 'MarcWeber/vim-addon-async'
 Bundle 'MarcWeber/vim-addon-signs'
