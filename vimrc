@@ -32,19 +32,12 @@ Bundle 'godlygeek/tabular'
 "Bundle 'kien/ctrlp.vim'
 Bundle 'rosenfeld/conque-term'
 
-Bundle 'MarcWeber/vim-addon-async'
-Bundle 'MarcWeber/vim-addon-signs'
-Bundle 'MarcWeber/vim-addon-completion'
-Bundle 'MarcWeber/vim-addon-json-encoding'
-Bundle 'tomtom/tlib_vim'
-
 " vim-scripts repo
 Bundle 'a.vim'
 Bundle 'BusyBee'
 Bundle 'cscope_macros.vim'
 Bundle 'Color-Sampler-Pack'
 Bundle 'Jinja'
-Bundle 'keepcase.vim'
 Bundle 'L9'
 Bundle 'octave.vim--'
 
@@ -145,7 +138,7 @@ set wildmode=longest,list:longest
 "autocmd FileType python set tags+=~/.vim/tags/python_tags
 
 "regenerate cscope
-nmap <F6> :!find . -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.c++" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.java" -o -iname "*.py" -o -iname "*.scala" > cscope.files<CR>:!cscope -b<CR>:cs reset<CR><CR>
+nmap <F6> :!find . -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.c++" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.java" -o -iname "*.py" -o -iname "*.scala" > cscope.files<CR>:!cscope -b -q<CR>:cs reset<CR><CR>
 
 " scala
 let g:tagbar_type_scala= {
@@ -202,6 +195,10 @@ nmap <silent> <F7> :call ToggleComments()<CR>
 
 """""""""""""""""""""""""""C SPECIFIC"""""""""""""""""""""""""""""
 "autocmd FileType c set foldmethod=syntax
+
+
+"""""""""""""""""""""""""""CONQUETERM"""""""""""""""""""""""""""""
+let g:ConqueTerm_EscKey = '<C-j>'
 
 """""""""""""""""""""""""""SUPERTAB"""""""""""""""""""""""""""
 
