@@ -40,6 +40,7 @@ Bundle 'Color-Sampler-Pack'
 Bundle 'Jinja'
 Bundle 'L9'
 Bundle 'octave.vim--'
+Bundle 'VimClojure'
 
 " non github repos
 Bundle 'git://git.wincent.com/command-t.git'
@@ -70,10 +71,11 @@ colorscheme BusyBee
 set autoindent
 set smartindent
 
-"tab = 4 spaces "indent spaces = 4 and tab to spaces
+"tab = 3 spaces "indent spaces = 3 and tab to spaces
 set expandtab
-set tabstop=4 
-set shiftwidth=4
+set tabstop=3 
+set softtabstop=3 
+set shiftwidth=3
 
 "allowing backspace to work after indent -> see :help i_backspacing
 set backspace=indent,eol,start
@@ -220,6 +222,8 @@ vmap <Leader>a: :Tabularize /:\zs<CR>
 
 """""""""""""""""""""""""""ECLIM""""""""""""""""""""""""""""""
 
+let g:EclimLoggingDisabled=1
+
 "eclim settings
 "if has("PingEclim")  "PingEclim isn't loaded yet, so this always fails
 if 1
@@ -263,6 +267,7 @@ cmap w!! %!sudo tee > /dev/null %
 
 "VCSVimDiff
 nmap <silent><leader>v :VCSVimDiff<CR>
+
 
 """"""""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""""
 
@@ -374,4 +379,10 @@ endif
 "PolyOmni 
 if !empty(matchstr($PWD, "polyomni"))
     call PolyOmniSetup()
+endif
+
+"PolyOmni 
+if !empty(matchstr($PWD, "activity_storage"))
+    cscope add /usr/local/code/dropwizard/cscope.out /usr/local/code/dropwizard
+    cscope add /usr/local/code/riak-java-client/cscope.out /usr/local/code/riak-java-client
 endif
