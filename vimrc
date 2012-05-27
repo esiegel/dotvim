@@ -71,6 +71,9 @@ set t_Co=256
 "colorscheme solarized 
 colorscheme BusyBee 
 
+"clipboard
+set clipboard=unnamed
+
 "matches previous indent level,
 "intelligently guesses indent (code level)
 set autoindent
@@ -123,7 +126,11 @@ set ignorecase
 
 "set status line for powerline
 set laststatus=2 
-let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
+if has('mac')
+    let g:Powerline_cache_file="/Users/eric/code/.tmpvim/PowerlineCache"
+elseif has('unix')
+    let g:Powerline_cache_file="/ext/home/eric/code/.tmpvim/PowerlineCache"
+endif
 
 "Necessary to show unicode glyphs
 set encoding=utf-8 " Necessary to show unicode glyphs
