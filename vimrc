@@ -29,7 +29,6 @@ Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-fugitive'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'godlygeek/tabular'
-"Bundle 'kien/ctrlp.vim'
 Bundle 'rosenfeld/conque-term'
 
 " vim-scripts repo
@@ -37,9 +36,7 @@ Bundle 'a.vim'
 Bundle 'BusyBee'
 Bundle 'cscope_macros.vim'
 Bundle 'Color-Sampler-Pack'
-Bundle 'Jinja'
 Bundle 'L9'
-Bundle 'octave.vim--'
 Bundle 'VimClojure'
 
 " non github repos
@@ -183,6 +180,9 @@ let g:tagbar_type_scala= {
     \ },
     \ 'sort'    : 0
 \ }
+
+"""""""""""""""""""""""""""VIMCLOJURE"""""""""""""""""""""""""""""
+let vimclojure#WantNailgun=1
 
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
 let g:snippets_dir="~/.vim/bundle/snipmate-snippets"
