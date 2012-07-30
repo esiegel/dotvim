@@ -15,21 +15,24 @@ Bundle 'git@github.com:esiegel/snipmate-snippets.git'
 Bundle 'mileszs/ack.vim'
 Bundle 'Rip-Rip/clang_complete'
 Bundle 'msanders/cocoa.vim'
-Bundle 'scrooloose/nerdtree'
+Bundle 'rosenfeld/conque-term'
+Bundle 'chrisbra/NrrwRgn'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/nerdtree'
 Bundle 'sorin-ionescu/python.vim'
 Bundle 'riobard/scala.vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'ervandew/supertab'
+Bundle 'scrooloose/syntastic'
+Bundle 'godlygeek/tabular'
 Bundle 'majutsushi/tagbar'
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-fugitive'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'godlygeek/tabular'
 Bundle 'rosenfeld/conque-term'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'tpope/vim-surround'
 
 " vim-scripts repo
 Bundle 'a.vim'
@@ -59,6 +62,9 @@ syntax on
 set t_Co=256
 "set background=dark
 "let g:solarized_termcolors=16
+
+"uses clipboard register +, instead of always :+y
+set clipboard=unnamedplus
 
 "colorscheme solarized 
 colorscheme BusyBee 
@@ -132,6 +138,9 @@ set encoding=utf-8 " Necessary to show unicode glyphs
 set backupdir=~/code/.tmpvim/backup
 set backup
 set directory=~/code/.tmpvim/swap
+set undodir=~/code/.tmpvim/undo
+set undolevels=1000
+set undoreload=1000
 
 "wildmode enables better file viewing when opeing new files, like bash
 set wildmenu
@@ -181,8 +190,14 @@ let g:tagbar_type_scala= {
     \ 'sort'    : 0
 \ }
 
-"""""""""""""""""""""""""""VIMCLOJURE"""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""Clojure"""""""""""""""""""""""""""""
 let vimclojure#WantNailgun=1
+
+
+"""""""""""""""""""""""""""Syntastic"""""""""""""""""""""""""""""
+let g:syntastic_mode_map = { 'mode': 'active',
+                           \ 'active_filetypes': [],
+                           \ 'passive_filetypes': ['java'] }
 
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
 let g:snippets_dir="~/.vim/bundle/snipmate-snippets"
@@ -227,9 +242,16 @@ vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 
+"""""""""""""""""""""""""""YankRing"""""""""""""""""""""""""""
+nmap <Leader>r :YRShow<CR>
+
 """""""""""""""""""""""""""ECLIM""""""""""""""""""""""""""""""
 
+" disable logging import when log is typed
 let g:EclimLoggingDisabled=1
+
+" sort imports together when first two pacakges match
+let g:EclimJavaImportPackageSeparationLevel=2
 
 "eclim settings
 "if has("PingEclim")  "PingEclim isn't loaded yet, so this always fails
@@ -242,6 +264,9 @@ endif
 
 "ImportMissing
 nmap <silent><leader>m :JavaImportMissing<CR>
+
+"import sort
+nmap <silent><leader>s :JavaImportSort<CR>
 
 "JavaCorrect
 nmap <silent><leader><leader>c :JavaCorrect<CR>
@@ -279,7 +304,7 @@ nmap <silent><leader>v :VCSVimDiff<CR>
 """"""""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""""
 
 "NERDTree Ctrl-n for nerdtree
-nnoremap <silent> <C-n> :NERDTreeToggle<CR>
+nnoremap <silent><leader>n :NERDTreeToggle<CR>
 
 "change nerdtree directory to directory containing current file Ctr-d goto dir
 nnoremap <silent> <C-d> :NERDTree %:h<CR>
