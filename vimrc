@@ -48,6 +48,10 @@ Bundle 'git://repo.or.cz/vcscommand'
 
 filetype plugin indent on     " required!off                                                                
 
+""""""""""""""""System""""""""""""""""""""
+"ebox or eric
+let hostname = substitute(system('hostname'), '\n', '', '')
+
 """""""""""""""""""""""""GENERAL"""""""""""""""""""""""""""""""
 set nocompatible
 filetype plugin indent on
@@ -125,9 +129,11 @@ set ignorecase
 
 "set status line for powerline
 set laststatus=2 
-if has('mac')
+if hostname == "ebox"
+   "macbook 
     let g:Powerline_cache_file="/Users/eric/code/.tmpvim/PowerlineCache"
-elseif has('unix')
+else
+   "llabs unix
     let g:Powerline_cache_file="/ext/home/eric/code/.tmpvim/PowerlineCache"
 endif
 
