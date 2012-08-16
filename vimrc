@@ -15,43 +15,42 @@ Bundle 'git@github.com:esiegel/snipmate-snippets.git'
 Bundle 'mileszs/ack.vim'
 Bundle 'Rip-Rip/clang_complete'
 Bundle 'msanders/cocoa.vim'
-Bundle 'scrooloose/nerdtree'
+Bundle 'rosenfeld/conque-term'
+Bundle 'chrisbra/NrrwRgn'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/nerdtree'
 Bundle 'sorin-ionescu/python.vim'
 Bundle 'riobard/scala.vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'ervandew/supertab'
+Bundle 'scrooloose/syntastic'
+Bundle 'godlygeek/tabular'
 Bundle 'majutsushi/tagbar'
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-fugitive'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'godlygeek/tabular'
-"Bundle 'kien/ctrlp.vim'
-
-Bundle 'MarcWeber/vim-addon-async'
-Bundle 'MarcWeber/vim-addon-signs'
-Bundle 'MarcWeber/vim-addon-completion'
-Bundle 'MarcWeber/vim-addon-json-encoding'
-Bundle 'tomtom/tlib_vim'
+Bundle 'rosenfeld/conque-term'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'tpope/vim-surround'
 
 " vim-scripts repo
 Bundle 'a.vim'
 Bundle 'BusyBee'
 Bundle 'cscope_macros.vim'
 Bundle 'Color-Sampler-Pack'
-Bundle 'Jinja'
-Bundle 'keepcase.vim'
 Bundle 'L9'
-Bundle 'octave.vim--'
+Bundle 'VimClojure'
 
 " non github repos
 Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'git://repo.or.cz/vcscommand'
 
 filetype plugin indent on     " required!off                                                                
+
+""""""""""""""""System""""""""""""""""""""
+"ebox or eric
+let hostname = substitute(system('hostname'), '\n', '', '')
 
 """""""""""""""""""""""""GENERAL"""""""""""""""""""""""""""""""
 set nocompatible
@@ -68,18 +67,25 @@ set t_Co=256
 "set background=dark
 "let g:solarized_termcolors=16
 
+"uses clipboard register +, instead of always :+y
+set clipboard=unnamedplus
+
 "colorscheme solarized 
 colorscheme BusyBee 
+
+"clipboard
+set clipboard=unnamed
 
 "matches previous indent level,
 "intelligently guesses indent (code level)
 set autoindent
 set smartindent
 
-"tab = 4 spaces "indent spaces = 4 and tab to spaces
+"tab = 3 spaces "indent spaces = 3 and tab to spaces
 set expandtab
-set tabstop=4 
-set shiftwidth=4
+set tabstop=3 
+set softtabstop=3 
+set shiftwidth=3
 
 "allowing backspace to work after indent -> see :help i_backspacing
 set backspace=indent,eol,start
@@ -123,7 +129,16 @@ set ignorecase
 
 "set status line for powerline
 set laststatus=2 
-"let g:Powerline_cache_file="/usr/local/code/.tmpvim/PowerlineCache"
+if hostname == "ebox"
+   "macbook 
+    let g:Powerline_cache_file="/Users/eric/code/.tmpvim/PowerlineCache"
+elseif hostname == "emachine"
+   "linux at home
+    let g:Powerline_cache_file="/home/eric/code/.tmpvim/PowerlineCache"
+else
+   "llabs unix
+    let g:Powerline_cache_file="/ext/home/eric/code/.tmpvim/PowerlineCache"
+endif
 
 "Necessary to show unicode glyphs
 set encoding=utf-8 " Necessary to show unicode glyphs
@@ -132,6 +147,9 @@ set encoding=utf-8 " Necessary to show unicode glyphs
 set backupdir=~/code/.tmpvim/backup
 set backup
 set directory=~/code/.tmpvim/swap
+set undodir=~/code/.tmpvim/undo
+set undolevels=1000
+set undoreload=1000
 
 "wildmode enables better file viewing when opeing new files, like bash
 set wildmenu
@@ -144,7 +162,7 @@ set wildmode=longest,list:longest
 "autocmd FileType python set tags+=~/.vim/tags/python_tags
 
 "regenerate cscope
-nmap <F6> :!find . -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.c++" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.java" -o -iname "*.py" -o -iname "*.scala" > cscope.files<CR>:!cscope -b<CR>:cs reset<CR><CR>
+nmap <F6> :!find . -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.c++" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.java" -o -iname "*.py" -o -iname "*.scala" > cscope.files<CR>:!cscope -b -q<CR>:cs reset<CR><CR>
 
 " scala
 let g:tagbar_type_scala= {
@@ -181,6 +199,15 @@ let g:tagbar_type_scala= {
     \ 'sort'    : 0
 \ }
 
+"""""""""""""""""""""""""""Clojure"""""""""""""""""""""""""""""
+let vimclojure#WantNailgun=1
+
+
+"""""""""""""""""""""""""""Syntastic"""""""""""""""""""""""""""""
+let g:syntastic_mode_map = { 'mode': 'active',
+                           \ 'active_filetypes': [],
+                           \ 'passive_filetypes': ['java'] }
+
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
 let g:snippets_dir="~/.vim/bundle/snipmate-snippets"
 
@@ -202,6 +229,10 @@ nmap <silent> <F7> :call ToggleComments()<CR>
 """""""""""""""""""""""""""C SPECIFIC"""""""""""""""""""""""""""""
 "autocmd FileType c set foldmethod=syntax
 
+
+"""""""""""""""""""""""""""CONQUETERM"""""""""""""""""""""""""""""
+let g:ConqueTerm_EscKey = '<C-j>'
+
 """""""""""""""""""""""""""SUPERTAB"""""""""""""""""""""""""""
 
 "set completion type to change based on context around it
@@ -220,7 +251,16 @@ vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 
+"""""""""""""""""""""""""""YankRing"""""""""""""""""""""""""""
+nmap <Leader>r :YRShow<CR>
+
 """""""""""""""""""""""""""ECLIM""""""""""""""""""""""""""""""
+
+" disable logging import when log is typed
+let g:EclimLoggingDisabled=1
+
+" sort imports together when first two pacakges match
+let g:EclimJavaImportPackageSeparationLevel=2
 
 "eclim settings
 "if has("PingEclim")  "PingEclim isn't loaded yet, so this always fails
@@ -233,6 +273,9 @@ endif
 
 "ImportMissing
 nmap <silent><leader>m :JavaImportMissing<CR>
+
+"import sort
+nmap <silent><leader>s :JavaImportSort<CR>
 
 "JavaCorrect
 nmap <silent><leader><leader>c :JavaCorrect<CR>
@@ -266,10 +309,11 @@ cmap w!! %!sudo tee > /dev/null %
 "VCSVimDiff
 nmap <silent><leader>v :VCSVimDiff<CR>
 
+
 """"""""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""""
 
 "NERDTree Ctrl-n for nerdtree
-nnoremap <silent> <C-n> :NERDTreeToggle<CR>
+nnoremap <silent><leader>n :NERDTreeToggle<CR>
 
 "change nerdtree directory to directory containing current file Ctr-d goto dir
 nnoremap <silent> <C-d> :NERDTree %:h<CR>
@@ -376,4 +420,10 @@ endif
 "PolyOmni 
 if !empty(matchstr($PWD, "polyomni"))
     call PolyOmniSetup()
+endif
+
+"PolyOmni 
+if !empty(matchstr($PWD, "activity_storage"))
+    cscope add /usr/local/code/dropwizard/cscope.out /usr/local/code/dropwizard
+    cscope add /usr/local/code/riak-java-client/cscope.out /usr/local/code/riak-java-client
 endif
