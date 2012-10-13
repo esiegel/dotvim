@@ -252,6 +252,9 @@ nmap <silent> <F7> :call ToggleComments()<CR>
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
 
+"""""""""""""""""""""""""""gradle"""""""""""""""""""""""""""""
+au BufNewFile,BufRead *.gradle set filetype=groovy
+
 """""""""""""""""""""""""""SUPERTAB"""""""""""""""""""""""""""
 
 "set completion type to change based on context around it
