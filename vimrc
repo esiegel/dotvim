@@ -1,9 +1,34 @@
+""""""""""""""""System""""""""""""""""""""
+"ebox or eric
+let hostname = substitute(system('hostname'), '\n', '', '')
+
+if hostname == "ebox"
+   "macbook 
+    let vimHome="/Users/eric/.vim"
+    let tmpDir="/Users/eric/code/.tmpvim"
+elseif hostname == "emachine"
+   "linux at home
+    let vimHome="/home/eric/.vim"
+    let tmpDir="/home/eric/code/.tmpvim"
+else
+   "llabs unix
+    let vimHome="/usr/local/code/dotvim"
+    let tmpDir="/usr/local/code/.tmpvim"
+endif
+
 """"""PATHOGEN INITIALIZATION"""""""""""""""""
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc() 
+" Set vundle in runtimepath.
+exec 'set rtp+='.vimHome."/bundle/vundle/"
+
+" Call vundle with path to bundles. Default, only check .vim dir.
+call vundle#rc(vimHome . "/bundle") 
+
+" add local, non git, changes.
+set rtp+=/usr/local/code/dotvim/local_config/after
+
 " let Vundle manage Vundle
 " required! 
 Bundle 'gmarik/vundle'
@@ -48,10 +73,6 @@ Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'git://repo.or.cz/vcscommand'
 
 filetype plugin indent on     " required!off                                                                
-
-""""""""""""""""System""""""""""""""""""""
-"ebox or eric
-let hostname = substitute(system('hostname'), '\n', '', '')
 
 """""""""""""""""""""""""GENERAL"""""""""""""""""""""""""""""""
 set nocompatible
@@ -130,25 +151,16 @@ set ignorecase
 
 "set status line for powerline
 set laststatus=2 
-if hostname == "ebox"
-   "macbook 
-    let g:Powerline_cache_file="/Users/eric/code/.tmpvim/PowerlineCache"
-elseif hostname == "emachine"
-   "linux at home
-    let g:Powerline_cache_file="/home/eric/code/.tmpvim/PowerlineCache"
-else
-   "llabs unix
-    let g:Powerline_cache_file="/ext/home/eric/code/.tmpvim/PowerlineCache"
-endif
+let g:Powerline_cache_file=tmpDir . "/PowerlineCache"
 
 "Necessary to show unicode glyphs
 set encoding=utf-8 " Necessary to show unicode glyphs
 
 "Setup backup location and enable
-set backupdir=~/code/.tmpvim/backup
+let &backupdir=tmpDir . "/backup"
+let &directory=tmpDir . "/swap"
+let &undodir=tmpDir. "/undo"
 set backup
-set directory=~/code/.tmpvim/swap
-set undodir=~/code/.tmpvim/undo
 set undolevels=1000
 set undoreload=1000
 
@@ -207,8 +219,14 @@ let vimclojure#WantNailgun=1
 
 """""""""""""""""""""""""""Syntastic"""""""""""""""""""""""""""""
 let g:syntastic_mode_map = { 'mode': 'active',
-                           \ 'active_filetypes': [],
+                           \ 'active_filetypes': ['python'],
                            \ 'passive_filetypes': ['java'] }
+
+" E221 - multiple spaces before keyword.  Nice to lineup =.
+" E241 - multiple spaces after :.  Nice to lineup dicts. 
+" E272 - multiple spaces before keyword.  Nice to lineup import.
+" W404 - import *, unable to detected undefined names.
+let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404"
 
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
 let g:snippets_dir="~/.vim/bundle/snipmate-snippets"
@@ -235,6 +253,10 @@ nmap <silent> <F7> :call ToggleComments()<CR>
 """""""""""""""""""""""""""CONQUETERM"""""""""""""""""""""""""""""
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
+
+"""""""""""""""""""""""""""gradle"""""""""""""""""""""""""""""
+
+au BufNewFile,BufRead *.gradle set filetype=groovy
 
 """""""""""""""""""""""""""SUPERTAB"""""""""""""""""""""""""""
 
