@@ -58,6 +58,7 @@ Bundle 'godlygeek/tabular'
 Bundle 'rosenfeld/conque-term'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-surround'
+Bundle 'kien/ctrlp.vim'
 
 " vim-scripts repo
 Bundle 'a.vim'
@@ -166,6 +167,7 @@ set undoreload=1000
 "wildmode enables better file viewing when opeing new files, like bash
 set wildmenu
 set wildmode=longest,list:longest
+set wildignore+=*.swp,*.pyc,*.class,*.idea*
 
 """""""""""""""""""""""""""CTAGS"""""""""""""""""""""""""""""
 
@@ -253,6 +255,7 @@ let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
 
 """""""""""""""""""""""""""gradle"""""""""""""""""""""""""""""
+
 au BufNewFile,BufRead *.gradle set filetype=groovy
 
 """""""""""""""""""""""""""SUPERTAB"""""""""""""""""""""""""""
@@ -347,6 +350,12 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 let g:clang_auto_select=0
 let g:clang_complete_auto=0
 let g:clang_hl_errors=1
+
+if hostname == "ebox"
+   let g:clang_use_library=1
+   let g:clang_library_path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"
+endif
+
 
 """"""""""""""""""""""""""""""AcK""""""""""""""""""""""""""""""
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
