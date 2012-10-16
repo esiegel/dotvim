@@ -220,7 +220,7 @@ let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['python'],
                            \ 'passive_filetypes': ['java'] }
 
-" E221 - multiple spaces before keyword.  Nice to lineup =.
+" E221 - multiple spaces before operator.  Nice to lineup =.
 " E241 - multiple spaces after :.  Nice to lineup dicts. 
 " E272 - multiple spaces before keyword.  Nice to lineup import.
 " W404 - import *, unable to detected undefined names.
