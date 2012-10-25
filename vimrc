@@ -178,6 +178,10 @@ set wildignore+=*.swp,*.pyc,*.class,*.idea*
 "regenerate cscope
 nmap <F6> :!find . -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.c++" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.java" -o -iname "*.py" -o -iname "*.scala" > cscope.files<CR>:!cscope -b -q<CR>:cs reset<CR><CR>
 
+"""""""""""""""""""""""""""TAGBAR"""""""""""""""""""""""""""""
+
+let g:tagbar_autofocus=1
+
 " scala
 let g:tagbar_type_scala= {
     \ 'ctagstype' : 'scala',
@@ -222,11 +226,12 @@ let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['python'],
                            \ 'passive_filetypes': ['java'] }
 
-" E221 - multiple spaces before keyword.  Nice to lineup =.
+" E221 - multiple spaces before operator.  Nice to lineup =.
 " E241 - multiple spaces after :.  Nice to lineup dicts. 
 " E272 - multiple spaces before keyword.  Nice to lineup import.
 " W404 - import *, unable to detected undefined names.
-let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404"
+" W801 - redefinition of unused import, try/except import fails.
+let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404,W801"
 
 let g:syntastic_pyhton_checker="flake8"
 
@@ -309,11 +314,26 @@ nmap <silent><leader><leader>c :JavaCorrect<CR>
 
 """""""""""""""""""""""""""MAPPINGS"""""""""""""""""""""""""""
 
+"Do different things depending on context
+function ContextAwareEnter()
+   if &filetype=="qf"
+      "Quickfix enter command
+      :.cc
+   else
+      "tagbar shortcut
+      :TagbarToggle
+   endif
+endfunction
+
+function Blah()
+   :TagbarToggle
+endfunction
+
 "Taglist
 "nnoremap <silent> <cr> :TlistToggle<CR>
 "let Tlist_WinWidth=40
-nnoremap <silent> <cr> :TagbarToggle<CR>
-let g:tagbar_autofocus=1
+"nnoremap <silent> <cr> :call ContextAwareEnter()<CR> 
+nnoremap <cr> :call ContextAwareEnter()<CR>
 
 "change to next and previous buffers
 noremap <silent> <C-h> :bp<CR>
@@ -352,12 +372,16 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 let g:clang_auto_select=0
 let g:clang_complete_auto=0
 let g:clang_hl_errors=1
+let g:clang_snippets_engine="snipmate"
 
 if hostname == "ebox"
    let g:clang_use_library=1
    let g:clang_library_path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"
    let g:clang_user_options='-stdlib=libc++ -std=c++11'
    let g:clang_auto_user_options = '.clang_complete'
+elseif hostname == "eric"
+   let g:clang_use_library=1
+   let g:clang_library_path="/usr/local/downloads/clang+llvm-3.0-x86_64-linux-Ubuntu-11_04/lib"
 endif
 
 
