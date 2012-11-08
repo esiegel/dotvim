@@ -53,12 +53,12 @@ Bundle 'godlygeek/tabular'
 Bundle 'majutsushi/tagbar'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-markdown'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'godlygeek/tabular'
 Bundle 'rosenfeld/conque-term'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-surround'
-Bundle 'kien/ctrlp.vim'
 
 " vim-scripts repo
 Bundle 'a.vim'
@@ -67,6 +67,7 @@ Bundle 'cscope_macros.vim'
 Bundle 'Color-Sampler-Pack'
 Bundle 'L9'
 Bundle 'VimClojure'
+Bundle 'Jinja'
 
 " non github repos
 Bundle 'git://git.wincent.com/command-t.git'
@@ -234,7 +235,7 @@ let g:syntastic_mode_map = { 'mode': 'active',
 let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404,W801"
 
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
-let g:snippets_dir="~/.vim/bundle/snipmate-snippets"
+let g:snippets_dir=vimHome."/bundle/snipmate-snippets"
 
 """""""""""""""""""""""""""JAVA SPECIFIC"""""""""""""""""""""""""""""
 "autocmd FileType java set foldmethod=syntax
