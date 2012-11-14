@@ -238,6 +238,8 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " W801 - redefinition of unused import, try/except import fails.
 let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404,W801"
 
+let g:syntastic_pyhton_checker="flake8"
+
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
 let g:snippets_dir=vimHome."/bundle/snipmate-snippets"
 
@@ -380,6 +382,8 @@ let g:clang_snippets_engine="snipmate"
 if hostname == "ebox"
    let g:clang_use_library=1
    let g:clang_library_path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"
+   let g:clang_user_options='-stdlib=libc++ -std=c++11'
+   let g:clang_auto_user_options = '.clang_complete'
 elseif hostname == "eric"
    let g:clang_use_library=1
    let g:clang_library_path="/usr/local/downloads/clang+llvm-3.0-x86_64-linux-Ubuntu-11_04/lib"
@@ -398,13 +402,6 @@ let g:nrrw_rgn_vert = 1
 let g:nrrw_rgn_wdth = 80 
 
 """""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS""""""""""""""""""""""""""""""
-
-"default code directory
-let s:codedir = "~/code"
-
-if !empty(matchstr(hostname(), "eric"))
-    let s:codedir = "/usr/local/code"
-endif
 
 function! AntSingle()
     "change ant single to current file
@@ -455,10 +452,6 @@ function! SparkleClientSetup()
     cscope add /usr/local/code/web_java_1.16/cscope.out       /usr/local/code/web_java_1.16/
 endfunction
 
-function! PolyOmniSetup()
-    cscope add /usr/local/Cellar/box2d/2.1.2/cscope.out /usr/local/Cellar/box2d/2.1.2 
-endfunction
-
 " Sparkle call
 if !empty(matchstr($PWD, "sparkle[^_]"))
     "load files if path contains sparkle_demo
@@ -475,15 +468,4 @@ endif
 if !empty(matchstr($PWD, "sparkle_client_java"))
     "load files if path contains sparkle_demo
     call SparkleClientSetup()
-endif
-
-"PolyOmni 
-if !empty(matchstr($PWD, "polyomni"))
-    call PolyOmniSetup()
-endif
-
-"PolyOmni 
-if !empty(matchstr($PWD, "activity_storage"))
-    cscope add /usr/local/code/dropwizard/cscope.out /usr/local/code/dropwizard
-    cscope add /usr/local/code/riak-java-client/cscope.out /usr/local/code/riak-java-client
 endif
