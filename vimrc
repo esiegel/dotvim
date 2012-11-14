@@ -16,7 +16,7 @@ else
     let tmpDir="/usr/local/code/.tmpvim"
 endif
 
-""""""PATHOGEN INITIALIZATION"""""""""""""""""
+""""""Vundle INITIALIZATION"""""""""""""""""
 set nocompatible
 filetype off
 
@@ -25,6 +25,9 @@ exec 'set rtp+='.vimHome."/bundle/vundle/"
 
 " Call vundle with path to bundles. Default, only check .vim dir.
 call vundle#rc(vimHome . "/bundle") 
+
+" add eclim
+set rtp+=/usr/local/code/dotvim
 
 " add local, non git, changes.
 set rtp+=/usr/local/code/dotvim/local_config/after
@@ -76,9 +79,6 @@ Bundle 'git://repo.or.cz/vcscommand'
 filetype plugin indent on     " required!off                                                                
 
 """""""""""""""""""""""""GENERAL"""""""""""""""""""""""""""""""
-set nocompatible
-filetype plugin indent on
-
 "read modeline at bottom of files
 set modeline
 
@@ -170,6 +170,10 @@ set wildmenu
 set wildmode=longest,list:longest
 set wildignore+=*.swp,*.pyc,*.class,*.idea*
 
+"When in unclosed parens, ie args, have them line up.
+"help cinoptions-values
+set cino+=(0
+
 """""""""""""""""""""""""""CTAGS"""""""""""""""""""""""""""""
 
 "Tags files
@@ -250,6 +254,10 @@ function! ToggleComments()
     endif
 endfunction
 
+function! AlignArgs()
+   execute 'normal vi(:s/, */,\r/gvi(=f('
+endfunction
+
 nmap <silent> <F7> :call ToggleComments()<CR>
 
 """""""""""""""""""""""""""C SPECIFIC"""""""""""""""""""""""""""""
@@ -322,10 +330,6 @@ function ContextAwareEnter()
       "tagbar shortcut
       :TagbarToggle
    endif
-endfunction
-
-function Blah()
-   :TagbarToggle
 endfunction
 
 "Taglist
