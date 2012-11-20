@@ -57,11 +57,8 @@ Bundle 'majutsushi/tagbar'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
-Bundle 'chrisbra/NrrwRgn'
-Bundle 'godlygeek/tabular'
-Bundle 'rosenfeld/conque-term'
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'tpope/vim-surround'
+Bundle 'Lokaltog/vim-powerline'
 
 " vim-scripts repo
 Bundle 'a.vim'
@@ -153,6 +150,7 @@ set ignorecase
 "set status line for powerline
 set laststatus=2 
 let g:Powerline_cache_file=tmpDir . "/PowerlineCache"
+let g:Powerline_symbols="unicode"
 
 "Necessary to show unicode glyphs
 set encoding=utf-8 " Necessary to show unicode glyphs
@@ -228,7 +226,7 @@ let vimclojure#WantNailgun=1
 
 """""""""""""""""""""""""""Syntastic"""""""""""""""""""""""""""""
 let g:syntastic_mode_map = { 'mode': 'active',
-                           \ 'active_filetypes': ['python'],
+                           \ 'active_filetypes': ['python', 'javascript'],
                            \ 'passive_filetypes': ['java'] }
 
 " E221 - multiple spaces before operator.  Nice to lineup =.
@@ -411,7 +409,7 @@ endfunction
 function! Markdownify()
     "markdown current file to html
     let l:urlSpacesRemoved = substitute(expand("%:p"), " ", "\\\\ ", "g")
-    execute '!python ~/code/eric/scripts/markdown_to_html.py -i ' . l:urlSpacesRemoved . ' -g'
+    execute '!/usr/local/code/jesse/bin/markdown2html -i ' . l:urlSpacesRemoved . ' -g'
 endfunction
 
 function! SparkleSetup()
