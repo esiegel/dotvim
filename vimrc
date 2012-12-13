@@ -144,8 +144,11 @@ set nowrap
 "hides buffers instead of closing them
 set hidden
 
-"ignorecase when searching
-set ignorecase
+"case only important if use caps
+set smartcase 
+
+"in <Ctrl-v> block visual select, not confined to end of chars.
+set virtualedit=block
 
 "set status line for powerline
 set laststatus=2 
@@ -322,22 +325,10 @@ nmap <silent><leader><leader>c :JavaCorrect<CR>
 
 """""""""""""""""""""""""""MAPPINGS"""""""""""""""""""""""""""
 
-"Do different things depending on context
-function ContextAwareEnter()
-   if &filetype=="qf"
-      "Quickfix enter command
-      :.cc
-   else
-      "tagbar shortcut
-      :TagbarToggle
-   endif
-endfunction
-
 "Taglist
 "nnoremap <silent> <cr> :TlistToggle<CR>
 "let Tlist_WinWidth=40
-"nnoremap <silent> <cr> :call ContextAwareEnter()<CR> 
-nnoremap <cr> :call ContextAwareEnter()<CR>
+nnoremap <leader><CR> :TagbarToggle<CR>
 
 "change to next and previous buffers
 noremap <silent> <C-h> :bp<CR>
@@ -350,6 +341,11 @@ noremap <silent><leader>l :cn<CR>
 "caps to escape
 map! <C-j> <Esc>
 map <C-j> <Esc>
+
+"Yank till end of line
+"D deletes till end, C changes till end, Y should yank till end
+"By default it yanks whole line
+nnoremap Y y$
 
 "QuickFix List clear
 noremap <C-q> :call setqflist([])
