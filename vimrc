@@ -252,7 +252,8 @@ let g:syntastic_mode_map = { 'mode': 'active',
 let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404,W801"
 
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
-let g:snippets_dir=vimHome."/bundle/snipmate-snippets"
+let g:snippets_dir=vimHome."/bundle/snipmate-snippets/snippets"
+"let g:snippets_dir=vimHome."/bundle/snipmate.vim/snippets"
 
 """""""""""""""""""""""""""JAVA SPECIFIC"""""""""""""""""""""""""""""
 "autocmd FileType java set foldmethod=syntax
