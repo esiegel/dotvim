@@ -59,6 +59,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-surround'
 Bundle 'Lokaltog/vim-powerline'
+Bundle 'kchmck/vim-coffee-script'
 
 " vim-scripts repo
 Bundle 'a.vim'
@@ -144,6 +145,9 @@ set nowrap
 "hides buffers instead of closing them
 set hidden
 
+"ignorecase
+set ignorecase
+
 "case only important if use caps
 set smartcase 
 
@@ -174,6 +178,10 @@ set wildignore+=*.swp,*.pyc,*.class,*.idea*
 "When in unclosed parens, ie args, have them line up.
 "help cinoptions-values
 set cino+=(0
+
+" spell checking
+set spell spelllang=en_us
+set nospell
 
 """""""""""""""""""""""""""XIKI"""""""""""""""""""""""""""""
 let $XIKI_DIR = "/usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5"
@@ -242,8 +250,6 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " W404 - import *, unable to detected undefined names.
 " W801 - redefinition of unused import, try/except import fails.
 let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404,W801"
-
-let g:syntastic_pyhton_checker="flake8"
 
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
 let g:snippets_dir=vimHome."/bundle/snipmate-snippets"
@@ -351,7 +357,8 @@ map <C-j> <Esc>
 nnoremap Y y$
 
 "QuickFix List clear
-noremap <C-q> :call setqflist([])
+"Important that, stty -ixon, is set, to allow this sequence to pass through
+nnoremap <C-q> :call setqflist([])<CR>
 
 "Trick if forgot to sudo
 cmap w!! %!sudo tee > /dev/null %
