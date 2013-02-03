@@ -188,7 +188,9 @@ set nospell
 
 """""""""""""""""""""""""""XIKI"""""""""""""""""""""""""""""
 let $XIKI_DIR = "/usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5"
-source /usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5/etc/vim/xiki.vim
+if filereadable($XIKI_DIR)
+   source /usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5/etc/vim/xiki.vim
+endif
 
 """""""""""""""""""""""""""CTAGS"""""""""""""""""""""""""""""
 
