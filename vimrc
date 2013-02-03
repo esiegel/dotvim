@@ -20,17 +20,17 @@ endif
 set nocompatible
 filetype off
 
+" add vimhome to rtp
+exec 'set rtp+='.vimHome
+
+" add local, non git, changes.
+exec 'set rtp+='.vimHome."/local_config/after"
+
 " Set vundle in runtimepath.
 exec 'set rtp+='.vimHome."/bundle/vundle/"
 
 " Call vundle with path to bundles. Default, only check .vim dir.
 call vundle#rc(vimHome . "/bundle") 
-
-" add eclim
-set rtp+=/usr/local/code/dotvim
-
-" add local, non git, changes.
-set rtp+=/usr/local/code/dotvim/local_config/after
 
 " let Vundle manage Vundle
 " required! 
@@ -144,6 +144,9 @@ set nowrap
 
 "hides buffers instead of closing them
 set hidden
+
+"case only important if use caps
+set ignorecase
 
 "case only important if use caps
 set smartcase 
