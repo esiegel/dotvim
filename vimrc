@@ -249,11 +249,10 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " E272 - multiple spaces before keyword.  Nice to lineup import.
 " W404 - import *, unable to detected undefined names.
 " W801 - redefinition of unused import, try/except import fails.
-let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404,W801"
+let g:syntastic_python_flake8_args = "--ignore=E221,E241,E272,W404,W801"
 
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
 let g:snippets_dir=vimHome."/bundle/snipmate-snippets/snippets"
-"let g:snippets_dir=vimHome."/bundle/snipmate.vim/snippets"
 
 """""""""""""""""""""""""""JAVA SPECIFIC"""""""""""""""""""""""""""""
 "autocmd FileType java set foldmethod=syntax
@@ -273,6 +272,12 @@ function! AlignArgs()
 endfunction
 
 nmap <silent> <F7> :call ToggleComments()<CR>
+
+
+"""""""""""""""""""""""""""JAVA CHECKSTYLE"""""""""""""""""""""""""""""
+let java_checkstyle_dir = "/usr/local/code/other/checkstyle-5.6/"
+let g:syntastic_java_checkstyle_classpath= java_checkstyle_dir . 'checkstyle-5.6-all.jar'
+let g:syntastic_java_checkstyle_conf_file= java_checkstyle_dir . 'sun_checks.xml'
 
 """""""""""""""""""""""""""C SPECIFIC"""""""""""""""""""""""""""""
 "autocmd FileType c set foldmethod=syntax
