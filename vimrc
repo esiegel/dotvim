@@ -20,17 +20,17 @@ endif
 set nocompatible
 filetype off
 
+" add vimhome to rtp
+exec 'set rtp+='.vimHome
+
+" add local, non git, changes.
+exec 'set rtp+='.vimHome."/local_config/after"
+
 " Set vundle in runtimepath.
 exec 'set rtp+='.vimHome."/bundle/vundle/"
 
 " Call vundle with path to bundles. Default, only check .vim dir.
 call vundle#rc(vimHome . "/bundle") 
-
-" add eclim
-set rtp+=/usr/local/code/dotvim
-
-" add local, non git, changes.
-set rtp+=/usr/local/code/dotvim/local_config/after
 
 " let Vundle manage Vundle
 " required! 
@@ -149,6 +149,9 @@ set hidden
 set ignorecase
 
 "case only important if use caps
+set ignorecase
+
+"case only important if use caps
 set smartcase 
 
 "in <Ctrl-v> block visual select, not confined to end of chars.
@@ -185,7 +188,9 @@ set nospell
 
 """""""""""""""""""""""""""XIKI"""""""""""""""""""""""""""""
 let $XIKI_DIR = "/usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5"
-source /usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5/etc/vim/xiki.vim
+if filereadable($XIKI_DIR)
+   source /usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5/etc/vim/xiki.vim
+endif
 
 """""""""""""""""""""""""""CTAGS"""""""""""""""""""""""""""""
 
