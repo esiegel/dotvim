@@ -255,6 +255,7 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " W404 - import *, unable to detected undefined names.
 " W801 - redefinition of unused import, try/except import fails.
 let g:syntastic_python_checker_args = "--ignore=E221,E241,E272,W404,W801"
+let g:syntastic_python_flake8_args = "--ignore=E221,E241,E272,W404,W801"
 
 """""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
 let g:snippets_dir=vimHome."/bundle/snipmate-snippets/snippets"
