@@ -240,6 +240,36 @@ let g:tagbar_type_scala= {
     \ 'sort'    : 0
 \ }
 
+if executable('lushtags')
+    let g:tagbar_type_haskell = {
+            \ 'ctagsbin' : 'lushtags',
+            \ 'ctagsargs' : '--ignore-parse-error --',
+            \ 'kinds' : [
+                \ 'm:module:0',
+                \ 'e:exports:1',
+                \ 'i:imports:1',
+                \ 't:declarations:0',
+                \ 'd:declarations:1',
+                \ 'n:declarations:1',
+                \ 'f:functions:0',
+                \ 'c:constructors:0'
+            \ ],
+            \ 'sro' : '.',
+            \ 'kind2scope' : {
+                \ 'd' : 'data',
+                \ 'n' : 'newtype',
+                \ 'c' : 'constructor',
+                \ 't' : 'type'
+            \ },
+            \ 'scope2kind' : {
+                \ 'data' : 'd',
+                \ 'newtype' : 'n',
+                \ 'constructor' : 'c',
+                \ 'type' : 't'
+            \ }
+        \ }
+ endif
+
 """""""""""""""""""""""""""Clojure"""""""""""""""""""""""""""""
 let vimclojure#WantNailgun=1
 
@@ -372,11 +402,16 @@ nnoremap Y y$
 nnoremap <C-q> :call setqflist([])<CR>
 
 "Trick if forgot to sudo
-cmap w!! %!sudo tee > /dev/null %
+cnoremap w!! %!sudo tee > /dev/null %
 
 "VCSVimDiff
-nmap <silent><leader>v :VCSVimDiff<CR>
+nnoremap <silent><leader>v :VCSVimDiff<CR>
 
+"Use emacs go to beginning of line in cmd mode, default is <c-b>.
+cnoremap <c-a> <c-b>
+
+"markdown spellcheck by default
+autocmd FileType markdown setlocal spell
 
 """"""""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""""
 
