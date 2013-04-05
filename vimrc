@@ -94,6 +94,9 @@ set clipboard=unnamedplus
 "colorscheme solarized 
 colorscheme BusyBee 
 
+"inverse search
+hi Search cterm=inverse ctermbg=none ctermfg=none gui=inverse guibg=none guifg=none
+
 "clipboard
 set clipboard=unnamed
 
@@ -137,9 +140,6 @@ set nowrapscan
 "magic patterns - extended regular expresions
 set magic
 
-"colors for &hlsearch
-hi Search ctermfg=white ctermbg=lightblue
-
 set nowrap
 
 "hides buffers instead of closing them
@@ -182,9 +182,18 @@ set wildignore+=*.swp,*.pyc,*.class,*.idea*
 "help cinoptions-values
 set cino+=(0
 
-" spell checking
+"spell checking
 set spell spelllang=en_us
 set nospell
+
+"Improve matching with '%', will match if/then/else, etc.
+"runtime will source a file found in runtimepath/rtp.
+runtime macros/matchit.vim
+
+"Vertical/Horizontal Scroll offset.
+"Minimal number of screen lines to keep above and below the cursor
+set scrolloff=3
+set sidescrolloff=3
 
 """""""""""""""""""""""""""XIKI"""""""""""""""""""""""""""""
 let $XIKI_DIR = "/usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5"
@@ -247,7 +256,7 @@ let vimclojure#WantNailgun=1
 """""""""""""""""""""""""""Syntastic"""""""""""""""""""""""""""""
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['python', 'javascript'],
-                           \ 'passive_filetypes': ['java'] }
+                           \ 'passive_filetypes': ['java', 'scala'] }
 
 " E221 - multiple spaces before operator.  Nice to lineup =.
 " E241 - multiple spaces after :.  Nice to lineup dicts. 
@@ -377,6 +386,18 @@ cmap w!! %!sudo tee > /dev/null %
 "VCSVimDiff
 nmap <silent><leader>v :VCSVimDiff<CR>
 
+"Open vimrc
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+
+"Redirect to selction register
+funct! Redir(command)
+  exec 'redir @*'
+  exec a:command
+  redir END
+endfunct
+
+"expose redirect as command
+command! -nargs=+ R call call(function('Redir'), [<q-args>])
 
 """"""""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""""
 
