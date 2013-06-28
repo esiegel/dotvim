@@ -1,4 +1,4 @@
-""""""""""""""""System""""""""""""""""""""
+""""""""""""""""System"""""""""""""""""""" {{{
 "ebox or eric
 let hostname = substitute(system('hostname'), '\n', '', '')
 
@@ -16,7 +16,9 @@ else
     let tmpDir="/usr/local/code/.tmpvim"
 endif
 
-""""""Vundle INITIALIZATION"""""""""""""""""
+" }}}
+
+""""""Vundle INITIALIZATION""""""""""""""""" {{{
 set nocompatible
 filetype off
 
@@ -78,7 +80,9 @@ Bundle 'git://repo.or.cz/vcscommand'
 
 filetype plugin indent on     " required!off                                                                
 
-"""""""""""""""""""""""""GENERAL"""""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""GENERAL""""""""""""""""""""""""""""""" {{{
 "read modeline at bottom of files
 set modeline
 
@@ -197,13 +201,17 @@ runtime macros/matchit.vim
 set scrolloff=3
 set sidescrolloff=3
 
-"""""""""""""""""""""""""""XIKI"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""XIKI""""""""""""""""""""""""""""" {{{
 let $XIKI_DIR = "/usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5"
 if filereadable($XIKI_DIR)
    source /usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5/etc/vim/xiki.vim
 endif
 
-"""""""""""""""""""""""""""CTAGS"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""CTAGS""""""""""""""""""""""""""""" {{{
 
 "Tags files
 "autocmd FileType java set tags+=~/.vim/tags/java_tags
@@ -212,7 +220,9 @@ endif
 "regenerate cscope
 nmap <F6> :!find . -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.c++" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.java" -o -iname "*.py" -o -iname "*.scala" > cscope.files<CR>:!cscope -b -q<CR>:cs reset<CR><CR>
 
-"""""""""""""""""""""""""""TAGBAR"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""TAGBAR""""""""""""""""""""""""""""" {{{
 
 let g:tagbar_autofocus=1
 
@@ -281,11 +291,15 @@ if executable('lushtags')
         \ }
  endif
 
-"""""""""""""""""""""""""""Clojure"""""""""""""""""""""""""""""
+" }}}
+ 
+"""""""""""""""""""""""""""Clojure""""""""""""""""""""""""""""" {{{
 let vimclojure#WantNailgun=1
 
 
-"""""""""""""""""""""""""""Syntastic"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""Syntastic""""""""""""""""""""""""""""" {{{
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['python', 'javascript'],
                            \ 'passive_filetypes': ['java', 'scala'] }
@@ -297,10 +311,14 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " W801 - redefinition of unused import, try/except import fails.
 let g:syntastic_python_flake8_args = "--ignore=E221,E241,E272,W404,W801"
 
-"""""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""SNIPMATE""""""""""""""""""""""""""""" {{{
 let g:snippets_dir=vimHome."/bundle/snipmate-snippets/snippets"
 
-"""""""""""""""""""""""""""JAVA SPECIFIC"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""JAVA SPECIFIC""""""""""""""""""""""""""""" {{{
 "autocmd FileType java set foldmethod=syntax
 function! ToggleComments()
     if &foldmethod == "marker"
@@ -320,24 +338,34 @@ endfunction
 nmap <silent> <F7> :call ToggleComments()<CR>
 
 
-"""""""""""""""""""""""""""JAVA CHECKSTYLE"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""JAVA CHECKSTYLE""""""""""""""""""""""""""""" {{{
 let java_checkstyle_dir = "/usr/local/code/other/checkstyle-5.6/"
 let g:syntastic_java_checkstyle_classpath= java_checkstyle_dir . 'checkstyle-5.6-all.jar'
 let g:syntastic_java_checkstyle_conf_file= java_checkstyle_dir . 'sun_checks.xml'
 
-"""""""""""""""""""""""""""C SPECIFIC"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""C SPECIFIC""""""""""""""""""""""""""""" {{{
 "autocmd FileType c set foldmethod=syntax
 
 
-"""""""""""""""""""""""""""CONQUETERM"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""CONQUETERM""""""""""""""""""""""""""""" {{{
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
 
-"""""""""""""""""""""""""""gradle"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""gradle""""""""""""""""""""""""""""" {{{
 
 au BufNewFile,BufRead *.gradle set filetype=groovy
 
-"""""""""""""""""""""""""""SUPERTAB"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""SUPERTAB""""""""""""""""""""""""""" {{{
 
 "set completion type to change based on context around it
 let g:SuperTabDefaultCompletionType = 'context'
@@ -346,19 +374,27 @@ let g:SuperTabDefaultCompletionType = 'context'
 set completeopt=longest,menu,preview
 
 
-"""""""""""""""""""""""""""PYTHON"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""PYTHON""""""""""""""""""""""""""" {{{
 au FileType python set omnifunc=pythoncomplete#Complete
 
-"""""""""""""""""""""""""""TABULAR"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""TABULAR""""""""""""""""""""""""""" {{{
 nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 
-"""""""""""""""""""""""""""YankRing"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""YankRing""""""""""""""""""""""""""" {{{
 nmap <Leader>r :YRShow<CR>
 
-"""""""""""""""""""""""""""ECLIM""""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""ECLIM"""""""""""""""""""""""""""""" {{{
 
 " disable logging import when log is typed
 let g:EclimLoggingDisabled=1
@@ -384,7 +420,9 @@ nmap <silent><leader>s :JavaImportSort<CR>
 "JavaCorrect
 nmap <silent><leader><leader>c :JavaCorrect<CR>
 
-"""""""""""""""""""""""""""MAPPINGS"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""MAPPINGS""""""""""""""""""""""""""" {{{
 
 "Taglist
 "nnoremap <silent> <cr> :TlistToggle<CR>
@@ -467,17 +505,23 @@ nnoremap Q @@
 "cnoremap s/ s/\v
 "cnoremap %s/ %s/\v
 
-" find closest ( [ {, and delete or change it.
-" how to select?
-vnoremap in( :<c-u>normal! f(vi(<cr>
-onoremap in( :<c-u>normal! f(vi(<cr>
-onoremap in) :<c-u>normal! f)vi)<cr>
-onoremap in[ :<c-u>normal! f[vi[<cr>
-onoremap in] :<c-u>normal! f]vi]<cr>
-onoremap in{ :<c-u>normal! f{vi{<cr>
-onoremap in} :<c-u>normal! f}vi}<cr>
+" find closest ( [ {, and delete/change/visual select it.
+" silent is required so that the normal command contiunes on error.
+" This means that even if the character '(' is not found, the selection
+" still occurs.
+vnoremap in( :<c-u>silent normal! f(vi(<cr>
+onoremap in( :<c-u>silent normal! f(vi(<cr>
+onoremap in) :<c-u>silent normal! f)vi)<cr>
+vnoremap in[ :<c-u>silent normal! f[vi[<cr>
+onoremap in[ :<c-u>silent normal! f[vi[<cr>
+onoremap in] :<c-u>silent normal! f]vi]<cr>
+vnoremap in{ :<c-u>silent normal! f{vi{<cr>
+onoremap in{ :<c-u>silent normal! f{vi{<cr>
+onoremap in} :<c-u>silent normal! f}vi}<cr>
 
-""""""""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""""
+" }}}
+
+""""""""""""""""""""""""""""""NERDTree"""""""""""""""""""""""""""""" {{{
 
 "NERDTree Ctrl-n for nerdtree
 nnoremap <silent><leader>n :NERDTreeToggle<CR>
@@ -488,7 +532,9 @@ nnoremap <silent> <C-d> :NERDTree %:h<CR>
 "ignore files
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
-""""""""""""""""""""""""""""""Clang_complete""""""""""""""""""""""""""""""
+" }}}
+
+""""""""""""""""""""""""""""""Clang_complete"""""""""""""""""""""""""""""" {{{
 let g:clang_auto_select=0
 let g:clang_complete_auto=0
 let g:clang_hl_errors=1
@@ -505,18 +551,24 @@ elseif hostname == "eric"
 endif
 
 
-""""""""""""""""""""""""""""""AcK""""""""""""""""""""""""""""""
+" }}}
+
+""""""""""""""""""""""""""""""AcK"""""""""""""""""""""""""""""" {{{
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 if !empty(matchstr(hostname(), "ebox"))
     let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
 
-""""""""""""""""""""""""""""""AcK""""""""""""""""""""""""""""""
+" }}}
+
+""""""""""""""""""""""""""""""AcK"""""""""""""""""""""""""""""" {{{
 "narrow window vertical
 let g:nrrw_rgn_vert = 1
 let g:nrrw_rgn_wdth = 80 
 
-"""""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS""""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS"""""""""""""""""""""""""""""" {{{
 
 function! AntSingle()
     "change ant single to current file
@@ -584,3 +636,5 @@ if !empty(matchstr($PWD, "sparkle_client_java"))
     "load files if path contains sparkle_demo
     call SparkleClientSetup()
 endif
+
+" }}}
