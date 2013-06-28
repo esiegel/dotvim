@@ -40,35 +40,37 @@ Bundle 'gmarik/vundle'
 Bundle 'git@github.com:esiegel/snipmate-snippets.git'
 
 " original repos on github
-Bundle 'mileszs/ack.vim'
+Bundle 'Lokaltog/vim-powerline'
 Bundle 'Rip-Rip/clang_complete'
-Bundle 'msanders/cocoa.vim'
-Bundle 'rosenfeld/conque-term'
+Bundle 'altercation/vim-colors-solarized'
 Bundle 'chrisbra/NrrwRgn'
+Bundle 'ervandew/supertab'
+Bundle 'godlygeek/tabular'
+Bundle 'jnwhiteh/vim-golang'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'majutsushi/tagbar'
+Bundle 'mileszs/ack.vim'
+Bundle 'msanders/cocoa.vim'
+Bundle 'msanders/snipmate.vim'
+Bundle 'nsf/gocode', {'rtp': 'vim/'}
+Bundle 'riobard/scala.vim'
+Bundle 'rosenfeld/conque-term'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
-Bundle 'sorin-ionescu/python.vim'
-Bundle 'riobard/scala.vim'
-Bundle 'msanders/snipmate.vim'
-Bundle 'ervandew/supertab'
 Bundle 'scrooloose/syntastic'
-Bundle 'godlygeek/tabular'
-Bundle 'majutsushi/tagbar'
-Bundle 'altercation/vim-colors-solarized'
+Bundle 'sorin-ionescu/python.vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-surround'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'kchmck/vim-coffee-script'
 
 " vim-scripts repo
-Bundle 'a.vim'
 Bundle 'BusyBee'
-Bundle 'cscope_macros.vim'
 Bundle 'Color-Sampler-Pack'
+Bundle 'Jinja'
 Bundle 'L9'
 Bundle 'VimClojure'
-Bundle 'Jinja'
+Bundle 'a.vim'
+Bundle 'cscope_macros.vim'
 
 " non github repos
 Bundle 'git://git.wincent.com/command-t.git'
@@ -416,8 +418,25 @@ cnoremap w!! %!sudo tee > /dev/null %
 "VCSVimDiff
 nnoremap <silent><leader>v :VCSVimDiff<CR>
 
-"Use emacs go to beginning of line in cmd mode, default is <c-b>.
-cnoremap <c-a> <c-b>
+"Use emacs bindings for command mode.
+" start of line
+:cnoremap <C-A> <Home>
+" back one character
+:cnoremap <C-B> <Left>
+" delete character under cursor
+:cnoremap <C-D> <Del>
+" end of line
+:cnoremap <C-E> <End>
+" forward one character
+:cnoremap <C-F> <Right>
+" recall newer command-line
+:cnoremap <C-N> <Down>
+" recall previous (older) command-line
+:cnoremap <C-P> <Up>
+" back one word
+:cnoremap <Esc><C-B>	<S-Left>
+" forward one word
+:cnoremap <Esc><C-F>	<S-Right>
 
 "markdown spellcheck by default
 autocmd FileType markdown setlocal spell
@@ -434,6 +453,29 @@ endfunct
 
 "expose redirect as command
 command! -nargs=+ R call call(function('Redir'), [<q-args>])
+
+" Disable Ex mode shortcut key. Make Q repeate last macro
+" http://vimbits.com/bits/263
+nnoremap Q @@
+
+" Make regexes better by making regex magic
+" :help /\v
+"nnoremap / /\v
+"nnoremap ? /\v
+"vnoremap / /\v
+"vnoremap ? ?\v
+"cnoremap s/ s/\v
+"cnoremap %s/ %s/\v
+
+" find closest ( [ {, and delete or change it.
+" how to select?
+vnoremap in( :<c-u>normal! f(vi(<cr>
+onoremap in( :<c-u>normal! f(vi(<cr>
+onoremap in) :<c-u>normal! f)vi)<cr>
+onoremap in[ :<c-u>normal! f[vi[<cr>
+onoremap in] :<c-u>normal! f]vi]<cr>
+onoremap in{ :<c-u>normal! f{vi{<cr>
+onoremap in} :<c-u>normal! f}vi}<cr>
 
 """"""""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""""
 
