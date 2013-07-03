@@ -519,6 +519,38 @@ vnoremap in{ :<c-u>silent normal! f{vi{<cr>
 onoremap in{ :<c-u>silent normal! f{vi{<cr>
 onoremap in} :<c-u>silent normal! f}vi}<cr>
 
+" remove trailing whitespace and remain at current position
+nnoremap <leader>W mz:%s/\s\+$//g<cr>`z
+
+" }}}
+
+""""""""""""""""""""""""""""""Ack Operator"""""""""""""""""""""""""""""" {{{
+"
+"""""""""""" viw<leader>g , <leader>g4w, <leader>gt;, <leader>gi[
+
+nnoremap <leader>g :set operatorfunc=<SID>AckOperator<cr>g@
+vnoremap <leader>g :<c-u>call <SID>AckOperator(visualmode())<cr>
+
+" argument is the type of selection (characterwise, linewise, or block)
+function! s:AckOperator(type)
+   " Save the unamed register
+   let saved_register = @@
+
+   " Handle visual mode, operatorfunc, or else do nothing
+   if a:type ==# 'v'
+      normal! `<v`>y
+   elseif a:type ==# 'char'
+      normal! `[v`]y
+   else
+      return
+   endif
+
+   " Copy shellescaped values from unnamed register
+   silent execute "Ack! -a " . shellescape(@@)
+
+   let @@ = saved_register
+endfunction
+
 " }}}
 
 """"""""""""""""""""""""""""""NERDTree"""""""""""""""""""""""""""""" {{{
