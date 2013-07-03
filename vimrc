@@ -78,7 +78,7 @@ Bundle 'cscope_macros.vim'
 Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'git://repo.or.cz/vcscommand'
 
-filetype plugin indent on     " required!off                                                                
+filetype plugin indent on " required!off                                                                
 
 " }}}
 
@@ -217,8 +217,34 @@ endif
 "autocmd FileType java set tags+=~/.vim/tags/java_tags
 "autocmd FileType python set tags+=~/.vim/tags/python_tags
 
+" file extensions to search for when regenerating cscope index
+let s:cscope_file_extensions = ["c", "cpp", "cc",
+                               \"c++", "h", "hpp",
+                               \"java", "py", "scala"]
+
+function! s:GenerateCscopeIndex()
+   let exts = deepcopy(s:cscope_file_extensions)
+
+   " surround with quotes and add .* to beginning
+   call map(exts, '"\"*." . v:val . "\""')
+
+   " prepend the string -iname
+   call map(exts, '"-iname " . v:val')
+
+   " find uses -o flag to separate flags.
+   let join_str = join(exts, ' -o ')
+
+   " finda command
+   let find_command = 'find . ' . join_str
+
+   execute 'silent !' . find_command . ' > cscope.files'
+   silent !cscope -b -q
+   cs reset
+   redraw!
+endfunction
+
 "regenerate cscope
-nmap <F6> :!find . -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.c++" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.java" -o -iname "*.py" -o -iname "*.scala" > cscope.files<CR>:!cscope -b -q<CR>:cs reset<CR><CR>
+nmap <F6> :call <SID>GenerateCscopeIndex()<cr>
 
 " }}}
 
