@@ -1,4 +1,4 @@
-""""""""""""""""System""""""""""""""""""""
+""""""""""""""""System"""""""""""""""""""" {{{
 "ebox or eric
 let hostname = substitute(system('hostname'), '\n', '', '')
 
@@ -16,7 +16,9 @@ else
     let tmpDir="/usr/local/code/.tmpvim"
 endif
 
-""""""Vundle INITIALIZATION"""""""""""""""""
+" }}}
+
+""""""Vundle INITIALIZATION""""""""""""""""" {{{
 set nocompatible
 filetype off
 
@@ -40,44 +42,48 @@ Bundle 'gmarik/vundle'
 Bundle 'git@github.com:esiegel/snipmate-snippets.git'
 
 " original repos on github
-Bundle 'mileszs/ack.vim'
+Bundle 'Lokaltog/vim-powerline'
 Bundle 'Rip-Rip/clang_complete'
-Bundle 'msanders/cocoa.vim'
-Bundle 'rosenfeld/conque-term'
+Bundle 'altercation/vim-colors-solarized'
 Bundle 'chrisbra/NrrwRgn'
+Bundle 'ervandew/supertab'
+Bundle 'godlygeek/tabular'
+Bundle 'jnwhiteh/vim-golang'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'majutsushi/tagbar'
+Bundle 'mileszs/ack.vim'
+Bundle 'msanders/cocoa.vim'
+Bundle 'msanders/snipmate.vim'
+Bundle 'nsf/gocode', {'rtp': 'vim/'}
+Bundle 'riobard/scala.vim'
+Bundle 'rosenfeld/conque-term'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
-Bundle 'sorin-ionescu/python.vim'
-Bundle 'riobard/scala.vim'
-Bundle 'msanders/snipmate.vim'
-Bundle 'ervandew/supertab'
 Bundle 'scrooloose/syntastic'
-Bundle 'godlygeek/tabular'
-Bundle 'majutsushi/tagbar'
-Bundle 'altercation/vim-colors-solarized'
+Bundle 'sorin-ionescu/python.vim'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-surround'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'kchmck/vim-coffee-script'
 
 " vim-scripts repo
-Bundle 'a.vim'
 Bundle 'BusyBee'
-Bundle 'cscope_macros.vim'
 Bundle 'Color-Sampler-Pack'
+Bundle 'Jinja'
 Bundle 'L9'
 Bundle 'VimClojure'
-Bundle 'Jinja'
+Bundle 'a.vim'
+Bundle 'cscope_macros.vim'
 
 " non github repos
 Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'git://repo.or.cz/vcscommand'
 
-filetype plugin indent on     " required!off                                                                
+filetype plugin indent on " required!off                                                                
 
-"""""""""""""""""""""""""GENERAL"""""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""GENERAL""""""""""""""""""""""""""""""" {{{
 "read modeline at bottom of files
 set modeline
 
@@ -196,22 +202,54 @@ runtime macros/matchit.vim
 set scrolloff=3
 set sidescrolloff=3
 
-"""""""""""""""""""""""""""XIKI"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""XIKI""""""""""""""""""""""""""""" {{{
 let $XIKI_DIR = "/usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5"
 if filereadable($XIKI_DIR)
    source /usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5/etc/vim/xiki.vim
 endif
 
-"""""""""""""""""""""""""""CTAGS"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""CTAGS""""""""""""""""""""""""""""" {{{
 
 "Tags files
 "autocmd FileType java set tags+=~/.vim/tags/java_tags
 "autocmd FileType python set tags+=~/.vim/tags/python_tags
 
-"regenerate cscope
-nmap <F6> :!find . -iname "*.c" -o -iname "*.cpp" -o -iname "*.cc" -o -iname "*.c++" -o -iname "*.h" -o -iname "*.hpp" -o -iname "*.java" -o -iname "*.py" -o -iname "*.scala" > cscope.files<CR>:!cscope -b -q<CR>:cs reset<CR><CR>
+" file extensions to search for when regenerating cscope index
+let s:cscope_file_extensions = ["c", "cpp", "cc",
+                               \"c++", "h", "hpp",
+                               \"java", "py", "scala"]
 
-"""""""""""""""""""""""""""TAGBAR"""""""""""""""""""""""""""""
+function! s:GenerateCscopeIndex()
+   let exts = deepcopy(s:cscope_file_extensions)
+
+   " surround with quotes and add .* to beginning
+   call map(exts, '"\"*." . v:val . "\""')
+
+   " prepend the string -iname
+   call map(exts, '"-iname " . v:val')
+
+   " find uses -o flag to separate flags.
+   let join_str = join(exts, ' -o ')
+
+   " finda command
+   let find_command = 'find . ' . join_str
+
+   execute 'silent !' . find_command . ' > cscope.files'
+   silent !cscope -b -q
+   cs reset
+   redraw!
+endfunction
+
+"regenerate cscope
+nmap <F6> :call <SID>GenerateCscopeIndex()<cr>
+
+" }}}
+
+"""""""""""""""""""""""""""TAGBAR""""""""""""""""""""""""""""" {{{
 
 let g:tagbar_autofocus=1
 
@@ -280,11 +318,15 @@ if executable('lushtags')
         \ }
  endif
 
-"""""""""""""""""""""""""""Clojure"""""""""""""""""""""""""""""
+" }}}
+ 
+"""""""""""""""""""""""""""Clojure""""""""""""""""""""""""""""" {{{
 let vimclojure#WantNailgun=1
 
 
-"""""""""""""""""""""""""""Syntastic"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""Syntastic""""""""""""""""""""""""""""" {{{
 let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'active_filetypes': ['python', 'javascript'],
                            \ 'passive_filetypes': ['java', 'scala'] }
@@ -296,10 +338,14 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " W801 - redefinition of unused import, try/except import fails.
 let g:syntastic_python_flake8_args = "--ignore=E221,E241,E272,W404,W801"
 
-"""""""""""""""""""""""""""SNIPMATE"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""SNIPMATE""""""""""""""""""""""""""""" {{{
 let g:snippets_dir=vimHome."/bundle/snipmate-snippets/snippets"
 
-"""""""""""""""""""""""""""JAVA SPECIFIC"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""JAVA SPECIFIC""""""""""""""""""""""""""""" {{{
 "autocmd FileType java set foldmethod=syntax
 function! ToggleComments()
     if &foldmethod == "marker"
@@ -319,24 +365,34 @@ endfunction
 nmap <silent> <F7> :call ToggleComments()<CR>
 
 
-"""""""""""""""""""""""""""JAVA CHECKSTYLE"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""JAVA CHECKSTYLE""""""""""""""""""""""""""""" {{{
 let java_checkstyle_dir = "/usr/local/code/other/checkstyle-5.6/"
 let g:syntastic_java_checkstyle_classpath= java_checkstyle_dir . 'checkstyle-5.6-all.jar'
 let g:syntastic_java_checkstyle_conf_file= java_checkstyle_dir . 'sun_checks.xml'
 
-"""""""""""""""""""""""""""C SPECIFIC"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""C SPECIFIC""""""""""""""""""""""""""""" {{{
 "autocmd FileType c set foldmethod=syntax
 
 
-"""""""""""""""""""""""""""CONQUETERM"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""CONQUETERM""""""""""""""""""""""""""""" {{{
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
 
-"""""""""""""""""""""""""""gradle"""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""gradle""""""""""""""""""""""""""""" {{{
 
 au BufNewFile,BufRead *.gradle set filetype=groovy
 
-"""""""""""""""""""""""""""SUPERTAB"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""SUPERTAB""""""""""""""""""""""""""" {{{
 
 "set completion type to change based on context around it
 let g:SuperTabDefaultCompletionType = 'context'
@@ -345,19 +401,27 @@ let g:SuperTabDefaultCompletionType = 'context'
 set completeopt=longest,menu,preview
 
 
-"""""""""""""""""""""""""""PYTHON"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""PYTHON""""""""""""""""""""""""""" {{{
 au FileType python set omnifunc=pythoncomplete#Complete
 
-"""""""""""""""""""""""""""TABULAR"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""TABULAR""""""""""""""""""""""""""" {{{
 nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
 nmap <Leader>a: :Tabularize /:\zs<CR>
 vmap <Leader>a: :Tabularize /:\zs<CR>
 
-"""""""""""""""""""""""""""YankRing"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""YankRing""""""""""""""""""""""""""" {{{
 nmap <Leader>r :YRShow<CR>
 
-"""""""""""""""""""""""""""ECLIM""""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""ECLIM"""""""""""""""""""""""""""""" {{{
 
 " disable logging import when log is typed
 let g:EclimLoggingDisabled=1
@@ -383,7 +447,9 @@ nmap <silent><leader>s :JavaImportSort<CR>
 "JavaCorrect
 nmap <silent><leader><leader>c :JavaCorrect<CR>
 
-"""""""""""""""""""""""""""MAPPINGS"""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""MAPPINGS""""""""""""""""""""""""""" {{{
 
 "Taglist
 "nnoremap <silent> <cr> :TlistToggle<CR>
@@ -417,8 +483,25 @@ cnoremap w!! %!sudo tee > /dev/null %
 "VCSVimDiff
 nnoremap <silent><leader>v :VCSVimDiff<CR>
 
-"Use emacs go to beginning of line in cmd mode, default is <c-b>.
-cnoremap <c-a> <c-b>
+"Use emacs bindings for command mode.
+" start of line
+:cnoremap <C-A> <Home>
+" back one character
+:cnoremap <C-B> <Left>
+" delete character under cursor
+:cnoremap <C-D> <Del>
+" end of line
+:cnoremap <C-E> <End>
+" forward one character
+:cnoremap <C-F> <Right>
+" recall newer command-line
+:cnoremap <C-N> <Down>
+" recall previous (older) command-line
+:cnoremap <C-P> <Up>
+" back one word
+:cnoremap <Esc><C-B>	<S-Left>
+" forward one word
+:cnoremap <Esc><C-F>	<S-Right>
 
 "markdown spellcheck by default
 autocmd FileType markdown setlocal spell
@@ -436,7 +519,68 @@ endfunct
 "expose redirect as command
 command! -nargs=+ R call call(function('Redir'), [<q-args>])
 
-""""""""""""""""""""""""""""""NERDTree""""""""""""""""""""""""""""""
+" Disable Ex mode shortcut key. Make Q repeate last macro
+" http://vimbits.com/bits/263
+nnoremap Q @@
+
+" Make regexes better by making regex magic
+" :help /\v
+"nnoremap / /\v
+"nnoremap ? /\v
+"vnoremap / /\v
+"vnoremap ? ?\v
+"cnoremap s/ s/\v
+"cnoremap %s/ %s/\v
+
+" find closest ( [ {, and delete/change/visual select it.
+" silent is required so that the normal command contiunes on error.
+" This means that even if the character '(' is not found, the selection
+" still occurs.
+vnoremap in( :<c-u>silent normal! f(vi(<cr>
+onoremap in( :<c-u>silent normal! f(vi(<cr>
+onoremap in) :<c-u>silent normal! f)vi)<cr>
+vnoremap in[ :<c-u>silent normal! f[vi[<cr>
+onoremap in[ :<c-u>silent normal! f[vi[<cr>
+onoremap in] :<c-u>silent normal! f]vi]<cr>
+vnoremap in{ :<c-u>silent normal! f{vi{<cr>
+onoremap in{ :<c-u>silent normal! f{vi{<cr>
+onoremap in} :<c-u>silent normal! f}vi}<cr>
+
+" remove trailing whitespace and remain at current position
+nnoremap <leader>W mz:%s/\s\+$//g<cr>`z
+
+" }}}
+
+""""""""""""""""""""""""""""""Ack Operator"""""""""""""""""""""""""""""" {{{
+"
+"""""""""""" viw<leader>g , <leader>g4w, <leader>gt;, <leader>gi[
+
+nnoremap <leader>g :set operatorfunc=<SID>AckOperator<cr>g@
+vnoremap <leader>g :<c-u>call <SID>AckOperator(visualmode())<cr>
+
+" argument is the type of selection (characterwise, linewise, or block)
+function! s:AckOperator(type)
+   " Save the unamed register
+   let saved_register = @@
+
+   " Handle visual mode, operatorfunc, or else do nothing
+   if a:type ==# 'v'
+      normal! `<v`>y
+   elseif a:type ==# 'char'
+      normal! `[v`]y
+   else
+      return
+   endif
+
+   " Copy shellescaped values from unnamed register
+   silent execute "Ack! -a " . shellescape(@@)
+
+   let @@ = saved_register
+endfunction
+
+" }}}
+
+""""""""""""""""""""""""""""""NERDTree"""""""""""""""""""""""""""""" {{{
 
 "NERDTree Ctrl-n for nerdtree
 nnoremap <silent><leader>n :NERDTreeToggle<CR>
@@ -447,7 +591,9 @@ nnoremap <silent> <C-d> :NERDTree %:h<CR>
 "ignore files
 let NERDTreeIgnore=['\.pyc$', '\~$']
 
-""""""""""""""""""""""""""""""Clang_complete""""""""""""""""""""""""""""""
+" }}}
+
+""""""""""""""""""""""""""""""Clang_complete"""""""""""""""""""""""""""""" {{{
 let g:clang_auto_select=0
 let g:clang_complete_auto=0
 let g:clang_hl_errors=1
@@ -464,18 +610,24 @@ elseif hostname == "eric"
 endif
 
 
-""""""""""""""""""""""""""""""AcK""""""""""""""""""""""""""""""
+" }}}
+
+""""""""""""""""""""""""""""""AcK"""""""""""""""""""""""""""""" {{{
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 if !empty(matchstr(hostname(), "ebox"))
     let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
 
-""""""""""""""""""""""""""""""AcK""""""""""""""""""""""""""""""
+" }}}
+
+""""""""""""""""""""""""""""""AcK"""""""""""""""""""""""""""""" {{{
 "narrow window vertical
 let g:nrrw_rgn_vert = 1
 let g:nrrw_rgn_wdth = 80 
 
-"""""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS""""""""""""""""""""""""""""""
+" }}}
+
+"""""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS"""""""""""""""""""""""""""""" {{{
 
 function! AntSingle()
     "change ant single to current file
@@ -543,3 +695,5 @@ if !empty(matchstr($PWD, "sparkle_client_java"))
     "load files if path contains sparkle_demo
     call SparkleClientSetup()
 endif
+
+" }}}
