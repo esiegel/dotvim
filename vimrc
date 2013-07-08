@@ -55,6 +55,7 @@ Bundle 'scrooloose/syntastic'
 Bundle 'godlygeek/tabular'
 Bundle 'majutsushi/tagbar'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-surround'
@@ -459,7 +460,7 @@ if hostname == "ebox"
    let g:clang_auto_user_options = '.clang_complete'
 elseif hostname == "eric"
    let g:clang_use_library=1
-   let g:clang_library_path="/usr/local/downloads/clang+llvm-3.0-x86_64-linux-Ubuntu-11_04/lib"
+   let g:clang_library_path="/usr/lib"
 endif
 
 
