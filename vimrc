@@ -536,6 +536,10 @@ nnoremap Q @@
 " silent is required so that the normal command contiunes on error.
 " This means that even if the character '(' is not found, the selection
 " still occurs.
+vnoremap in" :<c-u>silent normal! f"vi"<cr>
+onoremap in" :<c-u>silent normal! f"vi"<cr>
+vnoremap in' :<c-u>silent normal! f'vi'<cr>
+onoremap in' :<c-u>silent normal! f'vi'<cr>
 vnoremap in( :<c-u>silent normal! f(vi(<cr>
 onoremap in( :<c-u>silent normal! f(vi(<cr>
 onoremap in) :<c-u>silent normal! f)vi)<cr>
