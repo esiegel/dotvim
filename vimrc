@@ -388,9 +388,45 @@ let g:syntastic_java_checkstyle_conf_file= java_checkstyle_dir . 'sun_checks.xml
 " }}}
 
 """""""""""""""""""""""""""CONQUETERM""""""""""""""""""""""""""""" {{{
+function! s:ToggleConqueTerm()
+   " There is a bug in conque_term#get_instance() when there isn't an instance
+   " so we will use the global list of terminals instead.
+   if !exists("g:ConqueTerm_Terminals") || len(g:ConqueTerm_Terminals) == 0
+      "call conque_term#open("zsh", ['vsplit'])
+      ConqueTermVSplit zsh
+      return
+   endif
+
+   " Current buffer information
+   let current_buffer_nr = bufnr("")
+
+   " conque term information
+   let term_info   = conque_term#get_instance()
+   let buffer_name = term_info['buffer_name']
+   let buffer_nr   = bufnr(buffer_name)
+   let buffer_win  = bufwinnr(buffer_nr)
+
+   if buffer_win == -1
+      " open window
+      execute 'vs ' . buffer_name
+   else
+      " close conque window
+      if current_buffer_nr != buffer_nr
+         execute buffer_win . "wincmd w"
+         wincmd c
+         execute bufwinnr(current_buffer_nr) . "wincmd w"
+      else
+         wincmd c
+      endif
+   endif
+endfunction
+
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
 let g:ConqueTerm_PromptRegex = '^➜ \~'
+
+nnoremap <Leader>z :call <SID>ToggleConqueTerm()<CR>
+
 " }}}
 
 """""""""""""""""""""""""""gradle""""""""""""""""""""""""""""" {{{
@@ -416,10 +452,10 @@ au FileType python set omnifunc=pythoncomplete#Complete
 " }}}
 
 """""""""""""""""""""""""""TABULAR""""""""""""""""""""""""""" {{{
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:\zs<CR>
-vmap <Leader>a: :Tabularize /:\zs<CR>
+nnoremap <Leader>a= :Tabularize /=<CR>
+vnoremap <Leader>a= :Tabularize /=<CR>
+nnoremap <Leader>a: :Tabularize /:\zs<CR>
+vnoremap <Leader>a: :Tabularize /:\zs<CR>
 
 " }}}
 
