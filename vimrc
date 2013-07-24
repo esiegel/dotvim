@@ -50,6 +50,7 @@ Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'msanders/cocoa.vim'
@@ -65,6 +66,7 @@ Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-surround'
+
 
 " vim-scripts repo
 Bundle 'BusyBee'
@@ -182,7 +184,7 @@ set undoreload=1000
 
 "wildmode enables better file viewing when opeing new files, like bash
 set wildmenu
-set wildmode=longest,list:longest
+set wildmode=longest,list,list:full
 set wildignore+=*.swp,*.pyc,*.class,*.idea*
 
 "When in unclosed parens, ie args, have them line up.
@@ -201,6 +203,11 @@ runtime macros/matchit.vim
 "Minimal number of screen lines to keep above and below the cursor
 set scrolloff=3
 set sidescrolloff=3
+
+" new horizontal splits will be placed below
+" new vertical splits will be placed to the right
+set splitbelow
+set splitright
 
 " }}}
 
@@ -383,7 +390,7 @@ let g:syntastic_java_checkstyle_conf_file= java_checkstyle_dir . 'sun_checks.xml
 """""""""""""""""""""""""""CONQUETERM""""""""""""""""""""""""""""" {{{
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
-
+let g:ConqueTerm_PromptRegex = '^➜ \~'
 " }}}
 
 """""""""""""""""""""""""""gradle""""""""""""""""""""""""""""" {{{
@@ -624,7 +631,14 @@ endif
 
 " }}}
 
-""""""""""""""""""""""""""""""AcK"""""""""""""""""""""""""""""" {{{
+""""""""""""""""""""""""""""""Ctrlp"""""""""""""""""""""""""""""" {{{
+" working directory 
+let g:ctrlp_working_path_mode = 'r'
+
+let g:ctrlp_root_markers = ['project.xml']
+" }}}
+
+""""""""""""""""""""""""""""""narrow region"""""""""""""""""""""""""""""" {{{
 "narrow window vertical
 let g:nrrw_rgn_vert = 1
 let g:nrrw_rgn_wdth = 80 
