@@ -42,9 +42,9 @@ Bundle 'gmarik/vundle'
 Bundle 'git@github.com:esiegel/snipmate-snippets.git'
 
 " original repos on github
-Bundle 'Lokaltog/vim-powerline'
 Bundle 'Rip-Rip/clang_complete'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'bling/vim-airline'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
@@ -62,11 +62,11 @@ Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'sorin-ionescu/python.vim'
+Bundle 'tacahiroy/ctrlp-funky'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-surround'
-
 
 " vim-scripts repo
 Bundle 'BusyBee'
@@ -78,7 +78,6 @@ Bundle 'a.vim'
 Bundle 'cscope_macros.vim'
 
 " non github repos
-Bundle 'git://git.wincent.com/command-t.git'
 Bundle 'git://repo.or.cz/vcscommand'
 
 filetype plugin indent on " required!off                                                                
@@ -166,10 +165,8 @@ set smartcase
 "in <Ctrl-v> block visual select, not confined to end of chars.
 set virtualedit=block
 
-"set status line for powerline
+"set status line to always
 set laststatus=2 
-let g:Powerline_cache_file=tmpDir . "/PowerlineCache"
-let g:Powerline_symbols="unicode"
 
 "Necessary to show unicode glyphs
 set encoding=utf-8 " Necessary to show unicode glyphs
@@ -206,7 +203,7 @@ set sidescrolloff=3
 
 " new horizontal splits will be placed below
 " new vertical splits will be placed to the right
-set splitbelow
+set nosplitbelow
 set splitright
 
 " }}}
@@ -392,8 +389,14 @@ function! s:ToggleConqueTerm()
    " There is a bug in conque_term#get_instance() when there isn't an instance
    " so we will use the global list of terminals instead.
    if !exists("g:ConqueTerm_Terminals") || len(g:ConqueTerm_Terminals) == 0
-      "call conque_term#open("zsh", ['vsplit'])
-      ConqueTermVSplit zsh
+
+      " no conque split if only buffer is no name buffer.
+      if bufnr('$') == 1 && bufname(1) == ""
+         ConqueTerm zsh
+      else
+         ConqueTermVSplit zsh
+      endif
+
       return
    endif
 
@@ -423,7 +426,6 @@ endfunction
 
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
-let g:ConqueTerm_PromptRegex = '^➜ \~'
 
 nnoremap <Leader>z :call <SID>ToggleConqueTerm()<CR>
 
@@ -668,10 +670,24 @@ endif
 " }}}
 
 """"""""""""""""""""""""""""""Ctrlp"""""""""""""""""""""""""""""" {{{
-" working directory 
+" searches for nearest ancestor with projext.xml .git .hg .svn .bzr _darcs
 let g:ctrlp_working_path_mode = 'r'
-
 let g:ctrlp_root_markers = ['project.xml']
+
+" have match window at bottom and display results top to bottom
+let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:40'
+
+" default normal map to open file search
+let g:ctrlp_map = '<leader>f'
+
+" ctrlp enabled extensions
+let g:ctrlp_extensions = ['buffertag',
+                         \'funky',
+                         \'quickfix',
+                         \'tag']
+
+" map to open MRU mode
+nnoremap <leader>b :CtrlPBuffer<CR>
 " }}}
 
 """"""""""""""""""""""""""""""narrow region"""""""""""""""""""""""""""""" {{{
