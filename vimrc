@@ -427,6 +427,9 @@ endfunction
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
 
+" open all new files in the current window by default
+let g:ctrlp_reuse_window = '.*'
+
 nnoremap <Leader>z :call <SID>ToggleConqueTerm()<CR>
 
 " }}}
