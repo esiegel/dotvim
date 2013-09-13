@@ -63,6 +63,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'sorin-ionescu/python.vim'
 Bundle 'tacahiroy/ctrlp-funky'
+Bundle 'tikhomirov/vim-glsl'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
@@ -321,6 +322,34 @@ if executable('lushtags')
             \ }
         \ }
  endif
+
+ let g:tagbar_type_go = {
+     \ 'ctagstype' : 'go',
+     \ 'kinds'     : [
+         \ 'p:package',
+         \ 'i:imports:1',
+         \ 'c:constants',
+         \ 'v:variables',
+         \ 't:types',
+         \ 'n:interfaces',
+         \ 'w:fields',
+         \ 'e:embedded',
+         \ 'm:methods',
+         \ 'r:constructor',
+         \ 'f:functions'
+     \ ],
+     \ 'sro' : '.',
+     \ 'kind2scope' : {
+         \ 't' : 'ctype',
+         \ 'n' : 'ntype'
+     \ },
+     \ 'scope2kind' : {
+         \ 'ctype' : 't',
+         \ 'ntype' : 'n'
+     \ },
+     \ 'ctagsbin'  : 'gotags',
+     \ 'ctagsargs' : '-sort -silent'
+     \ }
 
 " }}}
  
