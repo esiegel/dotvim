@@ -41,12 +41,14 @@ Bundle 'gmarik/vundle'
 " Bundles :
 Bundle 'git@github.com:esiegel/snipmate-snippets.git'
 
-" original repos on github
+" Original repos on github
+Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'Rip-Rip/clang_complete'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'ervandew/supertab'
+Bundle 'garbas/vim-snipmate.git'
 Bundle 'godlygeek/tabular'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'kchmck/vim-coffee-script'
@@ -54,7 +56,6 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'msanders/cocoa.vim'
-Bundle 'msanders/snipmate.vim'
 Bundle 'nsf/gocode', {'rtp': 'vim/'}
 Bundle 'riobard/scala.vim'
 Bundle 'rosenfeld/conque-term'
@@ -63,12 +64,14 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'sorin-ionescu/python.vim'
 Bundle 'tacahiroy/ctrlp-funky'
+Bundle 'tomtom/tlib_vim'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-surround'
 
 " vim-scripts repo
+Bundle 'AnsiEsc.vim'
 Bundle 'BusyBee'
 Bundle 'Color-Sampler-Pack'
 Bundle 'Jinja'
@@ -340,7 +343,8 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " E272 - multiple spaces before keyword.  Nice to lineup import.
 " W404 - import *, unable to detected undefined names.
 " W801 - redefinition of unused import, try/except import fails.
-let g:syntastic_python_flake8_args = "--ignore=E221,E241,E272,W404,W801"
+" E203 - whitespace before ':'
+let g:syntastic_python_flake8_args = "--ignore=E203,E221,E241,E272,W404,W801"
 
 " }}}
 
@@ -444,6 +448,7 @@ au BufNewFile,BufRead *.gradle set filetype=groovy
 
 "set completion type to change based on context around it
 let g:SuperTabDefaultCompletionType = 'context'
+"let g:SuperTabContextTextOmniPrecedence = ['&completefunc', '&omnifunc']
 
 "Helps with completions not autofinishing first match
 set completeopt=longest,menu,preview
