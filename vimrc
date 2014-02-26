@@ -382,6 +382,8 @@ let g:syntastic_python_flake8_args = "--ignore=E203,E221,E241,E272,W404,W801"
 let g:UltiSnipsExpandTrigger="<tab>"                                            
 let g:UltiSnipsJumpForwardTrigger="<tab>"                                       
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"    
+let g:UltiSnipsListSnippets="<c-r><tab>"
+
 
 """""""""""""""""""""""""""JAVA SPECIFIC""""""""""""""""""""""""""""" {{{
 "autocmd FileType java set foldmethod=syntax
