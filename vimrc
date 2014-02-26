@@ -39,16 +39,16 @@ call vundle#rc(vimHome . "/bundle")
 Bundle 'gmarik/vundle'
 
 " Bundles :
-Bundle 'git@github.com:esiegel/snipmate-snippets.git'
+"Bundle 'git@github.com:esiegel/snipmate-snippets.git'
 
 " Original repos on github
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'Rip-Rip/clang_complete'
+Bundle 'SirVer/ultisnips'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
 Bundle 'chrisbra/NrrwRgn'
 Bundle 'ervandew/supertab'
-Bundle 'garbas/vim-snipmate.git'
 Bundle 'godlygeek/tabular'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'kchmck/vim-coffee-script'
@@ -377,10 +377,11 @@ let g:syntastic_python_flake8_args = "--ignore=E203,E221,E241,E272,W404,W801"
 
 " }}}
 
-"""""""""""""""""""""""""""SNIPMATE""""""""""""""""""""""""""""" {{{
-let g:snippets_dir=vimHome."/bundle/snipmate-snippets/snippets"
-
-" }}}
+"""""""""""""""""""""""""""ULTISNIPS""""""""""""""""""""""""""""" {{{
+" Set ultisnips triggers
+let g:UltiSnipsExpandTrigger="<tab>"                                            
+let g:UltiSnipsJumpForwardTrigger="<tab>"                                       
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"    
 
 """""""""""""""""""""""""""JAVA SPECIFIC""""""""""""""""""""""""""""" {{{
 "autocmd FileType java set foldmethod=syntax
@@ -632,8 +633,8 @@ vnoremap in{ :<c-u>silent normal! f{vi{<cr>
 onoremap in{ :<c-u>silent normal! f{vi{<cr>
 onoremap in} :<c-u>silent normal! f}vi}<cr>
 
-" remove trailing whitespace and remain at current position
-nnoremap <leader>W mz:%s/\s\+$//g<cr>`z
+" remove trailing whitespace, save buffer, and remain at current position
+nnoremap <leader>W mz:%s/\s\+$//g<cr>:w<cr>`z
 
 " }}}
 
@@ -683,7 +684,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 let g:clang_auto_select=0
 let g:clang_complete_auto=0
 let g:clang_hl_errors=1
-let g:clang_snippets_engine="snipmate"
+let g:clang_snippets_engine="ultisnips"
 
 if hostname == "ebox"
    let g:clang_use_library=1
