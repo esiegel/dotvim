@@ -373,7 +373,8 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " W404 - import *, unable to detected undefined names.
 " W801 - redefinition of unused import, try/except import fails.
 " E203 - whitespace before ':'
-let g:syntastic_python_flake8_args = "--ignore=E203,E221,E241,E272,W404,W801"
+let g:syntastic_python_flake8_args = "--max-line-length=99 " .
+                                    \"--ignore=E203,E221,E241,E272,W404,W801"
 
 " }}}
 
