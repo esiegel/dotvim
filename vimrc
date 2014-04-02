@@ -66,6 +66,7 @@ Bundle 'sorin-ionescu/python.vim'
 Bundle 'tacahiroy/ctrlp-funky'
 Bundle 'tikhomirov/vim-glsl'
 Bundle 'tomtom/tlib_vim'
+Bundle 'tpope/timl'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-markdown'
@@ -231,7 +232,7 @@ let s:cscope_file_extensions = ["c", "cpp", "cc",
                                \"c++", "h", "hpp",
                                \"java", "py", "scala"]
 
-function! s:GenerateCscopeIndex()
+function! s:GenerateAndAddCscopeIndex()
    let exts = deepcopy(s:cscope_file_extensions)
 
    " surround with quotes and add .* to beginning
@@ -247,13 +248,15 @@ function! s:GenerateCscopeIndex()
    let find_command = 'find . ' . join_str
 
    execute 'silent !' . find_command . ' > cscope.files'
-   silent !cscope -b -q
-   cs reset
+   silent! !cscope -b -q
+   silent! cscope add cscope.out
+   silent! cscope reset
+
    redraw!
 endfunction
 
 "regenerate cscope
-nmap <F6> :call <SID>GenerateCscopeIndex()<cr>
+nmap <F6> :call <SID>GenerateAndAddCscopeIndex()<cr>
 
 " }}}
 
