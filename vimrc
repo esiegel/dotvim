@@ -47,9 +47,10 @@ Bundle 'Rip-Rip/clang_complete'
 Bundle 'SirVer/ultisnips'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
-Bundle 'chrisbra/NrrwRgn'
+Bundle 'eagletmt/neco-ghc'
 Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
+Bundle 'honza/vim-snippets'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
@@ -379,6 +380,9 @@ let g:syntastic_mode_map = { 'mode': 'active',
 let g:syntastic_python_flake8_args = "--max-line-length=99 " .
                                     \"--ignore=E203,E221,E241,E272,W404,W801"
 
+" Show syntastic error map
+nnoremap <leader>e :Errors<cr>
+
 " }}}
 
 """""""""""""""""""""""""""ULTISNIPS""""""""""""""""""""""""""""" {{{
@@ -476,7 +480,7 @@ nnoremap <Leader>z :call <SID>ToggleConqueTerm()<CR>
 
 """""""""""""""""""""""""""gradle""""""""""""""""""""""""""""" {{{
 
-au BufNewFile,BufRead *.gradle set filetype=groovy
+autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 
 " }}}
 
@@ -493,7 +497,7 @@ set completeopt=longest,menu,preview
 " }}}
 
 """""""""""""""""""""""""""PYTHON""""""""""""""""""""""""""" {{{
-au FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType python set omnifunc=pythoncomplete#Complete
 
 " }}}
 
@@ -502,6 +506,8 @@ nnoremap <Leader>a= :Tabularize /=<CR>
 vnoremap <Leader>a= :Tabularize /=<CR>
 nnoremap <Leader>a: :Tabularize /:\zs<CR>
 vnoremap <Leader>a: :Tabularize /:\zs<CR>
+nnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
+vnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
 
 " }}}
 
@@ -622,22 +628,22 @@ nnoremap Q @@
 "cnoremap %s/ %s/\v
 
 " find closest ( [ {, and delete/change/visual select it.
-" silent is required so that the normal command contiunes on error.
+" silent! is required so that the normal command contiunes on error.
 " This means that even if the character '(' is not found, the selection
 " still occurs.
-vnoremap in" :<c-u>silent normal! f"vi"<cr>
-onoremap in" :<c-u>silent normal! f"vi"<cr>
-vnoremap in' :<c-u>silent normal! f'vi'<cr>
-onoremap in' :<c-u>silent normal! f'vi'<cr>
-vnoremap in( :<c-u>silent normal! f(vi(<cr>
-onoremap in( :<c-u>silent normal! f(vi(<cr>
-onoremap in) :<c-u>silent normal! f)vi)<cr>
-vnoremap in[ :<c-u>silent normal! f[vi[<cr>
-onoremap in[ :<c-u>silent normal! f[vi[<cr>
-onoremap in] :<c-u>silent normal! f]vi]<cr>
-vnoremap in{ :<c-u>silent normal! f{vi{<cr>
-onoremap in{ :<c-u>silent normal! f{vi{<cr>
-onoremap in} :<c-u>silent normal! f}vi}<cr>
+vnoremap in" :<c-u>silent! normal! f"vi"<cr>
+onoremap in" :<c-u>silent! normal! f"vi"<cr>
+vnoremap in' :<c-u>silent! normal! f'vi'<cr>
+onoremap in' :<c-u>silent! normal! f'vi'<cr>
+vnoremap in( :<c-u>silent! normal! f(vi(<cr>
+onoremap in( :<c-u>silent! normal! f(vi(<cr>
+onoremap in) :<c-u>silent! normal! f)vi)<cr>
+vnoremap in[ :<c-u>silent! normal! f[vi[<cr>
+onoremap in[ :<c-u>silent! normal! f[vi[<cr>
+onoremap in] :<c-u>silent! normal! f]vi]<cr>
+vnoremap in{ :<c-u>silent! normal! f{vi{<cr>
+onoremap in{ :<c-u>silent! normal! f{vi{<cr>
+onoremap in} :<c-u>silent! normal! f}vi}<cr>
 
 " remove trailing whitespace, save buffer, and remain at current position
 nnoremap <leader>W mz:%s/\s\+$//g<cr>:w<cr>`z
@@ -666,7 +672,7 @@ function! s:AckOperator(type)
    endif
 
    " Copy shellescaped values from unnamed register
-   silent execute "Ack! -a " . shellescape(@@)
+   silent execute "Ack! " . shellescape(@@)
 
    let @@ = saved_register
 endfunction
@@ -691,6 +697,13 @@ let g:clang_auto_select=0
 let g:clang_complete_auto=0
 let g:clang_hl_errors=1
 let g:clang_snippets_engine="ultisnips"
+
+" display errors on save
+autocmd BufWritePost {*.c,*.cpp,*.h,*.hpp} :call g:ClangUpdateQuickFix()
+
+" show all files that have hpp in extension as cpp
+autocmd BufNewFile,BufRead *.hpp* set filetype=cpp
+autocmd BufNewFile,BufRead *.tpp* set filetype=cpp
 
 if hostname == "ebox"
    let g:clang_use_library=1
@@ -732,13 +745,6 @@ let g:ctrlp_extensions = ['buffertag',
 
 " map to open MRU mode
 nnoremap <leader>b :CtrlPBuffer<CR>
-" }}}
-
-""""""""""""""""""""""""""""""narrow region"""""""""""""""""""""""""""""" {{{
-"narrow window vertical
-let g:nrrw_rgn_vert = 1
-let g:nrrw_rgn_wdth = 80 
-
 " }}}
 
 """""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS"""""""""""""""""""""""""""""" {{{
