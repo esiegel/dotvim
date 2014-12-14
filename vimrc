@@ -1,19 +1,32 @@
 """"""""""""""""System"""""""""""""""""""" {{{
-"ebox or eric
-let hostname = substitute(system('hostname'), '\n', '', '')
+" Known machines
+let UNKNOWN_MACHINE = 0
+let HOME_LAPTOP     = 1
+let HOME_DESKTOP    = 2
 
-if hostname == "ebox"
-   "macbook
+function! CurrentMachine()
+   let hostname = hostname()
+
+   if hostname == "ebox"
+      return g:HOME_LAPTOP
+   elseif hostname == "emachine"
+      return g:HOME_DESKTOP
+   else
+      return g:UNKNOWN_MACHINE
+   endif
+endfunction
+
+let MACHINE = CurrentMachine()
+
+if MACHINE == HOME_LAPTOP
     let vimHome="/Users/eric/.vim"
     let tmpDir="/Users/eric/code/.tmpvim"
-elseif hostname == "emachine"
-   "linux at home
+elseif MACHINE == HOME_DESKTOP
     let vimHome="/home/eric/.vim"
     let tmpDir="/home/eric/code/.tmpvim"
 else
-   "llabs unix
-    let vimHome="/usr/local/code/dotvim"
-    let tmpDir="/usr/local/code/.tmpvim"
+    let vimHome="~/.vim"
+    let tmpDir="/tmp"
 endif
 
 " }}}
@@ -699,23 +712,23 @@ let g:clang_snippets_engine="ultisnips"
 " display errors on save
 autocmd BufWritePost {*.c,*.cpp,*.cc,*.h,*.hpp} :call g:ClangUpdateQuickFix()
 
-if hostname == "ebox"
-   let g:clang_use_library=1
-   let g:clang_library_path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"
-   let g:clang_user_options='-stdlib=libc++ -std=c++11'
-   let g:clang_auto_user_options = '.clang_complete'
-elseif hostname == "eric"
-   let g:clang_use_library=1
-   let g:clang_library_path="/usr/lib"
-endif
+let g:clang_use_library=1
+let g:clang_user_options='-stdlib=libc++ -std=c++11'
+let g:clang_auto_user_options = '.clang_complete'
 
+if MACHINE == HOME_LAPTOP
+   let g:clang_library_path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"
+elseif MACHINE == HOME_DESKTOP
+   let g:clang_library_path="/usr/lib/llvm-3.4/lib/libclang.so.1"
+endif
 
 " }}}
 
 """"""""""""""""""""""""""""""AcK"""""""""""""""""""""""""""""" {{{
-let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-if !empty(matchstr(hostname(), "ebox"))
+if MACHINE == HOME_LAPTOP
     let g:ackprg="ack"
+elseif MACHINE == HOME_DESKTOP
+   let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 endif
 
 " }}}
