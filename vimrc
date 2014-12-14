@@ -3,7 +3,7 @@
 let hostname = substitute(system('hostname'), '\n', '', '')
 
 if hostname == "ebox"
-   "macbook 
+   "macbook
     let vimHome="/Users/eric/.vim"
     let tmpDir="/Users/eric/code/.tmpvim"
 elseif hostname == "emachine"
@@ -32,21 +32,27 @@ exec 'set rtp+='.vimHome."/local_config/after"
 exec 'set rtp+='.vimHome."/bundle/vundle/"
 
 " Call vundle with path to bundles. Default, only check .vim dir.
-call vundle#rc(vimHome . "/bundle") 
+call vundle#rc(vimHome . "/bundle")
 
 " let Vundle manage Vundle
-" required! 
+" required!
 Bundle 'gmarik/vundle'
 
 " Bundles :
-"Bundle 'git@github.com:esiegel/snipmate-snippets.git'
+" Bundle 'git@github.com:esiegel/snipmate-snippets.git'
+
+" Must come before tabular plugin
+Bundle 'plasticboy/vim-markdown'
 
 " Original repos on github
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'Rip-Rip/clang_complete'
+Bundle 'Shougo/vimproc.vim'
+Bundle 'Keithbsmiley/swift.vim'
 Bundle 'SirVer/ultisnips'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
+Bundle 'eagletmt/ghcmod-vim'
 Bundle 'eagletmt/neco-ghc'
 Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
@@ -70,7 +76,7 @@ Bundle 'tomtom/tlib_vim'
 Bundle 'tpope/timl'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-markdown'
+Bundle 'tpope/vim-scriptease'
 Bundle 'tpope/vim-surround'
 
 " vim-scripts repo
@@ -86,7 +92,7 @@ Bundle 'cscope_macros.vim'
 " non github repos
 Bundle 'git://repo.or.cz/vcscommand'
 
-filetype plugin indent on " required!off                                                                
+filetype plugin indent on " required!off
 
 " }}}
 
@@ -105,8 +111,8 @@ set t_Co=256
 "uses clipboard register +, instead of always :+y
 set clipboard=unnamedplus
 
-"colorscheme solarized 
-colorscheme BusyBee 
+"colorscheme solarized
+colorscheme BusyBee
 
 "inverse search
 hi Search cterm=inverse ctermbg=none ctermfg=none gui=inverse guibg=none guifg=none
@@ -121,8 +127,8 @@ set smartindent
 
 "tab = 3 spaces "indent spaces = 3 and tab to spaces
 set expandtab
-set tabstop=3 
-set softtabstop=3 
+set tabstop=3
+set softtabstop=3
 set shiftwidth=3
 
 "allowing backspace to work after indent -> see :help i_backspacing
@@ -166,13 +172,13 @@ set ignorecase
 set ignorecase
 
 "case only important if use caps
-set smartcase 
+set smartcase
 
 "in <Ctrl-v> block visual select, not confined to end of chars.
 set virtualedit=block
 
 "set status line to always
-set laststatus=2 
+set laststatus=2
 
 "Necessary to show unicode glyphs
 set encoding=utf-8 " Necessary to show unicode glyphs
@@ -295,38 +301,30 @@ let g:tagbar_type_scala= {
         \ 'object' : 'o',
         \ 'abstract class' : 'a',
         \ 'class' : 'c',
-        \ 'case class' : 'r'  
+        \ 'case class' : 'r'
     \ },
     \ 'sort'    : 0
 \ }
 
-if executable('lushtags')
+if executable('hasktags')
     let g:tagbar_type_haskell = {
-            \ 'ctagsbin' : 'lushtags',
-            \ 'ctagsargs' : '--ignore-parse-error --',
-            \ 'kinds' : [
-                \ 'm:module:0',
-                \ 'e:exports:1',
-                \ 'i:imports:1',
-                \ 't:declarations:0',
-                \ 'd:declarations:1',
-                \ 'n:declarations:1',
-                \ 'f:functions:0',
-                \ 'c:constructors:0'
-            \ ],
+            \ 'ctagsbin' : 'hasktags',
+            \ 'ctagsargs' : '-c -x -o -',
             \ 'sro' : '.',
-            \ 'kind2scope' : {
-                \ 'd' : 'data',
-                \ 'n' : 'newtype',
-                \ 'c' : 'constructor',
-                \ 't' : 'type'
-            \ },
-            \ 'scope2kind' : {
-                \ 'data' : 'd',
-                \ 'newtype' : 'n',
-                \ 'constructor' : 'c',
-                \ 'type' : 't'
-            \ }
+            \ 'kinds' : [
+                \ 'c:class:0:0',
+                \ 'cons:cons:1:0',
+                \ 'c_a:consaccessor:1:0',
+                \ 'c_gadt:consgadt:1:0',
+                \ 'd:data:1:0',
+                \ 'd_gadt:datagadt:1:0',
+                \ 'fi:funcimpl:1:0',
+                \ 'ft:function:0:0',
+                \ 'm:module:1:0',
+                \ 'nt:newtype:1:0',
+                \ 'o:other:1:0',
+                \ 't:type:1:0'
+            \ ]
         \ }
  endif
 
@@ -359,7 +357,7 @@ if executable('lushtags')
      \ }
 
 " }}}
- 
+
 """""""""""""""""""""""""""Clojure""""""""""""""""""""""""""""" {{{
 let vimclojure#WantNailgun=1
 
@@ -372,7 +370,7 @@ let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'passive_filetypes': ['java', 'scala'] }
 
 " E221 - multiple spaces before operator.  Nice to lineup =.
-" E241 - multiple spaces after :.  Nice to lineup dicts. 
+" E241 - multiple spaces after :.  Nice to lineup dicts.
 " E272 - multiple spaces before keyword.  Nice to lineup import.
 " W404 - import *, unable to detected undefined names.
 " W801 - redefinition of unused import, try/except import fails.
@@ -387,9 +385,9 @@ nnoremap <leader>e :Errors<cr>
 
 """""""""""""""""""""""""""ULTISNIPS""""""""""""""""""""""""""""" {{{
 " Set ultisnips triggers
-let g:UltiSnipsExpandTrigger="<tab>"                                            
-let g:UltiSnipsJumpForwardTrigger="<tab>"                                       
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"    
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsListSnippets="<c-r><tab>"
 
 
@@ -699,11 +697,7 @@ let g:clang_hl_errors=1
 let g:clang_snippets_engine="ultisnips"
 
 " display errors on save
-autocmd BufWritePost {*.c,*.cpp,*.h,*.hpp} :call g:ClangUpdateQuickFix()
-
-" show all files that have hpp in extension as cpp
-autocmd BufNewFile,BufRead *.hpp* set filetype=cpp
-autocmd BufNewFile,BufRead *.tpp* set filetype=cpp
+autocmd BufWritePost {*.c,*.cpp,*.cc,*.h,*.hpp} :call g:ClangUpdateQuickFix()
 
 if hostname == "ebox"
    let g:clang_use_library=1
@@ -721,7 +715,7 @@ endif
 """"""""""""""""""""""""""""""AcK"""""""""""""""""""""""""""""" {{{
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 if !empty(matchstr(hostname(), "ebox"))
-    let g:ackprg="ack -H --nocolor --nogroup --column"
+    let g:ackprg="ack"
 endif
 
 " }}}
@@ -746,6 +740,22 @@ let g:ctrlp_extensions = ['buffertag',
 " map to open MRU mode
 nnoremap <leader>b :CtrlPBuffer<CR>
 " }}}
+
+"""""""""""""""""""""""""""""""MARKDOWN
+
+" disable folding
+let g:vim_markdown_folding_disabled=1
+
+"""""""""""""""""""""""""""""""FILETYPE MAPPINGS
+
+" show all files that have hpp in extension as cpp
+autocmd BufNewFile,BufRead *.hpp* set filetype=cpp
+autocmd BufNewFile,BufRead *.tpp* set filetype=cpp
+
+" markdown extension mappings
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+autocmd BufNewFile,BufRead *.mkd set filetype=markdown
+autocmd BufNewFile,BufRead *.markdown set filetype=markdown
 
 """""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS"""""""""""""""""""""""""""""" {{{
 
@@ -786,7 +796,7 @@ function! SparkleSetup()
     cscope add /usr/local/code/redis_java/cscope.out                              /usr/local/code/redis_java/
     cscope add /usr/local/code/schedule_java/cscope.out                           /usr/local/code/schedule_java/
     cscope add /usr/local/code/http_java/cscope.out                               /usr/local/code/http_java/
-    
+
     cscope add /usr/local/code/spring-framework-3.0.5.RELEASE/src/cscope.out      /usr/local/code/spring-framework-3.0.5.RELEASE/src/
 endfunction
 
@@ -810,7 +820,7 @@ if !empty(matchstr($PWD, "sparkle_demo"))
     call SparkleSetup()
 endif
 
-" Sparkle_client_java 
+" Sparkle_client_java
 if !empty(matchstr($PWD, "sparkle_client_java"))
     "load files if path contains sparkle_demo
     call SparkleClientSetup()
