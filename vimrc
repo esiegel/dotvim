@@ -58,10 +58,10 @@ Bundle 'gmarik/vundle'
 Bundle 'plasticboy/vim-markdown'
 
 " Original repos on github
+Bundle 'Keithbsmiley/swift.vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'Rip-Rip/clang_complete'
 Bundle 'Shougo/vimproc.vim'
-Bundle 'Keithbsmiley/swift.vim'
 Bundle 'SirVer/ultisnips'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
@@ -74,6 +74,7 @@ Bundle 'jnwhiteh/vim-golang'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'majutsushi/tagbar'
+Bundle 'mattn/emmet-vim'
 Bundle 'mileszs/ack.vim'
 Bundle 'msanders/cocoa.vim'
 Bundle 'nsf/gocode', {'rtp': 'vim/'}
@@ -758,6 +759,9 @@ nnoremap <leader>b :CtrlPBuffer<CR>
 
 " disable folding
 let g:vim_markdown_folding_disabled=1
+
+"""""""""""""""""""""""""""""""HTML, CSS (Emmet plugin)
+let g:user_emmet_leader_key = '<c-y>'
 
 """""""""""""""""""""""""""""""FILETYPE MAPPINGS
 
