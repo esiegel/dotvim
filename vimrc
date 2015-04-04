@@ -3,6 +3,7 @@
 let UNKNOWN_MACHINE = 0
 let HOME_LAPTOP     = 1
 let HOME_DESKTOP    = 2
+let WORK_LAPTOP     = 3
 
 function! CurrentMachine()
    let hostname = hostname()
@@ -11,6 +12,8 @@ function! CurrentMachine()
       return g:HOME_LAPTOP
    elseif hostname == "emachine"
       return g:HOME_DESKTOP
+   elseif hostname == "etrans"
+      return g:WORK_LAPTOP
    else
       return g:UNKNOWN_MACHINE
    endif
@@ -24,6 +27,9 @@ if MACHINE == HOME_LAPTOP
 elseif MACHINE == HOME_DESKTOP
     let vimHome="/home/eric/.vim"
     let tmpDir="/home/eric/code/.tmpvim"
+elseif MACHINE == WORK_LAPTOP
+    let vimHome="/Users/eric/.vim"
+    let tmpDir=vimHome."/.tmpvim"
 else
     let vimHome="~/.vim"
     let tmpDir="/tmp"
@@ -79,6 +85,7 @@ Bundle 'mileszs/ack.vim'
 Bundle 'msanders/cocoa.vim'
 Bundle 'nsf/gocode', {'rtp': 'vim/'}
 Bundle 'riobard/scala.vim'
+Bundle 'rking/ag.vim'
 Bundle 'rosenfeld/conque-term'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
@@ -141,9 +148,9 @@ set smartindent
 
 "tab = 3 spaces "indent spaces = 3 and tab to spaces
 set expandtab
-set tabstop=3
-set softtabstop=3
-set shiftwidth=3
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 
 "allowing backspace to work after indent -> see :help i_backspacing
 set backspace=indent,eol,start
@@ -195,7 +202,7 @@ set virtualedit=block
 set laststatus=2
 
 "Necessary to show unicode glyphs
-set encoding=utf-8 " Necessary to show unicode glyphs
+set encoding=utf-8 " necessary to show unicode glyphs
 
 "Setup backup location and enable
 let &backupdir=tmpDir . "/backup"
@@ -370,6 +377,27 @@ if executable('hasktags')
      \ 'ctagsargs' : '-sort -silent'
      \ }
 
+if executable('donotload_coffeetags')
+  let g:tagbar_type_coffee = {
+    \ 'ctagsbin' : 'coffeetags',
+    \ 'ctagsargs' : '',
+    \ 'kinds' : [
+      \ 'b:block',
+      \ 'c:class',
+      \ 'f:function',
+      \ 'o:object',
+      \ 'p:proto',
+      \ 'v:var',
+    \ ],
+    \ 'sro' : ".",
+    \ 'kind2scope' : {
+      \ 'c' : 'class',
+      \ 'f' : 'function',
+      \ 'o' : 'object',
+    \ }
+  \ }
+endif
+
 " }}}
 
 """""""""""""""""""""""""""Clojure""""""""""""""""""""""""""""" {{{
@@ -391,6 +419,9 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " E203 - whitespace before ':'
 let g:syntastic_python_flake8_args = "--max-line-length=99 " .
                                     \"--ignore=E203,E221,E241,E272,W404,W801"
+
+"ruby
+let g:syntastic_ruby_checkers = ['rubocop']
 
 " Show syntastic error map
 nnoremap <leader>e :Errors<cr>
@@ -666,11 +697,11 @@ nnoremap <leader>W mz:%s/\s\+$//g<cr>:w<cr>`z
 "
 """""""""""" viw<leader>g , <leader>g4w, <leader>gt;, <leader>gi[
 
-nnoremap <leader>g :set operatorfunc=<SID>AckOperator<cr>g@
-vnoremap <leader>g :<c-u>call <SID>AckOperator(visualmode())<cr>
+nnoremap <leader>g :set operatorfunc=<SID>AgOperator<cr>g@
+vnoremap <leader>g :<c-u>call <SID>AgOperator(visualmode())<cr>
 
 " argument is the type of selection (characterwise, linewise, or block)
-function! s:AckOperator(type)
+function! s:AgOperator(type)
    " Save the unamed register
    let saved_register = @@
 
@@ -684,7 +715,7 @@ function! s:AckOperator(type)
    endif
 
    " Copy shellescaped values from unnamed register
-   silent execute "Ack! " . shellescape(@@)
+   silent execute "Ag! " . shellescape(@@)
 
    let @@ = saved_register
 endfunction
@@ -750,6 +781,8 @@ let g:ctrlp_extensions = ['buffertag',
                          \'funky',
                          \'quickfix',
                          \'tag']
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_use_caching = 0
 
 " map to open MRU mode
 nnoremap <leader>b :CtrlPBuffer<CR>
