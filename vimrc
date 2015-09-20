@@ -64,6 +64,7 @@ Bundle 'gmarik/vundle'
 Bundle 'plasticboy/vim-markdown'
 
 " Original repos on github
+Bundle 'AndrewRadev/linediff.vim'
 Bundle 'Keithbsmiley/swift.vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'Rip-Rip/clang_complete'
