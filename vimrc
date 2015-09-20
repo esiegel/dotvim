@@ -31,7 +31,8 @@ elseif MACHINE == WORK_LAPTOP
     let vimHome="/Users/eric/.vim"
     let tmpDir=vimHome."/.tmpvim"
 else
-    let vimHome="~/.vim"
+    " Set home to directory of this vimrc file
+    let vimHome=expand("%:p:h")
     let tmpDir="/tmp"
 endif
 
@@ -790,74 +791,3 @@ autocmd BufNewFile,BufRead *.tpp* set filetype=cpp
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.mkd set filetype=markdown
 autocmd BufNewFile,BufRead *.markdown set filetype=markdown
-
-"""""""""""""""""""""""""""""""PROJECT SPECFIC FUNCTIONS"""""""""""""""""""""""""""""" {{{
-
-function! AntSingle()
-    "change ant single to current file
-    ! python ~/code/eric/scripts/change_ant_single.py %:p && ant single
-endfunction
-
-function! Markdownify()
-    "markdown current file to html
-    let l:urlSpacesRemoved = substitute(expand("%:p"), " ", "\\\\ ", "g")
-    execute '!/usr/local/code/jesse/bin/markdown2html -i ' . l:urlSpacesRemoved . ' -g'
-endfunction
-
-function! SparkleSetup()
-    "add cscope db also prepend source paths, cscope can't handle relative
-    "paths
-
-    cscope add /usr/local/code/sparkle/sparkle/cscope.out                         /usr/local/code/sparkle/sparkle
-    cscope add /usr/local/code/sparkle/model/cscope.out                           /usr/local/code/sparkle/model
-    cscope add /usr/local/code/sparkle/common/cscope.out                          /usr/local/code/sparkle/common
-    cscope add /usr/local/code/sparkle/invitation_service/cscope.out              /usr/local/code/sparkle/invitation_service
-    cscope add /usr/local/code/sparkle/smsrouter/cscope.out                       /usr/local/code/sparkle/smsrouter
-    cscope add /usr/local/code/sparkle_demo/cscope.out                            /usr/local/code/sparkle_demo
-    cscope add /usr/local/code/sparkle_client_java/sparkle_client_java/cscope.out /usr/local/code/sparkle_client_java/sparkle_client_java
-
-    cscope add /usr/local/code/db_java/cscope.out                                 /usr/local/code/db_java/
-    cscope add /usr/local/code/factory_java_1.7/cscope.out                        /usr/local/code/factory_java_1.7/
-    cscope add /usr/local/code/logging_java/cscope.out                            /usr/local/code/logging_java/
-    cscope add /usr/local/code/mobile_account/cscope.out                          /usr/local/code/mobile_account/
-    cscope add /usr/local/code/rest_java/cscope.out                               /usr/local/code/rest_java/
-    cscope add /usr/local/code/sms_java_1.9/cscope.out                            /usr/local/code/sms_java_1.9/
-    cscope add /usr/local/code/web_java/cscope.out                                /usr/local/code/web_java/
-    cscope add /usr/local/code/ws_java_1.4/cscope.out                             /usr/local/code/ws_java_1.4/
-    cscope add /usr/local/code/c2dm/cscope.out                                    /usr/local/code/c2dm/
-    cscope add /usr/local/code/cache_java/cscope.out                              /usr/local/code/cache_java/
-    cscope add /usr/local/code/oauth_java/cscope.out                              /usr/local/code/oauth_java/
-    cscope add /usr/local/code/redis_java/cscope.out                              /usr/local/code/redis_java/
-    cscope add /usr/local/code/schedule_java/cscope.out                           /usr/local/code/schedule_java/
-    cscope add /usr/local/code/http_java/cscope.out                               /usr/local/code/http_java/
-
-    cscope add /usr/local/code/spring-framework-3.0.5.RELEASE/src/cscope.out      /usr/local/code/spring-framework-3.0.5.RELEASE/src/
-endfunction
-
-function! SparkleClientSetup()
-    "add cscope db also prepend source paths, cscope can't handle relative
-    "paths
-
-    cscope add /usr/local/code/sparkle_client_java/cscope.out /usr/local/code/sparkle_client_java/
-    cscope add /usr/local/code/web_java_1.16/cscope.out       /usr/local/code/web_java_1.16/
-endfunction
-
-" Sparkle call
-if !empty(matchstr($PWD, "sparkle[^_]"))
-    "load files if path contains sparkle_demo
-    call SparkleSetup()
-endif
-
-" Sparkle_demo call
-if !empty(matchstr($PWD, "sparkle_demo"))
-    "load files if path contains sparkle_demo
-    call SparkleSetup()
-endif
-
-" Sparkle_client_java
-if !empty(matchstr($PWD, "sparkle_client_java"))
-    "load files if path contains sparkle_demo
-    call SparkleClientSetup()
-endif
-
-" }}}
