@@ -80,6 +80,7 @@ Bundle 'honza/vim-snippets'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
+Bundle 'lukaszkorecki/CoffeeTags'
 Bundle 'majutsushi/tagbar'
 Bundle 'mattn/emmet-vim'
 Bundle 'mileszs/ack.vim'
@@ -378,27 +379,6 @@ if executable('hasktags')
      \ 'ctagsargs' : '-sort -silent'
      \ }
 
-if executable('donotload_coffeetags')
-  let g:tagbar_type_coffee = {
-    \ 'ctagsbin' : 'coffeetags',
-    \ 'ctagsargs' : '',
-    \ 'kinds' : [
-      \ 'b:block',
-      \ 'c:class',
-      \ 'f:function',
-      \ 'o:object',
-      \ 'p:proto',
-      \ 'v:var',
-    \ ],
-    \ 'sro' : ".",
-    \ 'kind2scope' : {
-      \ 'c' : 'class',
-      \ 'f' : 'function',
-      \ 'o' : 'object',
-    \ }
-  \ }
-endif
-
 " }}}
 
 """""""""""""""""""""""""""Clojure""""""""""""""""""""""""""""" {{{
@@ -420,6 +400,9 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " E203 - whitespace before ':'
 let g:syntastic_python_flake8_args = "--max-line-length=99 " .
                                     \"--ignore=E203,E221,E241,E272,W404,W801"
+
+"coffee
+let g:syntastic_coffee_coffeelint_args = "--file=./.coffeelint.json"
 
 "ruby
 let g:syntastic_ruby_checkers = ['rubocop']
