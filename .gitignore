@@ -1,4 +1,6 @@
 .netrwhist
 bundle
+bundle/vundle
 eclim
 plugin
+.tmpvim
