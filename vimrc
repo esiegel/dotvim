@@ -242,6 +242,11 @@ set sidescrolloff=3
 set nosplitbelow
 set splitright
 
+" Options for diff mode
+"   filler: show blank filler lines
+"   vertical: split vertical
+set diffopt=filler,vertical
+
 " }}}
 
 """""""""""""""""""""""""""XIKI""""""""""""""""""""""""""""" {{{
@@ -516,6 +521,13 @@ autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 
 "set completion type to change based on context around it
 let g:SuperTabDefaultCompletionType = 'context'
+
+"select first result.
+let g:SuperTabLongestHighlight = 1
+
+"tab again for next longest completion
+let g:SuperTabLongestEnhanced = 1
+
 "let g:SuperTabContextTextOmniPrecedence = ['&completefunc', '&omnifunc']
 
 "Helps with completions not autofinishing first match
