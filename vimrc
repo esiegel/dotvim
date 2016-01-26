@@ -92,13 +92,13 @@ Bundle 'rking/ag.vim'
 Bundle 'rosenfeld/conque-term'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/syntastic'
 Bundle 'sorin-ionescu/python.vim'
 Bundle 'tacahiroy/ctrlp-funky'
 Bundle 'tikhomirov/vim-glsl'
 Bundle 'tomtom/tlib_vim'
 Bundle 'tpope/timl'
 Bundle 'tpope/vim-abolish'
+Bundle 'tpope/vim-characterize'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-scriptease'
 Bundle 'tpope/vim-surround'
@@ -109,12 +109,18 @@ Bundle 'BusyBee'
 Bundle 'Color-Sampler-Pack'
 Bundle 'Jinja'
 Bundle 'L9'
-Bundle 'VimClojure'
 Bundle 'a.vim'
 Bundle 'cscope_macros.vim'
 
 " non github repos
 Bundle 'git://repo.or.cz/vcscommand'
+
+" split from vim to nvim
+if has('nvim')
+  Bundle 'benekastah/neomake'
+else
+  Bundle 'scrooloose/syntastic'
+endif
 
 filetype plugin indent on " required!off
 
@@ -248,6 +254,11 @@ set splitright
 set diffopt=filler,vertical
 
 " }}}
+
+"""""""""""""""""""""""""""ABBREVIATIONS""""""""""""""""""""
+iabbr :thumbs_up: 👍 
+iabbr :thumbs_down: 👎 
+iabbr :poo: 💩
 
 """""""""""""""""""""""""""XIKI""""""""""""""""""""""""""""" {{{
 let $XIKI_DIR = "/usr/local/rvm/gems/ruby-1.9.3-head@global/gems/xiki-0.6.5"
@@ -411,7 +422,7 @@ let g:syntastic_python_flake8_args = "--max-line-length=99 " .
 let g:syntastic_coffee_coffeelint_args = "--file=./.coffeelint.json"
 
 "ruby
-let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_ruby_checkers = ['mri']
 
 " Show syntastic error map
 nnoremap <leader>e :Errors<cr>
@@ -548,11 +559,6 @@ nnoremap <Leader>a: :Tabularize /:\zs<CR>
 vnoremap <Leader>a: :Tabularize /:\zs<CR>
 nnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
 vnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
-
-" }}}
-
-"""""""""""""""""""""""""""YankRing""""""""""""""""""""""""""" {{{
-nmap <Leader>r :YRShow<CR>
 
 " }}}
 
