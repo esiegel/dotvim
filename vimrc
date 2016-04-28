@@ -95,6 +95,7 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'sorin-ionescu/python.vim'
 Bundle 'tacahiroy/ctrlp-funky'
 Bundle 'tikhomirov/vim-glsl'
+Bundle 'tomasr/molokai'
 Bundle 'tomtom/tlib_vim'
 Bundle 'tpope/timl'
 Bundle 'tpope/vim-abolish'
@@ -111,6 +112,7 @@ Bundle 'Jinja'
 Bundle 'L9'
 Bundle 'a.vim'
 Bundle 'cscope_macros.vim'
+Bundle 'summerfruit256.vim'
 
 " non github repos
 Bundle 'git://repo.or.cz/vcscommand'
@@ -145,7 +147,7 @@ set clipboard=unnamedplus
 colorscheme BusyBee
 
 "inverse search
-hi Search cterm=inverse ctermbg=none ctermfg=none gui=inverse guibg=none guifg=none
+hi Search cterm=inverse ctermbg=NONE ctermfg=NONE gui=inverse guibg=NONE guifg=NONE
 
 "clipboard
 set clipboard=unnamed
@@ -155,7 +157,7 @@ set clipboard=unnamed
 set autoindent
 set smartindent
 
-"tab = 3 spaces "indent spaces = 3 and tab to spaces
+"tab = 2 spaces "indent spaces = 2 and tab to spaces
 set expandtab
 set tabstop=2
 set softtabstop=2
@@ -190,6 +192,7 @@ set nowrapscan
 "magic patterns - extended regular expresions
 set magic
 
+"don't wrap long lines
 set nowrap
 
 "hides buffers instead of closing them
@@ -436,6 +439,7 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsListSnippets="<c-r><tab>"
 
+" }}}
 
 """""""""""""""""""""""""""JAVA SPECIFIC""""""""""""""""""""""""""""" {{{
 "autocmd FileType java set foldmethod=syntax
@@ -534,12 +538,14 @@ autocmd BufNewFile,BufRead *.gradle set filetype=groovy
 let g:SuperTabDefaultCompletionType = 'context'
 
 "select first result.
-let g:SuperTabLongestHighlight = 1
+"   Disabled until this is fixed.
+"   https://github.com/ervandew/supertab/issues/162
+"let g:SuperTabLongestHighlight = 1
 
 "tab again for next longest completion
 let g:SuperTabLongestEnhanced = 1
 
-"let g:SuperTabContextTextOmniPrecedence = ['&completefunc', '&omnifunc']
+let g:SuperTabContextTextOmniPrecedence = ['&completefunc', '&omnifunc']
 
 "Helps with completions not autofinishing first match
 set completeopt=longest,menu,preview
@@ -555,12 +561,18 @@ autocmd FileType python set omnifunc=pythoncomplete#Complete
 """""""""""""""""""""""""""TABULAR""""""""""""""""""""""""""" {{{
 nnoremap <Leader>a= :Tabularize /=<CR>
 vnoremap <Leader>a= :Tabularize /=<CR>
-nnoremap <Leader>a: :Tabularize /:\zs<CR>
-vnoremap <Leader>a: :Tabularize /:\zs<CR>
+nnoremap <Leader>a: :Tabularize /:\zs/l0r1<CR>
+vnoremap <Leader>a: :Tabularize /:\zs/l0r1<CR>
 nnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
 vnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
 
 " }}}
+
+"""""""""""""""""""""""""""FUGITIVE""""""""""""""""""""""""""""" {{{
+nnoremap <leader>d :Gdiff master<CR>
+
+" }}}
+
 
 """""""""""""""""""""""""""ECLIM"""""""""""""""""""""""""""""" {{{
 
