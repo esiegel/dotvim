@@ -271,6 +271,25 @@ endif
 
 " }}}
 
+"""""""""""""""""""""""""""React""""""""""""""""""""""""""""" {{{
+function! ReactProps()
+  " Gets the the uniq list of referenced propTypes of the current file
+  let regex    = shellescape("@props\.[a-zA-Z_-]+")
+  let filepath = shellescape(expand("%:p"))
+  let command  = "ag -o " . regex  . " " .  filepath . " | sort | uniq"
+  let @* = system(command)
+endfunction
+
+function! ReactState()
+  " Gets the the uniq list of referenced propTypes of the current file
+  let regex    = shellescape("@state\.[a-zA-Z_-]+")
+  let filepath = shellescape(expand("%:p"))
+  let command  = "ag -o " . regex  . " " .  filepath . " | sort | uniq"
+  let @* = system(command)
+endfunction
+
+" }}}
+
 """""""""""""""""""""""""""CTAGS""""""""""""""""""""""""""""" {{{
 
 "Tags files
@@ -418,14 +437,15 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " W404 - import *, unable to detected undefined names.
 " W801 - redefinition of unused import, try/except import fails.
 " E203 - whitespace before ':'
-let g:syntastic_python_flake8_args = "--max-line-length=99 " .
+let g:syntastic_python_flake8_args = "--max-line-length=119 " .
                                     \"--ignore=E203,E221,E241,E272,W404,W801"
 
 "coffee
 let g:syntastic_coffee_coffeelint_args = "--file=./.coffeelint.json"
 
 "ruby
-let g:syntastic_ruby_checkers = ['mri']
+"let g:syntastic_ruby_checkers = ['mri']
+let g:syntastic_ruby_checkers = ['rubocop']
 
 " Show syntastic error map
 nnoremap <leader>e :Errors<cr>
@@ -663,11 +683,11 @@ autocmd FileType markdown setlocal spell
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 
 "Redirect to selction register
-funct! Redir(command)
+function! Redir(command)
   exec 'redir @*'
   exec a:command
   redir END
-endfunct
+endfunction
 
 "expose redirect as command
 command! -nargs=+ R call call(function('Redir'), [<q-args>])
