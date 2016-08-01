@@ -79,6 +79,7 @@ Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
 Bundle 'honza/vim-snippets'
 Bundle 'jnwhiteh/vim-golang'
+Bundle 'jonathanfilip/vim-lucius'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'lukaszkorecki/CoffeeTags'
@@ -101,6 +102,7 @@ Bundle 'tpope/timl'
 Bundle 'tpope/vim-abolish'
 Bundle 'tpope/vim-characterize'
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-scriptease'
 Bundle 'tpope/vim-surround'
 
@@ -113,9 +115,6 @@ Bundle 'L9'
 Bundle 'a.vim'
 Bundle 'cscope_macros.vim'
 Bundle 'summerfruit256.vim'
-
-" non github repos
-Bundle 'git://repo.or.cz/vcscommand'
 
 " split from vim to nvim
 if has('nvim')
@@ -255,6 +254,11 @@ set splitright
 "   filler: show blank filler lines
 "   vertical: split vertical
 set diffopt=filler,vertical
+
+" map gp to select recently pasted text
+" fancier `[v`]
+" http://vim.wikia.com/wiki/Selecting_your_pasted_text
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " }}}
 
@@ -653,8 +657,8 @@ nnoremap <C-q> :call setqflist([])<CR>
 "Trick if forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
 
-"VCSVimDiff
-nnoremap <silent><leader>v :VCSVimDiff<CR>
+"git diff files
+nnoremap <silent><leader>v :Gdiff<CR>
 
 "Use emacs bindings for command mode.
 " start of line
@@ -816,6 +820,8 @@ let g:ctrlp_extensions = ['buffertag',
                          \'funky',
                          \'quickfix',
                          \'tag']
+
+set grepprg=ag\ --nogroup\ --nocolor
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_use_caching = 0
 
