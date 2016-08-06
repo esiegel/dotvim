@@ -85,6 +85,7 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'lukaszkorecki/CoffeeTags'
 Bundle 'majutsushi/tagbar'
 Bundle 'mattn/emmet-vim'
+Bundle 'mhinz/vim-grepper'
 Bundle 'mileszs/ack.vim'
 Bundle 'msanders/cocoa.vim'
 Bundle 'nsf/gocode', {'rtp': 'vim/'}
@@ -118,6 +119,8 @@ Bundle 'summerfruit256.vim'
 
 " split from vim to nvim
 if has('nvim')
+  let g:python_host_prog='/Users/eric/.virtualenvs/neovim/bin/python'
+
   Bundle 'benekastah/neomake'
 else
   Bundle 'scrooloose/syntastic'
@@ -595,6 +598,74 @@ vnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
 """""""""""""""""""""""""""FUGITIVE""""""""""""""""""""""""""""" {{{
 nnoremap <leader>d :Gdiff master<CR>
 
+function! MagicDiffStart()
+  let original_bufnr = bufnr('%')
+  exec 'diffthis'
+
+  exec 'vsplit'
+  exec 'Glog'
+
+  " Get the buffer numbers from the quick fix list.
+  " Looks like:
+  "   [{'lnum': 0, 'bufnr': 233, 'col': 0, 'valid': 1, 'vcol': 0, 'nr': -1,
+  "     'type': '', 'pattern': '', 'text': 'vim-repeat + a colortheme.'}]
+  let g:magic_diff_buffer_numbers = [original_bufnr] + map(getqflist(), 'v:val["bufnr"]')
+  let g:magic_diff_buffer_index1  = 0
+  let g:magic_diff_buffer_index2  = 1
+
+  exec 'diffthis'
+endfunction
+
+function! MagicDiffSwap()
+  if g:magic_diff_buffer_index2 + 1 < len(g:magic_diff_buffer_numbers)
+    let old_bufnr1 = g:magic_diff_buffer_numbers[g:magic_diff_buffer_index1]
+    let old_bufnr2 = g:magic_diff_buffer_numbers[g:magic_diff_buffer_index2]
+    let win1 = bufwinnr(old_bufnr1)
+    let win2 = bufwinnr(old_bufnr2)
+
+    " goto windows and turn off diffing
+    exec win1 . 'wincmd w'
+    diffoff
+    exec win2 . 'wincmd w'
+    diffoff
+
+    " increment the indexes and get the new buffer numbers
+    let g:magic_diff_buffer_index1 += 1
+    let g:magic_diff_buffer_index2 += 1
+    let bufnr1 = g:magic_diff_buffer_numbers[g:magic_diff_buffer_index1]
+    let bufnr2 = g:magic_diff_buffer_numbers[g:magic_diff_buffer_index2]
+
+    " goto win1
+    exec win1 . 'wincmd w'
+    exec bufnr1 . 'buffer'
+    diffthis
+
+    " goto win2
+    exec win2 . 'wincmd w'
+    exec bufnr2 . 'buffer'
+    diffthis
+  endif
+endfunction
+
+function! MagicDiffStop()
+  let bufnr1 = g:magic_diff_buffer_numbers[g:magic_diff_buffer_index1]
+  let bufnr2 = g:magic_diff_buffer_numbers[g:magic_diff_buffer_index2]
+
+  " goto win2 and delete
+  exec bufwinnr(bufnr2) . 'wincmd w'
+  bdelete
+
+  " goto win1 and open original file.
+  exec bufwinnr(bufnr1) . 'wincmd w'
+  if bufname('%') =~ '^fugitive:///'
+    exec 'Gedit'
+  endif
+
+  unlet g:magic_diff_buffer_numbers
+  unlet g:magic_diff_buffer_index1
+  unlet g:magic_diff_buffer_index2
+endfunction
+
 " }}}
 
 
@@ -801,6 +872,27 @@ if MACHINE == HOME_LAPTOP
 elseif MACHINE == HOME_DESKTOP
    let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 endif
+
+" }}}
+
+""""""""""""""""""""""""""""""Grepper"""""""""""""""""""""""""""""" {{{
+
+let g:grepper = {
+    \ 'tools':     ['ag', 'git', 'grep'],
+    \ 'open':      1,
+    \ 'quickfix':  1,
+    \ 'switch':    1,
+    \ 'jump':      0,
+    \ 'prompt':    0,
+    \ 'highlight': 0,
+    \ }
+
+" search cword with with leader*
+nnoremap <leader>* :Grepper -tool ag -cword -noprompt<cr>
+
+" search selection
+nmap gs <plug>(GrepperOperator)
+xmap gs <plug>(GrepperOperator)
 
 " }}}
 
