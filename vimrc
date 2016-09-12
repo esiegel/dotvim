@@ -106,6 +106,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-scriptease'
 Bundle 'tpope/vim-surround'
+Bundle 'wellle/targets.vim'
 
 " vim-scripts repo
 Bundle 'AnsiEsc.vim'
