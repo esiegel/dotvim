@@ -36,6 +36,11 @@ else
     let tmpDir="/tmp"
 endif
 
+" make tmp directories
+if !isdirectory(tmpDir)
+  call mkdir(tmpDir)
+endif
+
 " }}}
 
 """"""Vundle INITIALIZATION""""""""""""""""" {{{
@@ -66,6 +71,7 @@ Bundle 'plasticboy/vim-markdown'
 
 " Original repos on github
 Bundle 'AndrewRadev/linediff.vim'
+Bundle 'AndrewRadev/sideways.vim'
 Bundle 'Keithbsmiley/swift.vim'
 Bundle 'MarcWeber/vim-addon-mw-utils'
 Bundle 'Rip-Rip/clang_complete'
@@ -73,13 +79,19 @@ Bundle 'Shougo/vimproc.vim'
 Bundle 'SirVer/ultisnips'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
+Bundle 'coderifous/textobj-word-column.vim'
 Bundle 'eagletmt/ghcmod-vim'
 Bundle 'eagletmt/neco-ghc'
+Bundle 'elixir-lang/vim-elixir'
 Bundle 'ervandew/supertab'
 Bundle 'godlygeek/tabular'
 Bundle 'honza/vim-snippets'
 Bundle 'jnwhiteh/vim-golang'
 Bundle 'jonathanfilip/vim-lucius'
+Bundle 'kana/vim-textobj-entire'
+Bundle 'kana/vim-textobj-indent'
+Bundle 'kana/vim-textobj-line'
+Bundle 'kana/vim-textobj-user'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'lukaszkorecki/CoffeeTags'
@@ -88,7 +100,10 @@ Bundle 'mattn/emmet-vim'
 Bundle 'mhinz/vim-grepper'
 Bundle 'mileszs/ack.vim'
 Bundle 'msanders/cocoa.vim'
+Bundle 'mxw/vim-jsx'
+Bundle 'nelstrom/vim-textobj-rubyblock'
 Bundle 'nsf/gocode', {'rtp': 'vim/'}
+Bundle 'pangloss/vim-javascript'
 Bundle 'riobard/scala.vim'
 Bundle 'rking/ag.vim'
 Bundle 'rosenfeld/conque-term'
@@ -120,9 +135,8 @@ Bundle 'summerfruit256.vim'
 
 " split from vim to nvim
 if has('nvim')
-  let g:python_host_prog='/Users/eric/.virtualenvs/neovim/bin/python'
-
   Bundle 'benekastah/neomake'
+  Bundle 'kassio/neoterm'
 else
   Bundle 'scrooloose/syntastic'
 endif
@@ -160,6 +174,12 @@ set clipboard=unnamed
 set autoindent
 set smartindent
 
+" load files that have changed on disk
+set autoread
+
+" remember last N commands
+set history=1000
+
 "tab = 2 spaces "indent spaces = 2 and tab to spaces
 set expandtab
 set tabstop=2
@@ -187,7 +207,7 @@ set incsearch
 let mapleader=","
 
 "removes highlighting from search after space
-:noremap <silent> <Space> :silent noh<Bar>echo<CR>
+noremap <silent> <Space> :silent noh<Bar>echo<CR>
 
 "no search wraps
 set nowrapscan
@@ -226,6 +246,17 @@ let &undodir=tmpDir. "/undo"
 set backup
 set undolevels=1000
 set undoreload=1000
+set undofile
+
+if !isdirectory(&backupdir)
+  call mkdir(&backupdir)
+endif
+if !isdirectory(&directory)
+  call mkdir(&directory)
+endif
+if !isdirectory(&undodir)
+  call mkdir(&undodir)
+endif
 
 "wildmode enables better file viewing when opeing new files, like bash
 set wildmenu
@@ -451,6 +482,9 @@ let g:syntastic_python_flake8_args = "--max-line-length=119 " .
 "coffee
 let g:syntastic_coffee_coffeelint_args = "--file=./.coffeelint.json"
 
+"javascript
+let g:syntastic_javascript_checkers = ['eslint']
+
 "ruby
 "let g:syntastic_ruby_checkers = ['mri']
 let g:syntastic_ruby_checkers = ['rubocop']
@@ -666,6 +700,12 @@ function! MagicDiffStop()
   unlet g:magic_diff_buffer_index1
   unlet g:magic_diff_buffer_index2
 endfunction
+
+" }}}
+
+"""""""""""""""""""""""""""SURROUND""""""""""""""""""""""""""""" {{{
+" indent after surrounding.
+let g:surround_indent=1
 
 " }}}
 
