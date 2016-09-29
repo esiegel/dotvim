@@ -54,7 +54,7 @@ exec 'set rtp+='.vimHome
 exec 'set rtp+='.vimHome."/local_config/after"
 
 " Set vundle in runtimepath.
-exec 'source ' vimHome . "/bundle/vim-plug/plug.vim"
+exec 'source ' . vimHome . "/bundle/vim-plug/plug.vim"
 
 " Call plug with path to bundles. Default, only check .vim dir.
 call plug#begin(vimHome . "/bundle")
@@ -72,47 +72,30 @@ Plug 'plasticboy/vim-markdown'
 " Original repos on github
 Plug 'AndrewRadev/linediff.vim'
 Plug 'AndrewRadev/sideways.vim'
-Plug 'Keithbsmiley/swift.vim'
 Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'Rip-Rip/clang_complete'
 Plug 'Shougo/vimproc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'altercation/vim-colors-solarized'
 Plug 'bling/vim-airline'
 Plug 'coderifous/textobj-word-column.vim'
-Plug 'eagletmt/ghcmod-vim'
-Plug 'eagletmt/neco-ghc'
-Plug 'elixir-lang/vim-elixir'
 Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
 Plug 'honza/vim-snippets'
-Plug 'jnwhiteh/vim-golang'
 Plug 'jonathanfilip/vim-lucius'
 Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-user'
-Plug 'kchmck/vim-coffee-script'
 Plug 'kien/ctrlp.vim'
-Plug 'leafgarland/typescript-vim'
-Plug 'lukaszkorecki/CoffeeTags'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'mhinz/vim-grepper'
 Plug 'mileszs/ack.vim'
-Plug 'msanders/cocoa.vim'
-Plug 'mxw/vim-jsx'
-Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'nsf/gocode', {'rtp': 'vim/'}
-Plug 'pangloss/vim-javascript'
-Plug 'riobard/scala.vim'
 Plug 'rking/ag.vim'
 Plug 'rosenfeld/conque-term'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/nerdtree'
-Plug 'sorin-ionescu/python.vim'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tacahiroy/ctrlp-funky'
-Plug 'tikhomirov/vim-glsl'
 Plug 'tomasr/molokai'
 Plug 'tomtom/tlib_vim'
 Plug 'tpope/timl'
@@ -123,6 +106,25 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-surround'
 Plug 'wellle/targets.vim'
+
+" language based
+Plug 'Keithbsmiley/swift.vim',         { 'for': 'swift' }
+Plug 'Rip-Rip/clang_complete',         { 'for': ['c', 'c++', 'cpp'] }
+Plug 'eagletmt/ghcmod-vim',            { 'for': 'haskell' }
+Plug 'eagletmt/neco-ghc',              { 'for': 'haskell' }
+Plug 'elixir-lang/vim-elixir',         { 'for': 'elixir' }
+Plug 'jnwhiteh/vim-golang',            { 'for': 'go' }
+Plug 'kchmck/vim-coffee-script',       { 'for': 'coffee' }
+Plug 'leafgarland/typescript-vim',     { 'for': 'typescript' }
+Plug 'lukaszkorecki/CoffeeTags',       { 'for': 'coffee' }
+Plug 'msanders/cocoa.vim',             { 'for': 'swift' }
+Plug 'mxw/vim-jsx',                    { 'for': 'javascript.jsx' }
+Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
+Plug 'nsf/gocode',                     { 'for': 'go', 'rtp': 'vim/' }
+Plug 'pangloss/vim-javascript',        { 'for': 'javascript' }
+Plug 'riobard/scala.vim',              { 'for': 'scala' }
+Plug 'sorin-ionescu/python.vim',       { 'for': 'python' }
+Plug 'tikhomirov/vim-glsl',            { 'for': 'glsl' }
 
 " vim-scripts repo
 Plug 'AnsiEsc.vim'
