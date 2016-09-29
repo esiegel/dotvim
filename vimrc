@@ -54,92 +54,95 @@ exec 'set rtp+='.vimHome
 exec 'set rtp+='.vimHome."/local_config/after"
 
 " Set vundle in runtimepath.
-exec 'set rtp+='.vimHome."/bundle/vundle/"
+exec 'source ' vimHome . "/bundle/vim-plug/plug.vim"
 
-" Call vundle with path to bundles. Default, only check .vim dir.
-call vundle#rc(vimHome . "/bundle")
+" Call plug with path to bundles. Default, only check .vim dir.
+call plug#begin(vimHome . "/bundle")
 
-" let Vundle manage Vundle
+" let plug manage plug 
 " required!
-Bundle 'gmarik/vundle'
+Plug 'junegunn/vim-plug'
 
-" Bundles :
-" Bundle 'git@github.com:esiegel/snipmate-snippets.git'
+" Plugs :
+" Plug 'git@github.com:esiegel/snipmate-snippets.git'
 
 " Must come before tabular plugin
-Bundle 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 
 " Original repos on github
-Bundle 'AndrewRadev/linediff.vim'
-Bundle 'AndrewRadev/sideways.vim'
-Bundle 'Keithbsmiley/swift.vim'
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'Rip-Rip/clang_complete'
-Bundle 'Shougo/vimproc.vim'
-Bundle 'SirVer/ultisnips'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'bling/vim-airline'
-Bundle 'coderifous/textobj-word-column.vim'
-Bundle 'eagletmt/ghcmod-vim'
-Bundle 'eagletmt/neco-ghc'
-Bundle 'elixir-lang/vim-elixir'
-Bundle 'ervandew/supertab'
-Bundle 'godlygeek/tabular'
-Bundle 'honza/vim-snippets'
-Bundle 'jnwhiteh/vim-golang'
-Bundle 'jonathanfilip/vim-lucius'
-Bundle 'kana/vim-textobj-entire'
-Bundle 'kana/vim-textobj-indent'
-Bundle 'kana/vim-textobj-line'
-Bundle 'kana/vim-textobj-user'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'kien/ctrlp.vim'
-Bundle 'lukaszkorecki/CoffeeTags'
-Bundle 'majutsushi/tagbar'
-Bundle 'mattn/emmet-vim'
-Bundle 'mhinz/vim-grepper'
-Bundle 'mileszs/ack.vim'
-Bundle 'msanders/cocoa.vim'
-Bundle 'mxw/vim-jsx'
-Bundle 'nelstrom/vim-textobj-rubyblock'
-Bundle 'nsf/gocode', {'rtp': 'vim/'}
-Bundle 'pangloss/vim-javascript'
-Bundle 'riobard/scala.vim'
-Bundle 'rking/ag.vim'
-Bundle 'rosenfeld/conque-term'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/nerdtree'
-Bundle 'sorin-ionescu/python.vim'
-Bundle 'tacahiroy/ctrlp-funky'
-Bundle 'tikhomirov/vim-glsl'
-Bundle 'tomasr/molokai'
-Bundle 'tomtom/tlib_vim'
-Bundle 'tpope/timl'
-Bundle 'tpope/vim-abolish'
-Bundle 'tpope/vim-characterize'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-scriptease'
-Bundle 'tpope/vim-surround'
-Bundle 'wellle/targets.vim'
+Plug 'AndrewRadev/linediff.vim'
+Plug 'AndrewRadev/sideways.vim'
+Plug 'Keithbsmiley/swift.vim'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'Rip-Rip/clang_complete'
+Plug 'Shougo/vimproc.vim'
+Plug 'SirVer/ultisnips'
+Plug 'altercation/vim-colors-solarized'
+Plug 'bling/vim-airline'
+Plug 'coderifous/textobj-word-column.vim'
+Plug 'eagletmt/ghcmod-vim'
+Plug 'eagletmt/neco-ghc'
+Plug 'elixir-lang/vim-elixir'
+Plug 'ervandew/supertab'
+Plug 'godlygeek/tabular'
+Plug 'honza/vim-snippets'
+Plug 'jnwhiteh/vim-golang'
+Plug 'jonathanfilip/vim-lucius'
+Plug 'kana/vim-textobj-entire'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-line'
+Plug 'kana/vim-textobj-user'
+Plug 'kchmck/vim-coffee-script'
+Plug 'kien/ctrlp.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'lukaszkorecki/CoffeeTags'
+Plug 'majutsushi/tagbar'
+Plug 'mattn/emmet-vim'
+Plug 'mhinz/vim-grepper'
+Plug 'mileszs/ack.vim'
+Plug 'msanders/cocoa.vim'
+Plug 'mxw/vim-jsx'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'nsf/gocode', {'rtp': 'vim/'}
+Plug 'pangloss/vim-javascript'
+Plug 'riobard/scala.vim'
+Plug 'rking/ag.vim'
+Plug 'rosenfeld/conque-term'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'sorin-ionescu/python.vim'
+Plug 'tacahiroy/ctrlp-funky'
+Plug 'tikhomirov/vim-glsl'
+Plug 'tomasr/molokai'
+Plug 'tomtom/tlib_vim'
+Plug 'tpope/timl'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-scriptease'
+Plug 'tpope/vim-surround'
+Plug 'wellle/targets.vim'
 
 " vim-scripts repo
-Bundle 'AnsiEsc.vim'
-Bundle 'BusyBee'
-Bundle 'Color-Sampler-Pack'
-Bundle 'Jinja'
-Bundle 'L9'
-Bundle 'a.vim'
-Bundle 'cscope_macros.vim'
-Bundle 'summerfruit256.vim'
+Plug 'AnsiEsc.vim'
+Plug 'BusyBee'
+Plug 'Color-Sampler-Pack'
+Plug 'Jinja'
+Plug 'L9'
+Plug 'a.vim'
+Plug 'cscope_macros.vim'
+Plug 'summerfruit256.vim'
 
 " split from vim to nvim
 if has('nvim')
-  Bundle 'benekastah/neomake'
-  Bundle 'kassio/neoterm'
+  Plug 'benekastah/neomake'
+  Plug 'kassio/neoterm'
 else
-  Bundle 'scrooloose/syntastic'
+  Plug 'scrooloose/syntastic'
 endif
+
+call plug#end()
 
 filetype plugin indent on " required!off
 
