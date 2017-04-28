@@ -73,6 +73,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'Shougo/vimproc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'altercation/vim-colors-solarized'
@@ -80,17 +81,19 @@ Plug 'bling/vim-airline'
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
+Plug 'haya14busa/incsearch.vim'
 Plug 'honza/vim-snippets'
 Plug 'jonathanfilip/vim-lucius'
 Plug 'kana/vim-textobj-entire'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-user'
-Plug 'kien/ctrlp.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
+Plug 'metakirby5/codi.vim'
 Plug 'mhinz/vim-grepper'
-Plug 'mileszs/ack.vim'
+Plug 'morhetz/gruvbox'
 Plug 'rking/ag.vim'
 Plug 'rosenfeld/conque-term'
 Plug 'scrooloose/nerdcommenter'
@@ -113,7 +116,7 @@ Plug 'Rip-Rip/clang_complete',         { 'for': ['c', 'c++', 'cpp'] }
 Plug 'eagletmt/ghcmod-vim',            { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc',              { 'for': 'haskell' }
 Plug 'elixir-lang/vim-elixir',         { 'for': 'elixir' }
-Plug 'jnwhiteh/vim-golang',            { 'for': 'go' }
+Plug 'fatih/vim-go',                   { 'for': 'go' }
 Plug 'kchmck/vim-coffee-script',       { 'for': 'coffee' }
 Plug 'leafgarland/typescript-vim',     { 'for': 'typescript' }
 Plug 'lukaszkorecki/CoffeeTags',       { 'for': 'coffee' }
@@ -121,8 +124,9 @@ Plug 'msanders/cocoa.vim',             { 'for': 'swift' }
 Plug 'mxw/vim-jsx',                    { 'for': 'javascript.jsx' }
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
 Plug 'nsf/gocode',                     { 'for': 'go', 'rtp': 'vim/' }
-Plug 'pangloss/vim-javascript',        { 'for': 'javascript' }
+Plug 'pangloss/vim-javascript',        { 'for': ['javascript', 'javascript.jsx', 'jsx'] }
 Plug 'riobard/scala.vim',              { 'for': 'scala' }
+Plug 'rust-lang/rust.vim',             { 'for': 'rust' }
 Plug 'sorin-ionescu/python.vim',       { 'for': 'python' }
 Plug 'tikhomirov/vim-glsl',            { 'for': 'glsl' }
 
@@ -133,7 +137,7 @@ Plug 'Color-Sampler-Pack'
 Plug 'Jinja'
 Plug 'L9'
 Plug 'a.vim'
-Plug 'cscope_macros.vim'
+"Plug 'cscope_macros.vim'
 Plug 'summerfruit256.vim'
 
 " split from vim to nvim
@@ -163,16 +167,14 @@ set t_Co=256
 "let g:solarized_termcolors=16
 
 "uses clipboard register +, instead of always :+y
-set clipboard=unnamedplus
+set clipboard=unnamedplus,unnamed
 
 "colorscheme solarized
+set background=dark
 colorscheme BusyBee
 
 "inverse search
 hi Search cterm=inverse ctermbg=NONE ctermfg=NONE gui=inverse guibg=NONE guifg=NONE
-
-"clipboard
-set clipboard=unnamed
 
 "matches previous indent level,
 "intelligently guesses indent (code level)
@@ -227,9 +229,6 @@ set nowrap
 set hidden
 
 "ignorecase
-set ignorecase
-
-"case only important if use caps
 set ignorecase
 
 "case only important if use caps
@@ -300,6 +299,20 @@ set diffopt=filler,vertical
 " http://vim.wikia.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
+" update formating options.
+set formatoptions +=c " auto-wrap comments at textwidth
+set formatoptions +=j " remove comment leader when joining lines
+set formatoptions +=r " insert comment leader after <enter> in insert mode
+
+" save state on vim close
+set viminfo  ='100              " previously edited files marks, required.
+set viminfo +=/10              " search pattern items history
+set viminfo +=:10              " command line history
+set viminfo +=f1               " save file marks
+set viminfo +=h                " disable hlsearch
+set viminfo +=s10              " maximum number of KB to save from a register
+set viminfo +=n~/.vim/viminfo  " set viminfo file name
+
 " }}}
 
 """""""""""""""""""""""""""ABBREVIATIONS""""""""""""""""""""
@@ -314,6 +327,24 @@ if filereadable($XIKI_DIR)
 endif
 
 " }}}
+"
+"""""""""""""""""""""""""""INCSEARCH PLUGIN OVERRIDES""""""""""""""""""""""""""""" {{{
+"map /  <Plug>(incsearch-forward)
+"map ?  <Plug>(incsearch-backward)
+"map g/ <Plug>(incsearch-stay)
+
+" Add auto nohls, auto removes highlighting
+":h g:incsearch#auto_nohlsearch
+"set hlsearch
+"let g:incsearch#auto_nohlsearch = 1
+"map n  <Plug>(incsearch-nohl-n)
+"map N  <Plug>(incsearch-nohl-N)
+"map *  <Plug>(incsearch-nohl-*)
+"map #  <Plug>(incsearch-nohl-#)
+"map g* <Plug>(incsearch-nohl-g*)
+"map g# <Plug>(incsearch-nohl-g#)
+
+"}}}
 
 """""""""""""""""""""""""""React""""""""""""""""""""""""""""" {{{
 function! ReactProps()
@@ -462,6 +493,21 @@ if executable('hasktags')
      \ 'ctagsargs' : '-sort -silent'
      \ }
 
+ "rust
+ let g:tagbar_type_rust = {
+   \ 'ctagstype' : 'rust',
+   \ 'kinds' : [
+     \'T:types',
+     \'f:functions',
+     \'g:enumerations',
+     \'s:structures',
+     \'m:modules',
+     \'c:constants',
+     \'t:traits',
+     \'i:trait implementations',
+   \ ]
+   \ }
+
 " }}}
 
 """""""""""""""""""""""""""Clojure""""""""""""""""""""""""""""" {{{
@@ -491,8 +537,10 @@ let g:syntastic_coffee_coffeelint_args = "--file=./.coffeelint.json"
 let g:syntastic_javascript_checkers = ['eslint']
 
 "ruby
-"let g:syntastic_ruby_checkers = ['mri']
-let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+
+"scss
+let g:syntastic_scss_checkers = ['sass_lint', 'sass']
 
 " Show syntastic error map
 nnoremap <leader>e :Errors<cr>
@@ -506,6 +554,17 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 let g:UltiSnipsListSnippets="<c-r><tab>"
 
+" private snippets
+let g:UltiSnipsSnippetsDir="~/.vim/private_snippets"
+
+" update to allow searching for private directory.
+let g:UltiSnipsSnippetDirectories=["private_snippets", "UltiSnips"]
+
+" vertical split
+let g:UltiSnipsEditSplit='vertical'
+
+" use snipmate snippets as well.  Will exist in snippets directories.
+let g:UltiSnipsEnableSnipMate=1
 " }}}
 
 """""""""""""""""""""""""""JAVA SPECIFIC""""""""""""""""""""""""""""" {{{
@@ -585,9 +644,6 @@ endfunction
 
 let g:ConqueTerm_EscKey = '<C-j>'
 let g:ConqueTerm_ReadUnfocused = 1
-
-" open all new files in the current window by default
-let g:ctrlp_reuse_window = '.*'
 
 nnoremap <Leader>z :call <SID>ToggleConqueTerm()<CR>
 
@@ -876,6 +932,10 @@ function! s:AgOperator(type)
    let @@ = saved_register
 endfunction
 
+" ag should have detected that my version supports
+" --vimgrep, but it doesn't for some reason.
+let g:ag_prg="ag --vimgrep --smart-case"
+
 " }}}
 
 """"""""""""""""""""""""""""""NERDTree"""""""""""""""""""""""""""""" {{{
@@ -912,15 +972,6 @@ endif
 
 " }}}
 
-""""""""""""""""""""""""""""""AcK"""""""""""""""""""""""""""""" {{{
-if MACHINE == HOME_LAPTOP
-    let g:ackprg="ack"
-elseif MACHINE == HOME_DESKTOP
-   let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-endif
-
-" }}}
-
 """"""""""""""""""""""""""""""Grepper"""""""""""""""""""""""""""""" {{{
 
 let g:grepper = {
@@ -943,6 +994,9 @@ xmap gs <plug>(GrepperOperator)
 " }}}
 
 """"""""""""""""""""""""""""""Ctrlp"""""""""""""""""""""""""""""" {{{
+" open all new files in the current window by default
+let g:ctrlp_reuse_window = '.*'
+
 " searches for nearest ancestor with projext.xml .git .hg .svn .bzr _darcs
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_root_markers = ['project.xml']
@@ -952,6 +1006,10 @@ let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:40'
 
 " default normal map to open file search
 let g:ctrlp_map = '<leader>f'
+
+" Function ctrlp
+nnoremap <Leader>F :CtrlPFunky<CR>
+
 
 " ctrlp enabled extensions
 let g:ctrlp_extensions = ['buffertag',
