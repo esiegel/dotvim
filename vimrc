@@ -73,7 +73,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'Shougo/vimproc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'altercation/vim-colors-solarized'
@@ -99,6 +98,7 @@ Plug 'rosenfeld/conque-term'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tacahiroy/ctrlp-funky'
+Plug 'millermedeiros/vim-esformatter'
 Plug 'tomasr/molokai'
 Plug 'tomtom/tlib_vim'
 Plug 'tpope/timl'
@@ -131,14 +131,14 @@ Plug 'sorin-ionescu/python.vim',       { 'for': 'python' }
 Plug 'tikhomirov/vim-glsl',            { 'for': 'glsl' }
 
 " vim-scripts repo
-Plug 'AnsiEsc.vim'
-Plug 'BusyBee'
-Plug 'Color-Sampler-Pack'
-Plug 'Jinja'
-Plug 'L9'
-Plug 'a.vim'
-"Plug 'cscope_macros.vim'
-Plug 'summerfruit256.vim'
+Plug 'vim-scripts/AnsiEsc.vim'
+Plug 'vim-scripts/BusyBee'
+Plug 'vim-scripts/Color-Sampler-Pack'
+Plug 'vim-scripts/Jinja'
+Plug 'vim-scripts/L9'
+Plug 'vim-scripts/a.vim'
+"Plug 'vim-scripts/cscope_macros.vim'
+Plug 'vim-scripts/summerfruit256.vim'
 
 " split from vim to nvim
 if has('nvim')
@@ -688,6 +688,24 @@ nnoremap <Leader>a: :Tabularize /:\zs/l0r1<CR>
 vnoremap <Leader>a: :Tabularize /:\zs/l0r1<CR>
 nnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
 vnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
+
+" Aligns es6 module 'from' and sorts
+function! AlignJSFrom()
+  " align from
+  call Tabularize('/from')
+
+  " select region and sort by from column
+  " TODO: look for a better way.
+  execute 'normal! vis:sort /from.*/ r'
+endfunction
+
+" expose method as Named Plug, so that we can use it with repeat.vim, which
+" needs a function by name.
+nmap <silent> <Plug>AlignJSFrom :call AlignJSFrom()<CR>
+      \:call repeat#set("\<Plug>AlignJSFrom")<CR>
+
+" And the mapping to the plug
+nmap <Leader>afrom <Plug>AlignJSFrom
 
 " }}}
 
