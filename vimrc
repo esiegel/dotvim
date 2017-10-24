@@ -70,6 +70,7 @@ Plug 'junegunn/vim-plug'
 Plug 'plasticboy/vim-markdown'
 
 " Original repos on github
+Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -84,7 +85,6 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'honza/vim-snippets'
 Plug 'jonathanfilip/vim-lucius'
 Plug 'kana/vim-textobj-entire'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-user'
@@ -92,13 +92,11 @@ Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'metakirby5/codi.vim'
 Plug 'mhinz/vim-grepper'
+Plug 'millermedeiros/vim-esformatter'
 Plug 'morhetz/gruvbox'
-Plug 'rking/ag.vim'
 Plug 'rosenfeld/conque-term'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'tacahiroy/ctrlp-funky'
-Plug 'millermedeiros/vim-esformatter'
 Plug 'tomasr/molokai'
 Plug 'tomtom/tlib_vim'
 Plug 'tpope/timl'
@@ -125,6 +123,7 @@ Plug 'mxw/vim-jsx',                    { 'for': 'javascript.jsx' }
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
 Plug 'nsf/gocode',                     { 'for': 'go', 'rtp': 'vim/' }
 Plug 'pangloss/vim-javascript',        { 'for': ['javascript', 'javascript.jsx', 'jsx'] }
+Plug 'racer-rust/vim-racer',           { 'for': 'rust' }
 Plug 'riobard/scala.vim',              { 'for': 'scala' }
 Plug 'rust-lang/rust.vim',             { 'for': 'rust' }
 Plug 'sorin-ionescu/python.vim',       { 'for': 'python' }
@@ -167,7 +166,9 @@ set t_Co=256
 "let g:solarized_termcolors=16
 
 "uses clipboard register +, instead of always :+y
-set clipboard=unnamedplus,unnamed
+if $TMUX == ''
+  set clipboard+=unnamedplus,unnamed
+endif
 
 "colorscheme solarized
 set background=dark
@@ -363,6 +364,19 @@ function! ReactState()
   let @* = system(command)
 endfunction
 
+" "aY this to convert proptypes into static proptypes
+"dt{istatic get Pr€kb€kbpropTy	() oreturn {};jvi{ojjxkkpgp>,a:
+
+" }}}
+
+"""""""""""""""""""""""""""rust""""""""""""""""""""""""""""" {{{
+let g:racer_cmd = "/Users/eric/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
 " }}}
 
 """""""""""""""""""""""""""CTAGS""""""""""""""""""""""""""""" {{{
@@ -829,8 +843,12 @@ noremap <silent> <C-h> :bp<CR>
 noremap <silent> <C-l> :bn<CR>
 
 "change to next quickfix error
-noremap <silent><leader>h :cp<CR>
-noremap <silent><leader>l :cn<CR>
+noremap <silent><leader>h :cprevious<CR>
+noremap <silent><leader>l :cnext<CR>
+
+"change to next locationlist error
+noremap <silent><leader>H :lprevious<CR>
+noremap <silent><leader>L :lnext<CR>
 
 "caps to escape
 map! <C-j> <Esc>
@@ -945,14 +963,10 @@ function! s:AgOperator(type)
    endif
 
    " Copy shellescaped values from unnamed register
-   silent execute "Ag! " . shellescape(@@)
+   silent execute "Ag " . @@
 
    let @@ = saved_register
 endfunction
-
-" ag should have detected that my version supports
-" --vimgrep, but it doesn't for some reason.
-let g:ag_prg="ag --vimgrep --smart-case"
 
 " }}}
 
@@ -1011,36 +1025,28 @@ xmap gs <plug>(GrepperOperator)
 
 " }}}
 
-""""""""""""""""""""""""""""""Ctrlp"""""""""""""""""""""""""""""" {{{
-" open all new files in the current window by default
-let g:ctrlp_reuse_window = '.*'
-
-" searches for nearest ancestor with projext.xml .git .hg .svn .bzr _darcs
-let g:ctrlp_working_path_mode = 'r'
-let g:ctrlp_root_markers = ['project.xml']
-
-" have match window at bottom and display results top to bottom
-let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:40'
-
-" default normal map to open file search
-let g:ctrlp_map = '<leader>f'
-
-" Function ctrlp
-nnoremap <Leader>F :CtrlPFunky<CR>
+""""""""""""""""""""""""""""""fzf"""""""""""""""""""""""""""""" {{{
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
 
 
-" ctrlp enabled extensions
-let g:ctrlp_extensions = ['buffertag',
-                         \'funky',
-                         \'quickfix',
-                         \'tag']
+" maps for fzf
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>F :call <SID>FZFAllFiles()<CR>
+nnoremap <leader>b :Buffers<CR>
 
 set grepprg=ag\ --nogroup\ --nocolor
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_use_caching = 0
 
-" map to open MRU mode
-nnoremap <leader>b :CtrlPBuffer<CR>
+" overwrites FZF_DEFAULT_COMMAND and then resets it so that we search all files.
+function! s:FZFAllFiles()
+   let initial = $FZF_DEFAULT_COMMAND
+   let $FZF_DEFAULT_COMMAND=''
+
+   execute ':Files'
+
+   let $FZF_DEFAULT_COMMAND=initial
+endfunction
+
 " }}}
 
 """""""""""""""""""""""""""""""MARKDOWN
