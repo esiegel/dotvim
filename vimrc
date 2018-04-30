@@ -59,7 +59,7 @@ exec 'source ' . vimHome . "/bundle/vim-plug/plug.vim"
 " Call plug with path to bundles. Default, only check .vim dir.
 call plug#begin(vimHome . "/bundle")
 
-" let plug manage plug 
+" let plug manage plug
 " required!
 Plug 'junegunn/vim-plug'
 
@@ -73,7 +73,9 @@ Plug 'plasticboy/vim-markdown'
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'AndrewRadev/sideways.vim'
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'Olical/vim-enmasse'
 Plug 'Shougo/vimproc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'altercation/vim-colors-solarized'
@@ -111,6 +113,7 @@ Plug 'wellle/targets.vim'
 " language based
 Plug 'Keithbsmiley/swift.vim',         { 'for': 'swift' }
 Plug 'Rip-Rip/clang_complete',         { 'for': ['c', 'c++', 'cpp'] }
+Plug 'derekwyatt/vim-scala',           { 'for': 'scala' }
 Plug 'eagletmt/ghcmod-vim',            { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc',              { 'for': 'haskell' }
 Plug 'elixir-lang/vim-elixir',         { 'for': 'elixir' }
@@ -124,7 +127,6 @@ Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
 Plug 'nsf/gocode',                     { 'for': 'go', 'rtp': 'vim/' }
 Plug 'pangloss/vim-javascript',        { 'for': ['javascript', 'javascript.jsx', 'jsx'] }
 Plug 'racer-rust/vim-racer',           { 'for': 'rust' }
-Plug 'riobard/scala.vim',              { 'for': 'scala' }
 Plug 'rust-lang/rust.vim',             { 'for': 'rust' }
 Plug 'sorin-ionescu/python.vim',       { 'for': 'python' }
 Plug 'tikhomirov/vim-glsl',            { 'for': 'glsl' }
@@ -144,7 +146,8 @@ if has('nvim')
   Plug 'benekastah/neomake'
   Plug 'kassio/neoterm'
 else
-  Plug 'scrooloose/syntastic'
+  "Plug 'scrooloose/syntastic'
+  Plug 'w0rp/ale'
 endif
 
 call plug#end()
@@ -317,8 +320,8 @@ set viminfo +=n~/.vim/viminfo  " set viminfo file name
 " }}}
 
 """""""""""""""""""""""""""ABBREVIATIONS""""""""""""""""""""
-iabbr :thumbs_up: 👍 
-iabbr :thumbs_down: 👎 
+iabbr :thumbs_up: 👍
+iabbr :thumbs_down: 👎
 iabbr :poo: 💩
 
 """""""""""""""""""""""""""XIKI""""""""""""""""""""""""""""" {{{
@@ -544,6 +547,9 @@ let g:syntastic_mode_map = { 'mode': 'active',
 let g:syntastic_python_flake8_args = "--max-line-length=119 " .
                                     \"--ignore=E203,E221,E241,E272,W404,W801"
 
+let g:ale_python_flake8_options = "--max-line-length=119 " .
+                                  \"--ignore=E203,E221,E241,E272,W404,W801"
+
 "coffee
 let g:syntastic_coffee_coffeelint_args = "--file=./.coffeelint.json"
 
@@ -556,8 +562,23 @@ let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 "scss
 let g:syntastic_scss_checkers = ['sass_lint', 'sass']
 
-" Show syntastic error map
-nnoremap <leader>e :Errors<cr>
+" Show ale error map
+nnoremap <leader>e :lopen<cr>
+
+let g:ale_linters = {
+\  'javascript': ['eslint'],
+\}
+
+let g:ale_fixers = {
+\  'javascript': ['eslint'],
+\}
+
+let g:ale_linter_aliases = {'jsx': 'css'}
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_filetype_changed = 0
+let g:ale_set_highlights = 0
 
 " }}}
 
@@ -842,13 +863,55 @@ nnoremap <leader><CR> :TagbarToggle<CR>
 noremap <silent> <C-h> :bp<CR>
 noremap <silent> <C-l> :bn<CR>
 
+" Helper methods to go to the first location/error or the next/prev.
+function! <SID>LocationPrevious()
+  try
+    lprev
+  catch /^Vim\%((\a\+)\)\=:E553/
+    llast
+  catch /^Vim\%((\a\+)\)\=:E42/
+  endtry
+endfunction
+
+function! <SID>LocationNext()
+  try
+    lnext
+  catch /^Vim\%((\a\+)\)\=:E553/
+    lfirst
+  catch /^Vim\%((\a\+)\)\=:E42/
+  endtry
+endfunction
+
+function! <SID>QfixPrevious()
+  try
+    cprev
+  catch /^Vim\%((\a\+)\)\=:E553/
+    clast
+  catch /^Vim\%((\a\+)\)\=:E42/
+  endtry
+endfunction
+
+function! <SID>QfixNext()
+  try
+    cnext
+  catch /^Vim\%((\a\+)\)\=:E553/
+    cfirst
+  catch /^Vim\%((\a\+)\)\=:E42/
+  endtry
+endfunction
+
+nnoremap <silent> <Plug>LocationPrevious :<C-u>exe 'call <SID>LocationPrevious()'<CR>
+nnoremap <silent> <Plug>LocationNext     :<C-u>exe 'call <SID>LocationNext()'<CR>
+nnoremap <silent> <Plug>QfixPrevious     :<C-u>exe 'call <SID>QfixPrevious()'<CR>
+nnoremap <silent> <Plug>QfixNext         :<C-u>exe 'call <SID>QfixNext()'<CR>
+
 "change to next quickfix error
-noremap <silent><leader>h :cprevious<CR>
-noremap <silent><leader>l :cnext<CR>
+nmap <silent><leader>h <Plug>QfixPrevious
+nmap <silent><leader>l <Plug>QfixNext
 
 "change to next locationlist error
-noremap <silent><leader>H :lprevious<CR>
-noremap <silent><leader>L :lnext<CR>
+nmap <silent><leader>H <Plug>LocationPrevious
+nmap <silent><leader>L <Plug>LocationNext
 
 "caps to escape
 map! <C-j> <Esc>
@@ -962,8 +1025,8 @@ function! s:AgOperator(type)
       return
    endif
 
-   " Copy shellescaped values from unnamed register
-   silent execute "Ag " . @@
+   " Copy values from unnamed register
+   execute "Ag " . @@
 
    let @@ = saved_register
 endfunction
@@ -980,6 +1043,13 @@ nnoremap <silent> <C-d> :NERDTree %:h<CR>
 
 "ignore files
 let NERDTreeIgnore=['\.pyc$', '\~$']
+
+" }}}
+
+""""""""""""""""""""""""""""""NERDTree"""""""""""""""""""""""""""""" {{{
+
+" add and remove spaces at beginning of comments
+let g:NERDSpaceDelims=1
 
 " }}}
 
@@ -1040,12 +1110,22 @@ set grepprg=ag\ --nogroup\ --nocolor
 " overwrites FZF_DEFAULT_COMMAND and then resets it so that we search all files.
 function! s:FZFAllFiles()
    let initial = $FZF_DEFAULT_COMMAND
-   let $FZF_DEFAULT_COMMAND=''
+   let $FZF_DEFAULT_COMMAND='ag -u -g ""'
 
    execute ':Files'
 
    let $FZF_DEFAULT_COMMAND=initial
 endfunction
+
+function! s:fzf_ag_raw(cmd, bang)
+  let cmd  = '--noheading '. a:cmd
+
+  " logic taken from fzf internals to pass <bang> operator which toggles full screen.
+  call fzf#vim#ag_raw(cmd, a:bang)
+endfunction
+
+" Allow Ag to take arguments like --ruby or directory.
+autocmd! VimEnter * command! -bang -nargs=* -complete=file Ag :call s:fzf_ag_raw(<q-args>, <bang>0)
 
 " }}}
 
