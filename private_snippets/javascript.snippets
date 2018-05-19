@@ -9,3 +9,30 @@ snippet riife "React Immediately-Invoked arrow Expression (iife)"
   $0
 })()}
 endsnippet
+
+snippet rclass "React Component Class"
+class $0 extends React.Component {
+  static get propTypes() {
+    return {
+    };
+  }
+
+  constructor(props, context) {
+    super(props, context);
+  }
+
+  render() {
+	  return (
+		);
+  }
+}
+endsnippet
+
+snippet Choose "React Conditional Helper"
+<Choose>
+	<When condition={$0}>
+	</When>
+	<Otherwise>
+	</Otherwise>
+</Choose>
+endsnippet
