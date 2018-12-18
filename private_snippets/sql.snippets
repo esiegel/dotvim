@@ -1,0 +1,20 @@
+snippet select "Select statement"
+SELECT ${1:*}
+	FROM ${2:my_table}
+	WHERE $3{my_table.x > 1}
+endsnippet
+
+snippet with "With statement"
+WITH
+  first_result AS (
+		SELECT foo AS FOO
+		FROM BAR
+	),
+	second_result AS (
+		SELECT foo AS FOO
+		FROM BAR
+  )
+
+	SELECT *
+	FROM first_result;
+endsnippet

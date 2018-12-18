@@ -123,7 +123,7 @@ Plug 'lukaszkorecki/CoffeeTags',       { 'for': 'coffee' }
 Plug 'msanders/cocoa.vim',             { 'for': 'swift' }
 Plug 'mxw/vim-jsx',                    { 'for': 'javascript.jsx' }
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
-Plug 'nsf/gocode',                     { 'for': 'go', 'rtp': 'vim/' }
+Plug 'mdempsky/gocode',                { 'for': 'go', 'rtp': 'vim/', 'do': '~/.vim/bundle/gocode/vim/symlink.sh' }
 Plug 'pangloss/vim-javascript',        { 'for': ['javascript', 'javascript.jsx', 'jsx'] }
 Plug 'racer-rust/vim-racer',           { 'for': 'rust' }
 Plug 'rust-lang/rust.vim',             { 'for': 'rust' }
@@ -327,7 +327,7 @@ iabbr :poo: 💩
 " escape to terminal normal
 tnoremap <C-j> <C-W>N
 
-func SendToTerm(what)
+function! SendToTerm(what)
   call term_sendkeys('', a:what)
   return ''
 endfunc
@@ -406,7 +406,7 @@ function! ReactProps()
   " Gets the the uniq list of referenced propTypes of the current file
   let regex    = shellescape("@props\.[a-zA-Z_-]+")
   let filepath = shellescape(expand("%:p"))
-  let command  = "ag -o " . regex  . " " .  filepath . " | sort | uniq"
+  let command  = "rg -o " . regex  . " " .  filepath . " | sort | uniq"
   let @* = system(command)
 endfunction
 
@@ -414,7 +414,7 @@ function! ReactState()
   " Gets the the uniq list of referenced propTypes of the current file
   let regex    = shellescape("@state\.[a-zA-Z_-]+")
   let filepath = shellescape(expand("%:p"))
-  let command  = "ag -o " . regex  . " " .  filepath . " | sort | uniq"
+  let command  = "rg -o " . regex  . " " .  filepath . " | sort | uniq"
   let @* = system(command)
 endfunction
 
@@ -595,28 +595,17 @@ let g:syntastic_mode_map = { 'mode': 'active',
 " W404 - import *, unable to detected undefined names.
 " W801 - redefinition of unused import, try/except import fails.
 " E203 - whitespace before ':'
-let g:syntastic_python_flake8_args = "--max-line-length=119 " .
-                                    \"--ignore=E203,E221,E241,E272,W404,W801"
-
 let g:ale_python_flake8_options = "--max-line-length=119 " .
                                   \"--ignore=E203,E221,E241,E272,W404,W801"
 
 "coffee
 let g:syntastic_coffee_coffeelint_args = "--file=./.coffeelint.json"
 
-"javascript
-let g:syntastic_javascript_checkers = ['eslint']
-
-"ruby
-let g:syntastic_ruby_checkers = ['rubocop', 'mri']
-
-"scss
-let g:syntastic_scss_checkers = ['sass_lint', 'sass']
-
 " Show ale error map
 nnoremap <leader>e :lopen<cr>
 
 let g:ale_linters = {
+\  'coffee': ['coffeelint'],
 \  'javascript': ['eslint'],
 \}
 
@@ -727,6 +716,8 @@ nnoremap <Leader>a: :Tabularize /:\zs/l0r1<CR>
 vnoremap <Leader>a: :Tabularize /:\zs/l0r1<CR>
 nnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
 vnoremap <Leader>a, :Tabularize /,\zs/l0r1<CR>
+nnoremap <Leader>a<Space> :Tabularize / \zs/l0r1<CR>
+vnoremap <Leader>a<Space> :Tabularize / \zs/l0r1<CR>
 
 " Aligns es6 module 'from' and sorts
 function! AlignJSFrom()
@@ -1122,7 +1113,7 @@ function! s:FZFAllFiles()
 endfunction
 
 function! s:fzf_ag_raw(cmd, bang)
-  let cmd  = '--noheading '. a:cmd
+  let cmd = '--noheading --nobreak '. a:cmd
 
   " logic taken from fzf internals to pass <bang> operator which toggles full screen.
   call fzf#vim#ag_raw(cmd, a:bang)
@@ -1140,6 +1131,34 @@ let g:vim_markdown_folding_disabled=1
 
 """""""""""""""""""""""""""""""HTML, CSS (Emmet plugin)
 let g:user_emmet_leader_key = '<c-y>'
+
+let g:user_emmet_settings = {
+\  'javascript.jsx' : {
+\      'extends' : 'jsx',
+\  },
+\}
+
+"""""""""""""""""""""""""""""""JSON
+
+"Clean json region using jq
+function! JQ(minimize) range
+  if a:minimize
+    silent! execute a:firstline . "," . a:lastline . '! jq -c .'
+  else
+    silent! execute a:firstline . "," . a:lastline . '! jq .'
+  endif
+endfunction
+
+"Convert within visual selection
+vnoremap <leader>jq :call JQ(0)<cr>
+"Convert entire file
+nnoremap <leader>jq :0,$call JQ(0)<cr>
+
+"Minimize within visual selection
+vnoremap <leader>JQ :call JQ(1)<cr>
+"Minimize entire file
+nnoremap <leader>JQ :0,$call JQ(1)<cr>
+
 
 """""""""""""""""""""""""""""""FILETYPE MAPPINGS
 

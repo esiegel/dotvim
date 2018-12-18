@@ -11,7 +11,7 @@ snippet riife "React Immediately-Invoked arrow Expression (iife)"
 endsnippet
 
 snippet rclass "React Component Class"
-class $0 extends React.Component {
+class ${1:SomeComponent} extends React.Component {
   static get propTypes() {
     return {
     };
@@ -23,16 +23,27 @@ class $0 extends React.Component {
 
   render() {
 	  return (
+		  <div>
+		  </div>
 		);
   }
-}
+}$0
 endsnippet
 
 snippet Choose "React Conditional Helper"
 <Choose>
-	<When condition={$0}>
+	<When condition={$1}>
 	</When>
 	<Otherwise>
 	</Otherwise>
 </Choose>
+endsnippet
+
+snippet If "React Conditional Helper"
+<If condition={$1}>
+</If>
+endsnippet
+
+snippet rbind "React bind method"
+this.$1 = this.$1.bind(this);
 endsnippet
