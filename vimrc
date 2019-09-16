@@ -79,8 +79,10 @@ Plug 'Olical/vim-enmasse'
 Plug 'Shougo/vimproc.vim'
 Plug 'SirVer/ultisnips'
 Plug 'altercation/vim-colors-solarized'
+Plug 'aserebryakov/vim-todo-lists'
 Plug 'bling/vim-airline'
 Plug 'coderifous/textobj-word-column.vim'
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
 Plug 'haya14busa/incsearch.vim'
@@ -96,6 +98,7 @@ Plug 'metakirby5/codi.vim'
 Plug 'mhinz/vim-grepper'
 Plug 'millermedeiros/vim-esformatter'
 Plug 'morhetz/gruvbox'
+Plug 'pelodelfuego/vim-swoop'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tomasr/molokai'
@@ -117,6 +120,7 @@ Plug 'eagletmt/ghcmod-vim',            { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc',              { 'for': 'haskell' }
 Plug 'elixir-lang/vim-elixir',         { 'for': 'elixir' }
 Plug 'fatih/vim-go',                   { 'for': 'go' }
+Plug 'jparise/vim-graphql',            { 'for': 'graphql' }
 Plug 'kchmck/vim-coffee-script',       { 'for': 'coffee' }
 Plug 'leafgarland/typescript-vim',     { 'for': 'typescript' }
 Plug 'lukaszkorecki/CoffeeTags',       { 'for': 'coffee' }
@@ -295,7 +299,7 @@ set splitright
 " Options for diff mode
 "   filler: show blank filler lines
 "   vertical: split vertical
-set diffopt=filler,vertical
+set diffopt=filler,vertical,internal,algorithm:patience
 
 " map gp to select recently pasted text
 " fancier `[v`]
@@ -840,7 +844,8 @@ endif
 nmap <silent><leader>m :JavaImportMissing<CR>
 
 "import sort
-nmap <silent><leader>s :JavaImportSort<CR>
+" TODO, figure out better mapping
+" nmap <silent><leader>s :JavaImportSort<CR>
 
 "JavaCorrect
 nmap <silent><leader><leader>c :JavaCorrect<CR>
@@ -1065,6 +1070,8 @@ if MACHINE == HOME_LAPTOP
    let g:clang_library_path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"
 elseif MACHINE == HOME_DESKTOP
    let g:clang_library_path="/usr/lib/llvm-3.4/lib/libclang.so.1"
+elseif MACHINE == WORK_LAPTOP
+   let g:clang_library_path="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib"
 endif
 
 " }}}
@@ -1112,6 +1119,31 @@ function! s:FZFAllFiles()
    let $FZF_DEFAULT_COMMAND=initial
 endfunction
 
+function! s:fzf_yank_results(lines)
+  echom '*****'
+  echom '*****'
+  echom '*****'
+  echom '*****'
+  echom '*****'
+  echom '*****'
+  echo '*****'
+  echo '*****'
+  echo '*****'
+  echo '*****'
+  echo '*****'
+  echo '*****'
+  let joined_lines = join(a:lines, "\n")
+
+  if len(a:lines) > 1
+    let joined_lines .= "\n"
+  endif
+
+  echom '*****'
+  echom joined_lines
+
+  let @+ = joined_lines
+endfunction
+
 function! s:fzf_ag_raw(cmd, bang)
   let cmd = '--noheading --nobreak '. a:cmd
 
@@ -1121,6 +1153,14 @@ endfunction
 
 " Allow Ag to take arguments like --ruby or directory.
 autocmd! VimEnter * command! -bang -nargs=* -complete=file Ag :call s:fzf_ag_raw(<q-args>, <bang>0)
+
+" Add keybindings within fzf window
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit',
+  \ 'ctrl-b': function('s:fzf_yank_results'),
+  \ }
 
 " }}}
 
@@ -1170,3 +1210,15 @@ autocmd BufNewFile,BufRead *.tpp* set filetype=cpp
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufRead *.mkd set filetype=markdown
 autocmd BufNewFile,BufRead *.markdown set filetype=markdown
+
+
+"""""""""""""""""""""""""""""""SWOOP
+let g:swoopUseDefaultKeyMap = 0
+nmap <Leader>s :call Swoop()<CR>
+vmap <Leader>s :call SwoopSelection()<CR>
+nmap <Leader>ms :call SwoopMulti()<CR>
+vmap <Leader>ms :call SwoopMultiSelection()<CR>
+
+"""""""""""""""""""""""""""""""todo-lists
+let g:VimTodoListsMoveItems = 0
+let g:VimTodoListsDatesEnabled = 0
