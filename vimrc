@@ -8,11 +8,11 @@ let WORK_LAPTOP     = 3
 function! CurrentMachine()
    let hostname = hostname()
 
-   if hostname == "ebox"
+   if hostname == "etrans"
       return g:HOME_LAPTOP
    elseif hostname == "emachine"
       return g:HOME_DESKTOP
-   elseif hostname == "etrans"
+   elseif hostname == "fpx-l-US00953"
       return g:WORK_LAPTOP
    else
       return g:UNKNOWN_MACHINE
@@ -23,12 +23,12 @@ let MACHINE = CurrentMachine()
 
 if MACHINE == HOME_LAPTOP
     let vimHome="/Users/eric/.vim"
-    let tmpDir="/Users/eric/code/.tmpvim"
+    let tmpDir=vimHome."/.tmpvim"
 elseif MACHINE == HOME_DESKTOP
     let vimHome="/home/eric/.vim"
     let tmpDir="/home/eric/code/.tmpvim"
 elseif MACHINE == WORK_LAPTOP
-    let vimHome="/Users/eric/.vim"
+    let vimHome="/Users/eric.siegel/.vim"
     let tmpDir=vimHome."/.tmpvim"
 else
     " Set home to directory of this vimrc file
@@ -68,6 +68,12 @@ Plug 'junegunn/vim-plug'
 
 " Must come before tabular plugin
 Plug 'plasticboy/vim-markdown'
+
+" Add maktaba, glaive, and codefmt to the runtimepath.
+" (Glaive must also be installed before it can be used.)
+Plug 'google/vim-maktaba'
+Plug 'google/vim-glaive'
+Plug 'google/vim-codefmt'
 
 " Original repos on github
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -127,7 +133,6 @@ Plug 'lukaszkorecki/CoffeeTags',       { 'for': 'coffee' }
 Plug 'msanders/cocoa.vim',             { 'for': 'swift' }
 Plug 'mxw/vim-jsx',                    { 'for': 'javascript.jsx' }
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
-Plug 'mdempsky/gocode',                { 'for': 'go', 'rtp': 'vim/', 'do': '~/.vim/bundle/gocode/vim/symlink.sh' }
 Plug 'pangloss/vim-javascript',        { 'for': ['javascript', 'javascript.jsx', 'jsx'] }
 Plug 'racer-rust/vim-racer',           { 'for': 'rust' }
 Plug 'rust-lang/rust.vim',             { 'for': 'rust' }
@@ -424,6 +429,17 @@ endfunction
 
 " "aY this to convert proptypes into static proptypes
 "dt{istatic get Pr€kb€kbpropTy	() oreturn {};jvi{ojjxkkpgp>,a:
+
+" }}}
+"
+"""""""""""""""""""""""""""golang""""""""""""""""""""""""""""" {{{
+"let g:go_debug = ["lsp"]
+let g:go_code_completion_enabled = 1
+let g:go_gopls_enabled = 1
+let g:go_doc_popup_window = 1
+
+" disable function information when cycling through completions
+let g:go_echo_go_info = 0
 
 " }}}
 
@@ -1026,7 +1042,7 @@ function! s:AgOperator(type)
    endif
 
    " Copy values from unnamed register
-   execute "Ag " . @@
+   execute "Ag " . "'" . @@ . "'"
 
    let @@ = saved_register
 endfunction
