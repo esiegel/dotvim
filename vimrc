@@ -105,6 +105,7 @@ Plug 'mhinz/vim-grepper'
 Plug 'millermedeiros/vim-esformatter'
 Plug 'morhetz/gruvbox'
 Plug 'pelodelfuego/vim-swoop'
+Plug 'romainl/Apprentice'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tomasr/molokai'
@@ -139,6 +140,15 @@ Plug 'rust-lang/rust.vim',             { 'for': 'rust' }
 Plug 'sorin-ionescu/python.vim',       { 'for': 'python' }
 Plug 'tikhomirov/vim-glsl',            { 'for': 'glsl' }
 
+" for martian syntax highlighting
+"   Add the plugin via Plug, but it isn't in a recognized vim structure
+"   Add the filetype
+"   Add the syntax highlighting
+Plug 'martian-lang/martian', { 'rtp': 'tools/syntax' }
+au BufRead,BufNewFile *.mro		setfiletype martian
+au BufRead,BufNewFile *.mro		exec 'source ' . vimHome . "/bundle/martian/tools/syntax/vim/martian.vim"
+
+
 " vim-scripts repo
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'vim-scripts/BusyBee'
@@ -148,6 +158,7 @@ Plug 'vim-scripts/L9'
 Plug 'vim-scripts/a.vim'
 "Plug 'vim-scripts/cscope_macros.vim'
 Plug 'vim-scripts/summerfruit256.vim'
+
 
 " split from vim to nvim
 if has('nvim')
@@ -596,6 +607,14 @@ if executable('hasktags')
    \ ]
    \ }
 
+let g:tagbar_type_martian= {
+    \ 'ctagstype' : 'martian',
+   \ 'kinds' : [
+      \'p:pipelines',
+      \'s:stages',
+   \ ]
+\ }
+
 " }}}
 
 """""""""""""""""""""""""""Clojure""""""""""""""""""""""""""""" {{{
@@ -767,7 +786,7 @@ function! MagicDiffStart()
   exec 'diffthis'
 
   exec 'vsplit'
-  exec 'Glog'
+  exec '0Gclog'
 
   " Get the buffer numbers from the quick fix list.
   " Looks like:
