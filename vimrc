@@ -32,8 +32,8 @@ elseif MACHINE == WORK_LAPTOP
     let tmpDir=vimHome."/.tmpvim"
 else
     " Set home to directory of this vimrc file
-    let vimHome=expand("%:p:h")
-    let tmpDir="/tmp"
+    let vimHome=expand("$HOME/.vim")
+    let tmpDir=vimHome."/.tmpvim"
 endif
 
 " make tmp directories
@@ -54,14 +54,10 @@ exec 'set rtp+='.vimHome
 exec 'set rtp+='.vimHome."/local_config/after"
 
 " Set vundle in runtimepath.
-exec 'source ' . vimHome . "/bundle/vim-plug/plug.vim"
+exec 'source ' . vimHome . "/vim-plug/plug.vim"
 
 " Call plug with path to bundles. Default, only check .vim dir.
 call plug#begin(vimHome . "/bundle")
-
-" let plug manage plug
-" required!
-Plug 'junegunn/vim-plug'
 
 " Plugs :
 " Plug 'git@github.com:esiegel/snipmate-snippets.git'
@@ -76,7 +72,8 @@ Plug 'google/vim-glaive'
 Plug 'google/vim-codefmt'
 
 " Original repos on github
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'AndrewRadev/splitjoin.vim'
