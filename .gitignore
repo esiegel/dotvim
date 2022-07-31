@@ -6,3 +6,8 @@ eclim
 .tmpvim
 viminfo
 spell/*
+viminfo.tmp*
+view/
+
+# neovim only
+init.vim

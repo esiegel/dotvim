@@ -72,8 +72,6 @@ Plug 'google/vim-glaive'
 Plug 'google/vim-codefmt'
 
 " Original repos on github
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'AndrewRadev/linediff.vim'
 Plug 'AndrewRadev/sideways.vim'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -84,6 +82,7 @@ Plug 'SirVer/ultisnips'
 Plug 'altercation/vim-colors-solarized'
 Plug 'aserebryakov/vim-todo-lists'
 Plug 'bling/vim-airline'
+Plug 'chrisbra/Colorizer'
 Plug 'coderifous/textobj-word-column.vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'ervandew/supertab'
@@ -91,22 +90,26 @@ Plug 'godlygeek/tabular'
 Plug 'haya14busa/incsearch.vim'
 Plug 'honza/vim-snippets'
 Plug 'jonathanfilip/vim-lucius'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-user'
+Plug 'kassio/neoterm'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'metakirby5/codi.vim'
 Plug 'mhinz/vim-grepper'
-Plug 'millermedeiros/vim-esformatter'
 Plug 'morhetz/gruvbox'
 Plug 'pelodelfuego/vim-swoop'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'romainl/Apprentice'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tomasr/molokai'
 Plug 'tomtom/tlib_vim'
+Plug 'tomasiser/vim-code-dark'
 Plug 'tpope/timl'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-characterize'
@@ -114,6 +117,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-surround'
+Plug 'w0rp/ale'
 Plug 'wellle/targets.vim'
 
 " language based
@@ -132,7 +136,6 @@ Plug 'msanders/cocoa.vim',             { 'for': 'swift' }
 Plug 'mxw/vim-jsx',                    { 'for': 'javascript.jsx' }
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
 Plug 'pangloss/vim-javascript',        { 'for': ['javascript', 'javascript.jsx', 'jsx'] }
-Plug 'racer-rust/vim-racer',           { 'for': 'rust' }
 Plug 'rust-lang/rust.vim',             { 'for': 'rust' }
 Plug 'sorin-ionescu/python.vim',       { 'for': 'python' }
 Plug 'tikhomirov/vim-glsl',            { 'for': 'glsl' }
@@ -155,16 +158,6 @@ Plug 'vim-scripts/L9'
 Plug 'vim-scripts/a.vim'
 "Plug 'vim-scripts/cscope_macros.vim'
 Plug 'vim-scripts/summerfruit256.vim'
-
-
-" split from vim to nvim
-if has('nvim')
-  Plug 'benekastah/neomake'
-  Plug 'kassio/neoterm'
-else
-  "Plug 'scrooloose/syntastic'
-  Plug 'w0rp/ale'
-endif
 
 call plug#end()
 
@@ -191,7 +184,9 @@ endif
 
 "colorscheme solarized
 set background=dark
-colorscheme BusyBee
+" colorscheme BusyBee
+" colorscheme codedark 
+colorscheme gruvbox
 
 "inverse search
 hi Search cterm=inverse ctermbg=NONE ctermfg=NONE gui=inverse guibg=NONE guifg=NONE
@@ -215,6 +210,11 @@ set shiftwidth=2
 
 "allowing backspace to work after indent -> see :help i_backspacing
 set backspace=indent,eol,start
+
+" Allows execution of local vimrc files, and enables project specific vimrc
+" disallows the use of autocmd, shell, and write within the exrc files
+set exrc
+set secure
 
 "removes annoying beeps when bad command
 "instead flashes screen
@@ -319,26 +319,33 @@ set diffopt=filler,vertical,internal,algorithm:patience
 " http://vim.wikia.com/wiki/Selecting_your_pasted_text
 nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
+" enable 24 bit colors
+set termguicolors
+
 " update formating options.
 set formatoptions +=c " auto-wrap comments at textwidth
 set formatoptions +=j " remove comment leader when joining lines
 set formatoptions +=r " insert comment leader after <enter> in insert mode
 
-" save state on vim close
-set viminfo  ='100              " previously edited files marks, required.
-set viminfo +=/10              " search pattern items history
-set viminfo +=:10              " command line history
-set viminfo +=f1               " save file marks
-set viminfo +=h                " disable hlsearch
-set viminfo +=s10              " maximum number of KB to save from a register
-set viminfo +=n~/.vim/viminfo  " set viminfo file name
+if has('nvim')
+else
+  " save state on vim close
+  set viminfo  ='100              " previously edited files marks, required.
+  set viminfo +=/10              " search pattern items history
+  set viminfo +=:10              " command line history
+  set viminfo +=f1               " save file marks
+  set viminfo +=h                " disable hlsearch
+  set viminfo +=s10              " maximum number of KB to save from a register
+  set viminfo +=n~/.vim/viminfo  " set viminfo file name
+endif
 
 " }}}
 
 """""""""""""""""""""""""""ABBREVIATIONS""""""""""""""""""""
-iabbr :thumbs_up: 👍
-iabbr :thumbs_down: 👎
-iabbr :poo: 💩
+iabbr :thumbs_up: ð
+iabbr :thumbs_down: ð
+iabbr :poo: ð©
+iabbr :check: ✔
 
 """""""""""""""""""""""""TERMINAL""""""""""""""""""""""""""""""" {{{
 " escape to terminal normal
@@ -375,7 +382,7 @@ function! s:ToggleTerm()
 
   if buffer_win == -1
     " open window
-    execute 'vs ' . buffer_name
+    vsplit | execute "buffer " .  buffer_nr
   else
     " close shell window
     if current_buffer_nr != buffer_nr
@@ -436,12 +443,12 @@ function! ReactState()
 endfunction
 
 " "aY this to convert proptypes into static proptypes
-"dt{istatic get Pr�kb�kbpropTy	() oreturn {};jvi{ojjxkkpgp>,a:
+"dt{istatic get PrkbkbpropTy	() oreturn {};jvi{ojjxkkpgp>,a:
 
 " }}}
 "
 """""""""""""""""""""""""""golang""""""""""""""""""""""""""""" {{{
-"let g:go_debug = ["lsp"]
+" let g:go_debug = ["shell-commands", "lsp"]
 let g:go_code_completion_enabled = 1
 let g:go_gopls_enabled = 1
 let g:go_doc_popup_window = 1
@@ -449,16 +456,52 @@ let g:go_doc_popup_window = 1
 " disable function information when cycling through completions
 let g:go_echo_go_info = 0
 
+" hopefully now on save, and on GoFmt, this doesn't destroy the undo history
+let g:go_fmt_experimental = 1
+
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+
 " }}}
 
 """""""""""""""""""""""""""rust""""""""""""""""""""""""""""" {{{
-let g:racer_cmd = "/Users/eric/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
 
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
+if executable('rls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+        \ 'allowlist': ['rust'],
+        \ })
+endif
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    inoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    inoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+    " refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 " }}}
 
 """""""""""""""""""""""""""CTAGS""""""""""""""""""""""""""""" {{{
@@ -598,6 +641,7 @@ if executable('hasktags')
      \'g:enumerations',
      \'s:structures',
      \'m:modules',
+     \'n:modules',
      \'c:constants',
      \'t:traits',
      \'i:trait implementations',
@@ -605,10 +649,25 @@ if executable('hasktags')
    \ }
 
 let g:tagbar_type_martian= {
-    \ 'ctagstype' : 'martian',
+   \ 'ctagstype' : 'martian',
    \ 'kinds' : [
       \'p:pipelines',
       \'s:stages',
+   \ ]
+\ }
+
+let g:tagbar_type_typescript= {
+   \ 'ctagstype' : 'typescript',
+   \ 'kinds' : [
+      \'c:classes',
+      \'n:modules',
+      \'f:functions',
+      \'v:variables',
+      \'v:varlambdas',
+      \'m:members',
+      \'i:interfaces',
+      \'e:enums',
+      \'I:imports',
    \ ]
 \ }
 
@@ -634,19 +693,28 @@ let g:syntastic_mode_map = { 'mode': 'active',
 let g:ale_python_flake8_options = "--max-line-length=119 " .
                                   \"--ignore=E203,E221,E241,E272,W404,W801"
 
+let g:ale_c_cc_executable = "clang"
+let g:ale_c_cc_options = "-std=c11 -Wall -I/Library/Developer/CommandLineTools/usr/include"
+
+
 "coffee
 let g:syntastic_coffee_coffeelint_args = "--file=./.coffeelint.json"
 
 " Show ale error map
-nnoremap <leader>e :lopen<cr>
+nnoremap <leader>el :lopen<cr>
 
 let g:ale_linters = {
 \  'coffee': ['coffeelint'],
 \  'javascript': ['eslint'],
+\  'typescriptreact': ['eslint'],
+\  'go': ['golangci_lint', 'gopls'],
 \}
 
 let g:ale_fixers = {
-\  'javascript': ['eslint'],
+\   'javascript': ['prettier', 'eslint'],
+\   'typescriptreact': ['prettier', 'eslint'],
+\   'typescript': ['prettier', 'eslint'],
+\   'css': ['prettier'],
 \}
 
 let g:ale_linter_aliases = {'jsx': 'css'}
@@ -655,6 +723,7 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 0
 let g:ale_lint_on_filetype_changed = 0
 let g:ale_set_highlights = 0
+let g:ale_fix_on_save = 1
 
 " }}}
 
@@ -727,7 +796,7 @@ let g:SuperTabDefaultCompletionType = 'context'
 "select first result.
 "   Disabled until this is fixed.
 "   https://github.com/ervandew/supertab/issues/162
-"let g:SuperTabLongestHighlight = 1
+let g:SuperTabLongestHighlight = 1
 
 "tab again for next longest completion
 let g:SuperTabLongestEnhanced = 1
@@ -776,7 +845,12 @@ nmap <Leader>afrom <Plug>AlignJSFrom
 " }}}
 
 """""""""""""""""""""""""""FUGITIVE""""""""""""""""""""""""""""" {{{
-nnoremap <leader>d :Gdiff master<CR>
+"git diff main
+nnoremap <leader>d :Gdiff main<CR>
+
+"git diff files
+nnoremap <silent><leader>v :Gdiff<CR>
+
 
 function! MagicDiffStart()
   let original_bufnr = bufnr('%')
@@ -941,6 +1015,9 @@ nnoremap <silent> <Plug>QfixNext         :<C-u>exe 'call <SID>QfixNext()'<CR>
 nmap <silent><leader>h <Plug>QfixPrevious
 nmap <silent><leader>l <Plug>QfixNext
 
+" loads the quickfix filter plugin
+packadd cfilter
+
 "change to next locationlist error
 nmap <silent><leader>H <Plug>LocationPrevious
 nmap <silent><leader>L <Plug>LocationNext
@@ -960,9 +1037,6 @@ nnoremap <C-q> :call setqflist([])<CR>
 
 "Trick if forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
-
-"git diff files
-nnoremap <silent><leader>v :Gdiff<CR>
 
 "Use emacs bindings for command mode.
 " start of line
@@ -985,7 +1059,8 @@ nnoremap <silent><leader>v :Gdiff<CR>
 :cnoremap <Esc><C-F>	<S-Right>
 
 "markdown spellcheck by default
-autocmd FileType markdown setlocal spell
+autocmd FileType markdown setlocal nospell
+autocmd FileType markdown setlocal nowrap
 
 "Open vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
@@ -1040,7 +1115,11 @@ nnoremap <leader>W mz:%s/\s\+$//g<cr>:w<cr>`z
 "
 """""""""""" viw<leader>g , <leader>g4w, <leader>gt;, <leader>gi[
 
-nnoremap <leader>g :set operatorfunc=<SID>AgOperator<cr>g@
+" This mapping calls the AgOperator with whatever text object we have pressed
+" nnoremap <leader>g :set operatorfunc=<SID>AgOperator<cr>g@
+
+" selects the current word at cursor
+nnoremap <leader>g :<c-u>call <SID>AgOperator('char')<cr>
 vnoremap <leader>g :<c-u>call <SID>AgOperator(visualmode())<cr>
 
 " argument is the type of selection (characterwise, linewise, or block)
@@ -1052,7 +1131,12 @@ function! s:AgOperator(type)
    if a:type ==# 'v'
       normal! `<v`>y
    elseif a:type ==# 'char'
-      normal! `[v`]y
+      " when this function is invoked via the operatorfunc
+      " `[ will be set with the beginning of the selection and `] with the end
+      " normal! `[v`]y
+
+      " yank the word
+      normal! viwy
    else
       return
    endif
