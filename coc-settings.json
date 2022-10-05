@@ -1,0 +1,7 @@
+{
+	"notification.maxHeight": 50,
+  "dialog.maxHeight": 100,
+  "hover.previewMaxHeight": 50,
+  "list.height": 50,
+  "list.maxPreviewHeight": 50
+}

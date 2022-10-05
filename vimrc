@@ -1,4 +1,7 @@
-""""""""""""""""System"""""""""""""""""""" {{{
+" TODO: allow vim9 script
+" vim9script
+
+""""""""""""""""System"""""""""""""""" {{{
 " Known machines
 let UNKNOWN_MACHINE = 0
 let HOME_LAPTOP     = 1
@@ -135,6 +138,7 @@ Plug 'lukaszkorecki/CoffeeTags',       { 'for': 'coffee' }
 Plug 'msanders/cocoa.vim',             { 'for': 'swift' }
 Plug 'mxw/vim-jsx',                    { 'for': 'javascript.jsx' }
 Plug 'nelstrom/vim-textobj-rubyblock', { 'for': 'ruby' }
+Plug 'neoclide/coc.nvim',              { 'for': ['rust', 'typescript', 'typescriptreact'], 'branch': 'release'}
 Plug 'pangloss/vim-javascript',        { 'for': ['javascript', 'javascript.jsx', 'jsx'] }
 Plug 'rust-lang/rust.vim',             { 'for': 'rust' }
 Plug 'sorin-ionescu/python.vim',       { 'for': 'python' }
@@ -271,6 +275,9 @@ set backup
 set undolevels=1000
 set undoreload=1000
 set undofile
+
+" longer updatetime leads to dealsy some times
+set updatetime=300
 
 if !isdirectory(&backupdir)
   call mkdir(&backupdir)
@@ -846,11 +853,31 @@ nmap <Leader>afrom <Plug>AlignJSFrom
 
 """""""""""""""""""""""""""FUGITIVE""""""""""""""""""""""""""""" {{{
 "git diff main
-nnoremap <leader>d :Gdiff main<CR>
+nnoremap <leader>d :call GitDiffMainOrMaster()<CR>
 
 "git diff files
 nnoremap <silent><leader>v :Gdiff<CR>
 
+"Check if git branch exists.  returns 1 for 
+function! GitBranchExists(branch)
+  let cmd = 'Git show-ref --heads ' . a:branch
+  let output = system(cmd)
+  if v:shell_error != 0
+    return 0
+  else
+    return 1
+  endif
+endfunction
+
+function! GitDiffMainOrMaster()
+  if GitBranchExists("main")
+    exec 'Gdiff main'
+  elseif GitBranchExists("master")
+    exec 'Gdiff master'
+  else
+    echom "not sure which branch to diff"
+  endif
+endfunction
 
 function! MagicDiffStart()
   let original_bufnr = bufnr('%')
@@ -1338,3 +1365,64 @@ vmap <Leader>ms :call SwoopMultiSelection()<CR>
 """""""""""""""""""""""""""""""todo-lists
 let g:VimTodoListsMoveItems = 0
 let g:VimTodoListsDatesEnabled = 0
+
+"""""""""""""""""""""""""""""""TYPESCRIPT
+
+" UTIL
+
+function! CheckBackSpace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+function! ToggleOutline() abort
+  let winid = coc#window#find('cocViewId', 'OUTLINE')
+  if winid == -1
+    echom "FOUND WINID " . winid
+    call CocAction('showOutline', 1)
+    let winid = coc#window#find('cocViewId', 'OUTLINE')
+    call win_gotoid(winid)
+  else
+    echom "Did not find WINID " . winid
+    call coc#window#close(winid)
+  endif
+endfunction
+
+" INIT
+
+function! InitTS() abort
+  " ctrl-] - jump to definition
+  nnoremap <buffer> <C-]> :call CocAction("jumpDefinition")<CR>
+
+  " disable autocomplete suggestion
+  let b:coc_suggest_disable = 1
+
+  " Insert <tab> when previous text is space, refresh completion if not.
+  inoremap <buffer> <silent><expr> <TAB>
+  \ coc#pum#visible() ? coc#pum#next(1):
+  \ CheckBackSpace() ? "\<Tab>" :
+  \ coc#refresh()
+
+  " completion backwards
+  inoremap <buffer> <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+  " start completion
+  inoremap <buffer> <silent><expr> <c-@> coc#refresh()
+
+  " outline
+  nnoremap <buffer> <leader><CR> :call ToggleOutline()<CR>
+endfunction
+
+function! InitCoctree() abort
+  " outline
+  nnoremap <buffer> <leader><CR> :call ToggleOutline()<CR>
+endfunction
+
+
+" AUTOCMDS on filetype
+autocmd FileType javascript,typescript,typescriptreact  :call InitTS()
+autocmd FileType coctree  :call InitCoctree()
+
+" cursor is disappearing
+let g:coc_disable_transparent_cursor = 1
+
