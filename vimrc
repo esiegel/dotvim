@@ -8,7 +8,7 @@ let WORK_LAPTOP     = 3
 function! CurrentMachine()
    let hostname = hostname()
 
-   if hostname == "etrans"
+   if hostname == "elaptop"
       return g:HOME_LAPTOP
    elseif hostname == "emachine"
       return g:HOME_DESKTOP
