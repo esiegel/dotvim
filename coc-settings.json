@@ -1,7 +1,18 @@
 {
+  "workspace.ignoredFolders": [
+    "$HOME",
+    "$HOME/.cargo/**",
+    "$HOME/.rustup/**"
+  ],
+
 	"notification.maxHeight": 50,
   "dialog.maxHeight": 100,
   "hover.previewMaxHeight": 50,
   "list.height": 50,
-  "list.maxPreviewHeight": 50
+  "list.maxPreviewHeight": 50,
+
+  "rust-analyzer.diagnostics.disabled": [ "inactive-code" ],
+  "rust-analyzer.inlayHints.parameterHints.enable": false,
+  "rust-analyzer.inlayHints.typeHints.enable": false,
+  "rust-analyzer.signatureInfo.detail": "full"
 }

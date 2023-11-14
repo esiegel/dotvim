@@ -81,6 +81,7 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'Olical/vim-enmasse'
 Plug 'Shougo/vimproc.vim'
+Plug 'catppuccin/vim', { 'as': 'catpuccin' }
 Plug 'SirVer/ultisnips'
 Plug 'altercation/vim-colors-solarized'
 Plug 'aserebryakov/vim-todo-lists'
@@ -92,6 +93,7 @@ Plug 'ervandew/supertab'
 Plug 'godlygeek/tabular'
 Plug 'haya14busa/incsearch.vim'
 Plug 'honza/vim-snippets'
+Plug 'jkramer/vim-checkbox'
 Plug 'jonathanfilip/vim-lucius'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -99,7 +101,7 @@ Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-user'
-Plug 'kassio/neoterm'
+" Plug 'kassio/neoterm'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'metakirby5/codi.vim'
@@ -118,6 +120,7 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rhubarb' " needed for GH actions with fugutive
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-surround'
 Plug 'w0rp/ale'
@@ -190,6 +193,7 @@ endif
 set background=dark
 " colorscheme BusyBee
 " colorscheme codedark 
+" colorscheme catppuccin_mocha
 colorscheme gruvbox
 
 "inverse search
@@ -276,7 +280,7 @@ set undolevels=1000
 set undoreload=1000
 set undofile
 
-" longer updatetime leads to dealsy some times
+" longer updatetime leads to dealays some times
 set updatetime=300
 
 if !isdirectory(&backupdir)
@@ -473,10 +477,10 @@ let g:go_info_mode='gopls'
 
 """""""""""""""""""""""""""rust""""""""""""""""""""""""""""" {{{
 
-if executable('rls')
+if executable('rustup')
     au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+        \ 'name': 'rust-analyzer',
+        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rust-analyzer']},
         \ 'allowlist': ['rust'],
         \ })
 endif
@@ -645,13 +649,19 @@ if executable('hasktags')
    \ 'kinds' : [
      \'T:types',
      \'f:functions',
-     \'g:enumerations',
+     \'g:enum',
      \'s:structures',
      \'m:modules',
      \'n:modules',
-     \'c:constants',
-     \'t:traits',
-     \'i:trait implementations',
+     \'c:implementations',
+     \'t:type alias',
+     \'i:traits',
+     \'v:globals',
+     \'M:macros',
+     \'m:struct fields',
+     \'e:enum variant',
+     \'P:method',
+     \'C:constant',
    \ ]
    \ }
 
@@ -946,6 +956,7 @@ function! MagicDiffStop()
   unlet g:magic_diff_buffer_index1
   unlet g:magic_diff_buffer_index2
 endfunction
+
 
 " }}}
 
